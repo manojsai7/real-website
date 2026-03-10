@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout – Code Hunters</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: #0a0a23; color: #e0e0e0; min-height: 100vh; }
+    a { color: #6c63ff; text-decoration: none; }
+    .header { background: #12122e; padding: 18px 30px; text-align: center; border-bottom: 2px solid #6c63ff; }
+    .header h1 { color: #fff; font-size: 22px; letter-spacing: 1px; }
+    .header h1 span { color: #6c63ff; }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    @media (max-width: 700px) { .container { grid-template-columns: 1fr; } }
+
+    .cart-section, .form-section { background: #15153a; border-radius: 12px; padding: 30px; border: 1px solid #23235a; }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #fff; border-bottom: 2px solid #6c63ff; padding-bottom: 10px; }
+
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #23235a; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-name { font-size: 15px; font-weight: 600; flex: 1; }
+    .cart-item-price { font-size: 17px; font-weight: 700; color: #6c63ff; white-space: nowrap; margin-left: 12px; }
+    .cart-item-remove { cursor: pointer; color: #ff4d6d; font-size: 18px; margin-left: 12px; background: none; border: none; }
+    .cart-item-remove:hover { color: #ff1744; }
+
+    .cart-total { display: flex; justify-content: space-between; padding: 18px 0 0; font-size: 20px; font-weight: 700; color: #fff; border-top: 2px solid #6c63ff; margin-top: 10px; }
+    .cart-total .amount { color: #00e676; }
+
+    .empty-cart { text-align: center; padding: 40px 0; color: #888; }
+    .empty-cart a { color: #6c63ff; font-weight: 600; }
+
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #b0b0cc; }
+    input, select { width: 100%; padding: 12px 14px; border: 1px solid #23235a; border-radius: 8px; background: #0d0d28; color: #fff; font-size: 15px; margin-bottom: 16px; outline: none; transition: border 0.2s; }
+    input:focus { border-color: #6c63ff; }
+
+    .terms { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; font-size: 13px; color: #b0b0cc; }
+    .terms input[type="checkbox"] { width: auto; margin-top: 3px; }
+
+    .pay-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #6c63ff, #4834d4); color: #fff; border: none; border-radius: 10px; font-size: 17px; font-weight: 700; cursor: pointer; transition: transform 0.15s, box-shadow 0.3s; letter-spacing: 0.5px; }
+    .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,99,255,0.4); }
+    .pay-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .error-msg { color: #ff4d6d; font-size: 13px; margin-bottom: 10px; display: none; }
+    .secure-badge { text-align: center; padding: 14px 0 0; font-size: 12px; color: #666; }
+    .warn-banner { background: #ff9800; color: #000; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; display: none; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 14px; color: #6c63ff; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Code <span>Hunters</span> – Checkout</h1>
+  </div>
+  <div id="warnBanner" class="warn-banner">
+    Razorpay keys not configured. Add your API keys to .env to enable payments.
+  </div>
+  <div class="container">
+    <div class="cart-section">
+      <div class="section-title">Your Order</div>
+      <div id="cartItems">
+        <div class="empty-cart">Your cart is empty. <a href="/sp/developers-kit.html">Browse products</a></div>
+      </div>
+      <div id="cartTotal" class="cart-total" style="display:none;">
+        <span>Total</span>
+        <span class="amount" id="totalAmount">&#8377;0</span>
+      </div>
+      <div class="back-link" style="margin-top:18px;">
+        <a href="/sp/developers-kit.html">&larr; Continue Shopping</a>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title">Contact Details</div>
+      <div id="errorMsg" class="error-msg"></div>
+      <form id="checkoutForm">
+        <label for="firstName">First Name *</label>
+        <input type="text" id="firstName" name="firstName" required autocomplete="given-name">
+
+        <label for="lastName">Last Name *</label>
+        <input type="text" id="lastName" name="lastName" required autocomplete="family-name">
+
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel">
+
+        <div class="terms">
+          <input type="checkbox" id="termsCheck" required>
+          <label for="termsCheck" style="margin-bottom:0;">I agree to the Terms &amp; Conditions and understand this is a digital product with instant delivery.</label>
+        </div>
+
+        <button type="submit" class="pay-btn" id="payBtn" disabled>
+          Pay with Razorpay
+        </button>
+
+        <div class="secure-badge">
+          &#128274; Secured by Razorpay. Your payment info never touches our server.
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+(function() {
+  var PRODUCTS = {
+    'developers-kit': { id: 'developers-kit', name: "Developer's Kit \u2013 700+ Projects Bundle", price: 881 },
+    '30-day-data-analyst-kit': { id: '30-day-data-analyst-kit', name: '30-Day Data Analyst Kit', price: 299 },
+    '5-day-js-bootcamp': { id: '5-day-js-bootcamp', name: '5-Day JavaScript Bootcamp', price: 201 },
+    'interview-mastery': { id: 'interview-mastery', name: 'Interview Mastery System', price: 1499 },
+    'interview-cracking-2026': { id: 'interview-cracking-2026', name: 'Interview-Cracking System (2026 AI)', price: 399 },
+    'ats-resume-template': { id: 'ats-resume-template', name: 'ATS Resume Template - WebDev', price: 129 },
+    'vip-pass': { id: 'vip-pass', name: 'Upgrade to VIP Pass', price: 149 }
+  };
+
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem('codehunters_cart')) || []; } catch(e) { return []; }
+  }
+  function saveCart(c) { localStorage.setItem('codehunters_cart', JSON.stringify(c)); }
+
+  // Accept ?product= param for direct buy
+  var params = new URLSearchParams(window.location.search);
+  var pid = params.get('product');
+  if (pid && PRODUCTS[pid]) {
+    saveCart([{ id: pid, quantity: 1 }]);
+  }
+
+  var razorpayKeyId = null;
+
+  fetch('/api/config').then(function(r){ return r.json(); }).then(function(cfg) {
+    if (cfg.razorpayConfigured) {
+      razorpayKeyId = cfg.keyId;
+    } else {
+      document.getElementById('warnBanner').style.display = 'block';
+    }
+  }).catch(function() {
+    document.getElementById('warnBanner').style.display = 'block';
+  });
+
+  function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  function renderCart() {
+    var cart = getCart();
+    var container = document.getElementById('cartItems');
+    var totalEl = document.getElementById('cartTotal');
+
+    if (!cart.length) {
+      container.innerHTML = '<div class="empty-cart">Your cart is empty. <a href="/sp/developers-kit.html">Browse products</a></div>';
+      totalEl.style.display = 'none';
+      document.getElementById('payBtn').disabled = true;
+      return;
+    }
+
+    var html = '', total = 0;
+    cart.forEach(function(item) {
+      var p = PRODUCTS[item.id];
+      if (!p) return;
+      var price = p.price * (item.quantity || 1);
+      total += price;
+      html += '<div class="cart-item">' +
+        '<span class="cart-item-name">' + escapeHtml(p.name) + '</span>' +
+        '<span class="cart-item-price">\u20B9' + price.toLocaleString('en-IN') + '</span>' +
+        '<button class="cart-item-remove" data-id="' + p.id + '" title="Remove">\u2715</button>' +
+        '</div>';
+    });
+
+    container.innerHTML = html;
+    document.getElementById('totalAmount').textContent = '\u20B9' + total.toLocaleString('en-IN');
+    totalEl.style.display = 'flex';
+    document.getElementById('payBtn').disabled = false;
+
+    container.querySelectorAll('.cart-item-remove').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var removeId = this.dataset.id;
+        saveCart(getCart().filter(function(i){ return i.id !== removeId; }));
+        renderCart();
+      });
+    });
+  }
+
+  renderCart();
+
+  document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var errorEl = document.getElementById('errorMsg');
+    errorEl.style.display = 'none';
+    var btn = document.getElementById('payBtn');
+
+    var cart = getCart();
+    if (!cart.length) { errorEl.textContent = 'Your cart is empty.'; errorEl.style.display = 'block'; return; }
+
+    var firstName = document.getElementById('firstName').value.trim();
+    var lastName = document.getElementById('lastName').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+
+    if (!firstName || !lastName || !email || !phone) {
+      errorEl.textContent = 'Please fill in all required fields.'; errorEl.style.display = 'block'; return;
+    }
+    if (!document.getElementById('termsCheck').checked) {
+      errorEl.textContent = 'Please agree to the Terms & Conditions.'; errorEl.style.display = 'block'; return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating order...';
+
+    fetch('/api/create-razorpay-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: cart,
+        customerName: firstName + ' ' + lastName,
+        customerEmail: email,
+        customerPhone: phone,
+      }),
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (data.error) {
+        errorEl.textContent = data.message || data.error;
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Pay with Razorpay';
+        return;
+      }
+
+      // Open Razorpay checkout modal
+      var options = {
+        key: data.keyId,
+        amount: data.amount,
+        currency: data.currency,
+        order_id: data.orderId,
+        name: 'Code Hunters',
+        description: 'Digital Products Purchase',
+        prefill: {
+          name: firstName + ' ' + lastName,
+          email: email,
+          contact: phone,
+        },
+        theme: { color: '#6c63ff' },
+        handler: function(response) {
+          // Verify payment on server
+          btn.textContent = 'Verifying payment...';
+          fetch('/api/verify-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          })
+          .then(function(r){ return r.json(); })
+          .then(function(result) {
+            if (result.verified) {
+              localStorage.removeItem('codehunters_cart');
+              window.location.href = '/success.html?payment_id=' + encodeURIComponent(response.razorpay_payment_id) + '&order_id=' + encodeURIComponent(response.razorpay_order_id);
+            } else {
+              errorEl.textContent = 'Payment verification failed. Please contact support.';
+              errorEl.style.display = 'block';
+              btn.disabled = false;
+              btn.textContent = 'Pay with Razorpay';
+            }
+          })
+          .catch(function() {
+            errorEl.textContent = 'Verification error. Please contact support.';
+            errorEl.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Pay with Razorpay';
+          });
+        },
+        modal: {
+          ondismiss: function() {
+            btn.disabled = false;
+            btn.textContent = 'Pay with Razorpay';
+          }
+        }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.on('payment.failed', function(resp) {
+        errorEl.textContent = resp.error.description || 'Payment failed. Please try again.';
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Pay with Razorpay';
+      });
+      rzp.open();
+    })
+    .catch(function() {
+      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Pay with Razorpay';
+    });
+  });
+})();
+</script>
+</body>
+</html>
