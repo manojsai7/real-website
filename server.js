@@ -60,6 +60,21 @@ const PRODUCTS = {
   }
 };
 
+// --- Order key generation (like wc_order_6aAljJBEgvnDB) ---
+let orderCounter = 1000;
+function generateOrderKey() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let key = 'ch_order_';
+  const bytes = crypto.randomBytes(13);
+  for (let i = 0; i < 13; i++) {
+    key += chars[bytes[i] % chars.length];
+  }
+  return key;
+}
+function getNextOrderNumber() {
+  return ++orderCounter;
+}
+
 // --- Razorpay instance (lazy, only if keys configured) ---
 function getRazorpay() {
   const keyId = process.env.RAZORPAY_KEY_ID;
@@ -130,11 +145,15 @@ app.post('/api/create-razorpay-order', async (req, res) => {
   }
 
   try {
+    const orderKey = generateOrderKey();
+    const orderNumber = getNextOrderNumber();
     const order = await razorpay.orders.create({
       amount: totalPaise,
       currency: 'INR',
-      receipt: 'order_' + Date.now(),
+      receipt: orderKey,
       notes: {
+        order_key: orderKey,
+        order_number: String(orderNumber),
         customer_name: customerName || '',
         customer_email: customerEmail || '',
         customer_phone: customerPhone || '',
@@ -144,6 +163,8 @@ app.post('/api/create-razorpay-order', async (req, res) => {
 
     res.json({
       orderId: order.id,
+      orderKey: orderKey,
+      orderNumber: orderNumber,
       amount: order.amount,
       currency: order.currency,
       keyId: process.env.RAZORPAY_KEY_ID,

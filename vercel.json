@@ -13,7 +13,8 @@
           "fonts/**",
           "images/**",
           "checkout.html",
-          "success.html"
+          "success.html",
+          "terms.html"
         ]
       }
     }

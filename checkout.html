@@ -4,115 +4,308 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Checkout – Code Hunters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: #0a0a23; color: #e0e0e0; min-height: 100vh; }
-    a { color: #6c63ff; text-decoration: none; }
-    .header { background: #12122e; padding: 18px 30px; text-align: center; border-bottom: 2px solid #6c63ff; }
-    .header h1 { color: #fff; font-size: 22px; letter-spacing: 1px; }
-    .header h1 span { color: #6c63ff; }
-    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-    @media (max-width: 700px) { .container { grid-template-columns: 1fr; } }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Source Sans Pro', 'Segoe UI', Arial, sans-serif; background: #f4f4f4; color: #333; min-height: 100vh; }
+    a { color: #F66711; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .cart-section, .form-section { background: #15153a; border-radius: 12px; padding: 30px; border: 1px solid #23235a; }
-    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #fff; border-bottom: 2px solid #6c63ff; padding-bottom: 10px; }
+    /* --- Animations --- */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #23235a; }
-    .cart-item:last-child { border-bottom: none; }
-    .cart-item-name { font-size: 15px; font-weight: 600; flex: 1; }
-    .cart-item-price { font-size: 17px; font-weight: 700; color: #6c63ff; white-space: nowrap; margin-left: 12px; }
-    .cart-item-remove { cursor: pointer; color: #ff4d6d; font-size: 18px; margin-left: 12px; background: none; border: none; }
-    .cart-item-remove:hover { color: #ff1744; }
+    /* --- Header --- */
+    .top-bar { background: #22c55e; color: #fff; text-align: center; padding: 12px 20px; font-size: 16px; font-weight: 700; letter-spacing: 0.5px; animation: fadeInUp 0.4s ease-out; }
+    .header { background: #fff; padding: 16px 30px; text-align: center; border-bottom: 1px solid #e0e0e0; animation: fadeInUp 0.5s ease-out; }
+    .header h1 { color: #222; font-size: 22px; font-weight: 700; }
+    .header h1 span { color: #F66711; }
 
-    .cart-total { display: flex; justify-content: space-between; padding: 18px 0 0; font-size: 20px; font-weight: 700; color: #fff; border-top: 2px solid #6c63ff; margin-top: 10px; }
-    .cart-total .amount { color: #00e676; }
+    .warn-banner { background: #fff3cd; color: #856404; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; border-bottom: 1px solid #ffc107; display: none; }
 
-    .empty-cart { text-align: center; padding: 40px 0; color: #888; }
-    .empty-cart a { color: #6c63ff; font-weight: 600; }
+    /* --- Layout --- */
+    .checkout-wrap { max-width: 1080px; margin: 0 auto; padding: 30px 20px 60px; display: grid; grid-template-columns: 1fr 400px; gap: 0; min-height: calc(100vh - 120px); }
+    @media (max-width: 900px) { .checkout-wrap { grid-template-columns: 1fr; gap: 24px; } }
 
-    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #b0b0cc; }
-    input, select { width: 100%; padding: 12px 14px; border: 1px solid #23235a; border-radius: 8px; background: #0d0d28; color: #fff; font-size: 15px; margin-bottom: 16px; outline: none; transition: border 0.2s; }
-    input:focus { border-color: #6c63ff; }
+    /* --- Left Column: Form --- */
+    .form-col { background: #fff; padding: 36px 40px; border-radius: 10px 0 0 10px; animation: slideInLeft 0.5s ease-out; }
+    @media (max-width: 900px) { .form-col { border-radius: 10px; } }
 
-    .terms { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; font-size: 13px; color: #b0b0cc; }
-    .terms input[type="checkbox"] { width: auto; margin-top: 3px; }
+    .order-info { display: flex; gap: 24px; flex-wrap: wrap; padding: 14px 0 20px; border-bottom: 1px solid #eee; margin-bottom: 24px; font-size: 14px; color: #666; }
+    .order-info .oi-item { display: flex; flex-direction: column; gap: 2px; }
+    .order-info .oi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 600; }
+    .order-info .oi-value { font-weight: 700; color: #222; font-size: 15px; }
+    .order-info .oi-value.total { color: #22c55e; font-size: 18px; }
 
-    .pay-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #6c63ff, #4834d4); color: #fff; border: none; border-radius: 10px; font-size: 17px; font-weight: 700; cursor: pointer; transition: transform 0.15s, box-shadow 0.3s; letter-spacing: 0.5px; }
-    .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,99,255,0.4); }
+    .section-label { font-size: 20px; font-weight: 700; color: #222; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #F66711; display: inline-block; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
+    .field label .req { color: #d50000; }
+    .field input { width: 100%; padding: 12px 14px; border: 1px solid #a0a0a0; border-radius: 4px; font-size: 15px; color: #333; background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .field input:focus { border-color: #61bdf7; box-shadow: 0 0 0 2px rgba(97,189,247,0.25); }
+    .field input.error { border-color: #d50000; box-shadow: 0 0 0 2px rgba(213,0,0,0.15); }
+
+    .error-msg { color: #d50000; font-size: 13px; margin-bottom: 14px; display: none; padding: 10px 14px; background: #fff5f5; border-radius: 4px; border: 1px solid #fecaca; }
+
+    .terms { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; font-size: 13px; color: #666; line-height: 1.5; }
+    .terms input[type="checkbox"] { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; accent-color: #F66711; }
+    .terms a { color: #F66711; font-weight: 600; }
+
+    /* --- CTA Button --- */
+    .pay-btn { width: 90%; display: block; margin: 0 auto; padding: 16px 25px; background: #F66711; color: #fff; border: none; border-radius: 6px; font-size: 24px; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.3s; letter-spacing: 0.5px; position: relative; overflow: hidden; }
+    .pay-btn:hover { background: #CF4E01; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(246,103,17,0.35); }
+    .pay-btn:active { transform: translateY(0); }
     .pay-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .pay-btn .shimmer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%); background-size: 200% 100%; animation: shimmer 2s infinite; pointer-events: none; }
 
-    .error-msg { color: #ff4d6d; font-size: 13px; margin-bottom: 10px; display: none; }
-    .secure-badge { text-align: center; padding: 14px 0 0; font-size: 12px; color: #666; }
-    .warn-banner { background: #ff9800; color: #000; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; display: none; }
-    .back-link { display: inline-block; margin-bottom: 20px; font-size: 14px; color: #6c63ff; }
-    .back-link:hover { text-decoration: underline; }
+    .secure-row { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 0 0; font-size: 12px; color: #999; }
+    .secure-row svg { width: 14px; height: 14px; fill: #999; }
+
+    /* --- Right Column: Sidebar --- */
+    .sidebar-col { background: #fff; border-radius: 0 10px 10px 0; padding: 36px 30px; box-shadow: 0 0 10px rgba(0,0,0,0.12); animation: slideInRight 0.5s ease-out; }
+    @media (max-width: 900px) { .sidebar-col { border-radius: 10px; } }
+
+    .sidebar-title { font-size: 22px; font-weight: 700; color: #222; margin-bottom: 20px; }
+
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-name { font-size: 14px; font-weight: 600; color: #333; flex: 1; }
+    .cart-item-price { font-size: 15px; font-weight: 700; color: #222; white-space: nowrap; margin-left: 12px; }
+    .cart-item-remove { cursor: pointer; color: #ccc; font-size: 16px; margin-left: 8px; background: none; border: none; transition: color 0.2s; }
+    .cart-item-remove:hover { color: #d50000; }
+
+    .cart-total { display: flex; justify-content: space-between; padding: 16px 0 0; font-size: 18px; font-weight: 700; color: #222; border-top: 2px solid #222; margin-top: 8px; }
+    .cart-total .amount { color: #22c55e; }
+
+    .empty-cart { text-align: center; padding: 30px 0; color: #999; font-size: 14px; }
+    .empty-cart a { color: #F66711; font-weight: 600; }
+
+    /* --- What You Get Section --- */
+    .getting-section { margin-top: 28px; padding-top: 20px; border-top: 1px solid #eee; }
+    .getting-title { font-size: 18px; font-weight: 700; color: #222; margin-bottom: 16px; }
+    .getting-list { list-style: none; padding: 0; }
+    .getting-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 15px; color: #444; line-height: 1.5; }
+    .getting-list li .chk { color: #22c55e; font-size: 18px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    /* --- Upsell Section --- */
+    .upsell-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid #eee; }
+    .upsell-title { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 12px; }
+    .upsell-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #fef7f0; border: 1px solid #fde1c4; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
+    .upsell-item:hover { background: #fff0e0; box-shadow: 0 2px 8px rgba(246,103,17,0.12); }
+    .upsell-item .ui-left { display: flex; align-items: center; gap: 10px; }
+    .upsell-item .ui-check { width: 18px; height: 18px; border: 2px solid #F66711; border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+    .upsell-item .ui-check.active { background: #F66711; }
+    .upsell-item .ui-check.active::after { content: '\2713'; color: #fff; font-size: 12px; font-weight: 700; }
+    .upsell-item .ui-name { font-size: 13px; font-weight: 600; color: #333; }
+    .upsell-item .ui-price { font-size: 14px; font-weight: 700; color: #F66711; white-space: nowrap; }
+
+    /* --- Trust Badges --- */
+    .trust-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; }
+    .trust-badges { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .trust-badge { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: #888; font-weight: 600; }
+    .trust-badge .tb-icon { width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .guarantee-text { font-size: 12px; color: #888; margin-top: 12px; line-height: 1.5; }
+
+    .back-link { display: inline-block; margin-top: 20px; font-size: 13px; color: #F66711; }
+
+    /* --- Responsive --- */
+    @media (max-width: 900px) {
+      .checkout-wrap { padding: 16px 12px 40px; }
+      .form-col, .sidebar-col { padding: 24px 20px; }
+      .pay-btn { width: 100%; font-size: 20px; }
+      .order-info { gap: 16px; }
+    }
+    @media (max-width: 500px) {
+      .pay-btn { font-size: 18px; padding: 14px 20px; }
+    }
   </style>
 </head>
 <body>
+  <div class="top-bar">Complete Details to Get Instant Access</div>
   <div class="header">
-    <h1>Code <span>Hunters</span> – Checkout</h1>
+    <h1>Code <span>Hunters</span></h1>
   </div>
   <div id="warnBanner" class="warn-banner">
     Razorpay keys not configured. Add your API keys to .env to enable payments.
   </div>
-  <div class="container">
-    <div class="cart-section">
-      <div class="section-title">Your Order</div>
+
+  <div class="checkout-wrap">
+    <!-- LEFT COLUMN: Form -->
+    <div class="form-col">
+      <div class="order-info" id="orderInfo">
+        <div class="oi-item">
+          <span class="oi-label">Order</span>
+          <span class="oi-value" id="orderNumber">–</span>
+        </div>
+        <div class="oi-item">
+          <span class="oi-label">Date</span>
+          <span class="oi-value" id="orderDate">–</span>
+        </div>
+        <div class="oi-item">
+          <span class="oi-label">Total</span>
+          <span class="oi-value total" id="orderTotal">₹0</span>
+        </div>
+        <div class="oi-item">
+          <span class="oi-label">Payment Method</span>
+          <span class="oi-value">Razorpay (UPI / Card / Netbanking)</span>
+        </div>
+      </div>
+
+      <div class="section-label">Contact Details</div>
+      <div id="errorMsg" class="error-msg"></div>
+      <form id="checkoutForm" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="firstName">First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" name="firstName" required autocomplete="given-name" placeholder="Your first name">
+          </div>
+          <div class="field">
+            <label for="lastName">Last Name <span class="req">*</span></label>
+            <input type="text" id="lastName" name="lastName" required autocomplete="family-name" placeholder="Your last name">
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email Address <span class="req">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="+91 98765 43210">
+        </div>
+
+        <div class="terms">
+          <input type="checkbox" id="termsCheck" required>
+          <label for="termsCheck">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and understand this is a digital product with instant delivery.</label>
+        </div>
+
+        <button type="submit" class="pay-btn" id="payBtn" disabled>
+          Get Instant Access
+          <span class="shimmer"></span>
+        </button>
+
+        <div class="secure-row">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          Secured by Razorpay &middot; 256-bit SSL Encrypted
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT COLUMN: Sidebar -->
+    <div class="sidebar-col">
+      <div class="sidebar-title">Your Order</div>
       <div id="cartItems">
         <div class="empty-cart">Your cart is empty. <a href="/sp/developers-kit.html">Browse products</a></div>
       </div>
       <div id="cartTotal" class="cart-total" style="display:none;">
         <span>Total</span>
-        <span class="amount" id="totalAmount">&#8377;0</span>
+        <span class="amount" id="totalAmount">₹0</span>
       </div>
-      <div class="back-link" style="margin-top:18px;">
-        <a href="/sp/developers-kit.html">&larr; Continue Shopping</a>
+
+      <!-- What You're Getting -->
+      <div class="getting-section" id="gettingSection" style="display:none;">
+        <div class="getting-title">What You're Getting Instantly</div>
+        <ul class="getting-list" id="gettingList"></ul>
       </div>
-    </div>
 
-    <div class="form-section">
-      <div class="section-title">Contact Details</div>
-      <div id="errorMsg" class="error-msg"></div>
-      <form id="checkoutForm">
-        <label for="firstName">First Name *</label>
-        <input type="text" id="firstName" name="firstName" required autocomplete="given-name">
+      <!-- Upsell -->
+      <div class="upsell-section" id="upsellSection" style="display:none;">
+        <div class="upsell-title">Recommended Add-Ons</div>
+        <div id="upsellItems"></div>
+      </div>
 
-        <label for="lastName">Last Name *</label>
-        <input type="text" id="lastName" name="lastName" required autocomplete="family-name">
-
-        <label for="email">Email Address *</label>
-        <input type="email" id="email" name="email" required autocomplete="email">
-
-        <label for="phone">Phone Number *</label>
-        <input type="tel" id="phone" name="phone" required autocomplete="tel">
-
-        <div class="terms">
-          <input type="checkbox" id="termsCheck" required>
-          <label for="termsCheck" style="margin-bottom:0;">I agree to the Terms &amp; Conditions and understand this is a digital product with instant delivery.</label>
+      <!-- Trust -->
+      <div class="trust-section">
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <div class="tb-icon">🔒</div>
+            <span>Secure<br>Payment</span>
+          </div>
+          <div class="trust-badge">
+            <div class="tb-icon">⚡</div>
+            <span>Instant<br>Delivery</span>
+          </div>
+          <div class="trust-badge">
+            <div class="tb-icon">♾️</div>
+            <span>Lifetime<br>Access</span>
+          </div>
+          <div class="trust-badge">
+            <div class="tb-icon">🎓</div>
+            <span>Expert<br>Quality</span>
+          </div>
         </div>
+        <p class="guarantee-text">100% Secure checkout. Your data is protected. Instant access after payment.</p>
+      </div>
 
-        <button type="submit" class="pay-btn" id="payBtn" disabled>
-          Pay with Razorpay
-        </button>
-
-        <div class="secure-badge">
-          &#128274; Secured by Razorpay. Your payment info never touches our server.
-        </div>
-      </form>
+      <a href="/sp/developers-kit.html" class="back-link">&larr; Continue Shopping</a>
     </div>
   </div>
 
 <script>
 (function() {
   var PRODUCTS = {
-    'developers-kit': { id: 'developers-kit', name: "Developer's Kit \u2013 700+ Projects Bundle", price: 881 },
-    '30-day-data-analyst-kit': { id: '30-day-data-analyst-kit', name: '30-Day Data Analyst Kit', price: 299 },
-    '5-day-js-bootcamp': { id: '5-day-js-bootcamp', name: '5-Day JavaScript Bootcamp', price: 201 },
-    'interview-mastery': { id: 'interview-mastery', name: 'Interview Mastery System', price: 1499 },
-    'interview-cracking-2026': { id: 'interview-cracking-2026', name: 'Interview-Cracking System (2026 AI)', price: 399 },
-    'ats-resume-template': { id: 'ats-resume-template', name: 'ATS Resume Template - WebDev', price: 129 },
-    'vip-pass': { id: 'vip-pass', name: 'Upgrade to VIP Pass', price: 149 }
+    'developers-kit': {
+      id: 'developers-kit',
+      name: "Developer's Kit \u2013 700+ Projects Bundle",
+      price: 881,
+      features: ['700+ real-world projects', '10+ technologies covered', 'Lifetime access & updates', 'Source code included', 'Priority support']
+    },
+    '30-day-data-analyst-kit': {
+      id: '30-day-data-analyst-kit',
+      name: '30-Day Data Analyst Kit',
+      price: 299,
+      features: ['30-day structured plan', 'Real datasets', 'Portfolio projects', 'Certificate ready']
+    },
+    '5-day-js-bootcamp': {
+      id: '5-day-js-bootcamp',
+      name: '5-Day JavaScript Bootcamp',
+      price: 201,
+      features: ['5-day intensive training', 'Hands-on projects', 'Modern JS (ES6+)', 'Build real apps']
+    },
+    'interview-mastery': {
+      id: 'interview-mastery',
+      name: 'Interview Mastery System',
+      price: 1499,
+      features: ['Cover every interview round', 'HR + Technical prep', 'Mock interview guides', '200+ curated questions']
+    },
+    'interview-cracking-2026': {
+      id: 'interview-cracking-2026',
+      name: 'Interview-Cracking System (2026 AI)',
+      price: 399,
+      features: ['AI-powered preparation', '2026 updated questions', 'Industry focused', 'Strategy guides']
+    },
+    'ats-resume-template': {
+      id: 'ats-resume-template',
+      name: 'ATS Resume Template - WebDev',
+      price: 129,
+      features: ['ATS-approved format', 'Web developer focused', 'Editable template', 'Cover letter included']
+    },
+    'vip-pass': {
+      id: 'vip-pass',
+      name: 'Upgrade to VIP Pass',
+      price: 149,
+      features: ['Exclusive VIP content', 'Early access to courses', 'Priority support', 'Special discounts']
+    }
+  };
+
+  // Upsell map: which products to suggest based on cart items
+  var UPSELLS = {
+    'developers-kit': ['ats-resume-template', 'interview-mastery'],
+    '30-day-data-analyst-kit': ['developers-kit', 'interview-cracking-2026'],
+    '5-day-js-bootcamp': ['developers-kit', 'ats-resume-template'],
+    'interview-mastery': ['ats-resume-template', 'developers-kit'],
+    'interview-cracking-2026': ['interview-mastery', 'ats-resume-template'],
+    'ats-resume-template': ['interview-cracking-2026', 'developers-kit'],
+    'vip-pass': ['developers-kit', 'interview-mastery']
   };
 
   function getCart() {
@@ -127,8 +320,13 @@
     saveCart([{ id: pid, quantity: 1 }]);
   }
 
-  var razorpayKeyId = null;
+  // Generate order display number
+  var orderNum = Math.floor(1000 + Math.random() * 9000);
+  document.getElementById('orderNumber').textContent = '#CH-' + orderNum;
+  var now = new Date();
+  document.getElementById('orderDate').textContent = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
+  var razorpayKeyId = null;
   fetch('/api/config').then(function(r){ return r.json(); }).then(function(cfg) {
     if (cfg.razorpayConfigured) {
       razorpayKeyId = cfg.keyId;
@@ -150,26 +348,85 @@
       container.innerHTML = '<div class="empty-cart">Your cart is empty. <a href="/sp/developers-kit.html">Browse products</a></div>';
       totalEl.style.display = 'none';
       document.getElementById('payBtn').disabled = true;
+      document.getElementById('orderTotal').textContent = '\u20B90';
+      document.getElementById('gettingSection').style.display = 'none';
+      document.getElementById('upsellSection').style.display = 'none';
       return;
     }
 
-    var html = '', total = 0;
+    var html = '', total = 0, allFeatures = [], cartIds = [];
     cart.forEach(function(item) {
       var p = PRODUCTS[item.id];
       if (!p) return;
+      cartIds.push(item.id);
       var price = p.price * (item.quantity || 1);
       total += price;
       html += '<div class="cart-item">' +
         '<span class="cart-item-name">' + escapeHtml(p.name) + '</span>' +
         '<span class="cart-item-price">\u20B9' + price.toLocaleString('en-IN') + '</span>' +
-        '<button class="cart-item-remove" data-id="' + p.id + '" title="Remove">\u2715</button>' +
+        '<button class="cart-item-remove" data-id="' + escapeHtml(p.id) + '" title="Remove">\u2715</button>' +
         '</div>';
+      if (p.features) {
+        p.features.forEach(function(f) {
+          if (allFeatures.indexOf(f) === -1) allFeatures.push(f);
+        });
+      }
     });
 
     container.innerHTML = html;
     document.getElementById('totalAmount').textContent = '\u20B9' + total.toLocaleString('en-IN');
+    document.getElementById('orderTotal').textContent = '\u20B9' + total.toLocaleString('en-IN');
     totalEl.style.display = 'flex';
     document.getElementById('payBtn').disabled = false;
+
+    // Render "What You're Getting"
+    if (allFeatures.length) {
+      var listHtml = '';
+      allFeatures.forEach(function(f) {
+        listHtml += '<li><span class="chk">\u2713</span>' + escapeHtml(f) + '</li>';
+      });
+      document.getElementById('gettingList').innerHTML = listHtml;
+      document.getElementById('gettingSection').style.display = 'block';
+    }
+
+    // Render upsells
+    var upsellIds = [];
+    cartIds.forEach(function(cid) {
+      (UPSELLS[cid] || []).forEach(function(uid) {
+        if (cartIds.indexOf(uid) === -1 && upsellIds.indexOf(uid) === -1) upsellIds.push(uid);
+      });
+    });
+    if (upsellIds.length) {
+      var uhtml = '';
+      upsellIds.slice(0, 3).forEach(function(uid) {
+        var up = PRODUCTS[uid];
+        if (!up) return;
+        uhtml += '<div class="upsell-item" data-id="' + escapeHtml(up.id) + '">' +
+          '<div class="ui-left"><div class="ui-check"></div><span class="ui-name">' + escapeHtml(up.name) + '</span></div>' +
+          '<span class="ui-price">\u20B9' + up.price.toLocaleString('en-IN') + '</span></div>';
+      });
+      document.getElementById('upsellItems').innerHTML = uhtml;
+      document.getElementById('upsellSection').style.display = 'block';
+
+      document.querySelectorAll('.upsell-item').forEach(function(el) {
+        el.addEventListener('click', function() {
+          var uid = this.dataset.id;
+          var check = this.querySelector('.ui-check');
+          if (check.classList.contains('active')) {
+            check.classList.remove('active');
+            saveCart(getCart().filter(function(i){ return i.id !== uid; }));
+          } else {
+            check.classList.add('active');
+            var c = getCart();
+            c.push({ id: uid, quantity: 1 });
+            saveCart(c);
+          }
+          renderCart();
+        });
+      });
+    } else {
+      document.getElementById('upsellSection').style.display = 'none';
+    }
 
     container.querySelectorAll('.cart-item-remove').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -188,6 +445,9 @@
     errorEl.style.display = 'none';
     var btn = document.getElementById('payBtn');
 
+    // Clear field errors
+    document.querySelectorAll('.field input').forEach(function(inp) { inp.classList.remove('error'); });
+
     var cart = getCart();
     if (!cart.length) { errorEl.textContent = 'Your cart is empty.'; errorEl.style.display = 'block'; return; }
 
@@ -196,15 +456,18 @@
     var email = document.getElementById('email').value.trim();
     var phone = document.getElementById('phone').value.trim();
 
-    if (!firstName || !lastName || !email || !phone) {
-      errorEl.textContent = 'Please fill in all required fields.'; errorEl.style.display = 'block'; return;
-    }
+    var valid = true;
+    if (!firstName) { document.getElementById('firstName').classList.add('error'); valid = false; }
+    if (!lastName) { document.getElementById('lastName').classList.add('error'); valid = false; }
+    if (!email) { document.getElementById('email').classList.add('error'); valid = false; }
+    if (!phone) { document.getElementById('phone').classList.add('error'); valid = false; }
+    if (!valid) { errorEl.textContent = 'Please fill in all required fields.'; errorEl.style.display = 'block'; return; }
     if (!document.getElementById('termsCheck').checked) {
       errorEl.textContent = 'Please agree to the Terms & Conditions.'; errorEl.style.display = 'block'; return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Creating order...';
+    btn.innerHTML = 'Creating order\u2026 <span class="shimmer"></span>';
 
     fetch('/api/create-razorpay-order', {
       method: 'POST',
@@ -222,11 +485,15 @@
         errorEl.textContent = data.message || data.error;
         errorEl.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'Pay with Razorpay';
+        btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
         return;
       }
 
-      // Open Razorpay checkout modal
+      // Show order key if returned
+      if (data.orderKey) {
+        document.getElementById('orderNumber').textContent = data.orderKey;
+      }
+
       var options = {
         key: data.keyId,
         amount: data.amount,
@@ -234,15 +501,10 @@
         order_id: data.orderId,
         name: 'Code Hunters',
         description: 'Digital Products Purchase',
-        prefill: {
-          name: firstName + ' ' + lastName,
-          email: email,
-          contact: phone,
-        },
-        theme: { color: '#6c63ff' },
+        prefill: { name: firstName + ' ' + lastName, email: email, contact: phone },
+        theme: { color: '#F66711' },
         handler: function(response) {
-          // Verify payment on server
-          btn.textContent = 'Verifying payment...';
+          btn.innerHTML = 'Verifying payment\u2026 <span class="shimmer"></span>';
           fetch('/api/verify-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -256,25 +518,27 @@
           .then(function(result) {
             if (result.verified) {
               localStorage.removeItem('codehunters_cart');
-              window.location.href = '/success.html?payment_id=' + encodeURIComponent(response.razorpay_payment_id) + '&order_id=' + encodeURIComponent(response.razorpay_order_id);
+              window.location.href = '/success.html?payment_id=' + encodeURIComponent(response.razorpay_payment_id) +
+                '&order_id=' + encodeURIComponent(response.razorpay_order_id) +
+                (data.orderKey ? '&order_key=' + encodeURIComponent(data.orderKey) : '');
             } else {
               errorEl.textContent = 'Payment verification failed. Please contact support.';
               errorEl.style.display = 'block';
               btn.disabled = false;
-              btn.textContent = 'Pay with Razorpay';
+              btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
             }
           })
           .catch(function() {
             errorEl.textContent = 'Verification error. Please contact support.';
             errorEl.style.display = 'block';
             btn.disabled = false;
-            btn.textContent = 'Pay with Razorpay';
+            btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
           });
         },
         modal: {
           ondismiss: function() {
             btn.disabled = false;
-            btn.textContent = 'Pay with Razorpay';
+            btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
           }
         }
       };
@@ -284,7 +548,7 @@
         errorEl.textContent = resp.error.description || 'Payment failed. Please try again.';
         errorEl.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'Pay with Razorpay';
+        btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
       });
       rzp.open();
     })
@@ -292,7 +556,7 @@
       errorEl.textContent = 'Something went wrong. Please try again.';
       errorEl.style.display = 'block';
       btn.disabled = false;
-      btn.textContent = 'Pay with Razorpay';
+      btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
     });
   });
 })();

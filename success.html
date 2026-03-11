@@ -4,23 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Order Confirmed – Code Hunters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; background: #0a0a23; color: #e0e0e0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    .header { width: 100%; background: #12122e; padding: 18px 30px; text-align: center; border-bottom: 2px solid #00e676; }
-    .header h1 { color: #fff; font-size: 22px; }
-    .header h1 span { color: #00e676; }
-    .card { max-width: 560px; margin: 60px auto; background: #15153a; border-radius: 16px; padding: 50px 40px; text-align: center; border: 1px solid #23235a; }
-    .check { width: 80px; height: 80px; border-radius: 50%; background: #00e676; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Source Sans Pro', 'Segoe UI', Arial, sans-serif; background: #f4f4f4; color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+    @keyframes checkDraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+
+    .header { width: 100%; background: #fff; padding: 16px 30px; text-align: center; border-bottom: 1px solid #e0e0e0; }
+    .header h1 { color: #222; font-size: 22px; font-weight: 700; }
+    .header h1 span { color: #F66711; }
+
+    .card { max-width: 560px; margin: 60px auto; background: #fff; border-radius: 12px; padding: 50px 40px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); animation: fadeInUp 0.5s ease-out; }
+    @media (max-width: 600px) { .card { margin: 30px 16px; padding: 36px 24px; } }
+
+    .check { width: 80px; height: 80px; border-radius: 50%; background: #22c55e; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: scaleIn 0.4s ease-out 0.2s both; }
     .check svg { width: 44px; height: 44px; }
-    .card h2 { font-size: 26px; color: #fff; margin-bottom: 12px; }
-    .card p { font-size: 15px; color: #b0b0cc; line-height: 1.6; margin-bottom: 10px; }
-    .details { margin: 24px 0; padding: 18px; background: #0d0d28; border-radius: 10px; text-align: left; }
-    .details .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
-    .details .row .label { color: #888; }
-    .details .row .value { color: #fff; font-weight: 600; word-break: break-all; }
-    .btn { display: inline-block; margin-top: 24px; padding: 14px 36px; background: linear-gradient(135deg, #6c63ff, #4834d4); color: #fff; border-radius: 10px; font-size: 16px; font-weight: 700; text-decoration: none; transition: transform 0.15s; }
-    .btn:hover { transform: translateY(-2px); }
+    .check svg polyline { stroke-dasharray: 24; animation: checkDraw 0.4s ease-out 0.5s both; }
+
+    .card h2 { font-size: 26px; color: #222; margin-bottom: 8px; font-weight: 700; }
+    .card p { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 10px; }
+
+    .details { margin: 24px 0; padding: 18px; background: #f9f9f9; border-radius: 8px; text-align: left; border: 1px solid #eee; }
+    .details .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+    .details .row:last-child { border-bottom: none; }
+    .details .row .label { color: #999; font-weight: 600; }
+    .details .row .value { color: #222; font-weight: 700; word-break: break-all; }
+
+    .btn { display: inline-block; margin-top: 24px; padding: 14px 36px; background: #F66711; color: #fff; border-radius: 6px; font-size: 16px; font-weight: 700; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+    .btn:hover { background: #CF4E01; transform: translateY(-2px); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -29,7 +45,7 @@
   </div>
   <div class="card">
     <div class="check">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a23" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     </div>
@@ -37,11 +53,12 @@
     <p>Thank you for your purchase. Your access details will be sent to your email shortly.</p>
 
     <div class="details" id="orderDetails" style="display:none;">
+      <div class="row" id="orderKeyRow" style="display:none;"><span class="label">Order Key</span><span class="value" id="orderKey">–</span></div>
       <div class="row"><span class="label">Payment ID</span><span class="value" id="paymentId">–</span></div>
-      <div class="row"><span class="label">Order ID</span><span class="value" id="orderId">–</span></div>
+      <div class="row"><span class="label">Razorpay Order ID</span><span class="value" id="orderId">–</span></div>
     </div>
 
-    <p style="font-size:13px; color:#888; margin-top:16px;">
+    <p style="font-size:13px; color:#999; margin-top:16px;">
       If you don't receive an email within 5 minutes, please check your spam folder.
     </p>
 
@@ -53,10 +70,15 @@
   var params = new URLSearchParams(window.location.search);
   var paymentId = params.get('payment_id');
   var orderId = params.get('order_id');
+  var orderKey = params.get('order_key');
   if (paymentId || orderId) {
     document.getElementById('orderDetails').style.display = 'block';
     if (paymentId) document.getElementById('paymentId').textContent = paymentId;
     if (orderId) document.getElementById('orderId').textContent = orderId;
+    if (orderKey) {
+      document.getElementById('orderKey').textContent = orderKey;
+      document.getElementById('orderKeyRow').style.display = 'flex';
+    }
   }
 })();
 </script>
