@@ -182,24 +182,35 @@ app.get('/', (req, res) => {
 
 // --- Static files ---
 app.use('/PAyment_gate', express.static(path.join(__dirname, 'PAyment_gate')));
+app.use('/sp', express.static(path.join(__dirname, 'sp')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.static(__dirname));
 
-app.listen(PORT, () => {
-  console.log(`\n  ====================================`);
-  console.log(`  Code Hunters - Local Store`);
-  console.log(`  ====================================`);
-  console.log(`  Server running at: http://localhost:${PORT}`);
-  console.log(`  Landing page:      http://localhost:${PORT}/sp/developers-kit.html`);
-  console.log(`  Checkout:          http://localhost:${PORT}/checkout.html`);
-  console.log(`  Shop:              http://localhost:${PORT}/PAyment_gate/shop.html`);
-  console.log(`  ====================================\n`);
+// Export app for Vercel serverless runtime
+module.exports = app;
 
-  const rz = getRazorpay();
-  if (!rz) {
-    console.log('  !! Razorpay NOT configured - payments disabled');
-    console.log('  -> Add your API keys to .env file');
-    console.log('  -> Get keys at: https://dashboard.razorpay.com/app/keys\n');
-  } else {
-    console.log('  Razorpay configured - payments ready\n');
-  }
-});
+// Start local server only when run directly (not imported by Vercel)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n  ====================================`);
+    console.log(`  Code Hunters - Local Store`);
+    console.log(`  ====================================`);
+    console.log(`  Server running at: http://localhost:${PORT}`);
+    console.log(`  Landing page:      http://localhost:${PORT}/sp/developers-kit.html`);
+    console.log(`  Checkout:          http://localhost:${PORT}/checkout.html`);
+    console.log(`  Shop:              http://localhost:${PORT}/PAyment_gate/shop.html`);
+    console.log(`  ====================================\n`);
+
+    const rz = getRazorpay();
+    if (!rz) {
+      console.log('  !! Razorpay NOT configured - payments disabled');
+      console.log('  -> Add your API keys to .env file');
+      console.log('  -> Get keys at: https://dashboard.razorpay.com/app/keys\n');
+    } else {
+      console.log('  Razorpay configured - payments ready\n');
+    }
+  });
+}
