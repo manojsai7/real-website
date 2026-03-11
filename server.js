@@ -44,7 +44,7 @@ const PRODUCTS = {
     currency: 'INR',
     description: 'AI-powered interview cracking system for 2026'
   },
-  'Testing First': {
+  'Testing-First': {
     id: 'Testing-First',
     name: 'Testing First',
     price: 12,
