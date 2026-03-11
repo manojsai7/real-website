@@ -44,6 +44,13 @@ const PRODUCTS = {
     currency: 'INR',
     description: 'AI-powered interview cracking system for 2026'
   },
+  'Testing First': {
+    id: 'Testing-First',
+    name: 'Testing First',
+    price: 12,
+    currency: 'INR',
+    description: 'Complete Tests'
+  },
   'ats-resume-template': {
     id: 'ats-resume-template',
     name: 'ATS Approved Resume Template - WebDev',
