@@ -305,13 +305,14 @@
 
   // Upsell map: which products to suggest based on cart items
   var UPSELLS = {
-    'developers-kit': ['ats-resume-template', 'interview-mastery'],
-    '30-day-data-analyst-kit': ['developers-kit', 'interview-cracking-2026'],
-    '5-day-js-bootcamp': ['developers-kit', 'ats-resume-template'],
-    'interview-mastery': ['ats-resume-template', 'developers-kit'],
-    'interview-cracking-2026': ['interview-mastery', 'ats-resume-template'],
-    'ats-resume-template': ['interview-cracking-2026', 'developers-kit'],
-    'vip-pass': ['developers-kit', 'interview-mastery']
+    'developers-kit': ['Testing-First', 'ats-resume-template', 'interview-mastery'],
+    '30-day-data-analyst-kit': ['Testing-First', 'developers-kit', 'interview-cracking-2026'],
+    '5-day-js-bootcamp': ['Testing-First', 'developers-kit', 'ats-resume-template'],
+    'interview-mastery': ['Testing-First', 'ats-resume-template', 'developers-kit'],
+    'interview-cracking-2026': ['Testing-First', 'interview-mastery', 'ats-resume-template'],
+    'ats-resume-template': ['Testing-First', 'interview-cracking-2026', 'developers-kit'],
+    'vip-pass': ['Testing-First', 'developers-kit', 'interview-mastery'],
+    'Testing-First': ['developers-kit', 'ats-resume-template']
   };
 
   function getCart() {
