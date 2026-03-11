@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Hunters — Developer Resources & Project Bundles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cardo:wght@700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ===== COLORS ===== */
+    :root {
+      --primary: #F66711;
+      --primary-dark: #CF4E01;
+      --accent: #22c55e;
+      --accent-dark: #16a34a;
+      --dark: #111827;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.1);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.12);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(30px) } to { opacity:1; transform:translateY(0) } }
+    @keyframes fadeIn   { from { opacity:0 } to { opacity:1 } }
+    @keyframes scaleIn  { from { opacity:0; transform:scale(.92) } to { opacity:1; transform:scale(1) } }
+    @keyframes slideDown { from { opacity:0; transform:translateY(-10px) } to { opacity:1; transform:translateY(0) } }
+    @keyframes float    { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-8px) } }
+    @keyframes shimmer  { 0%{ background-position:-200% 0 } 100%{ background-position:200% 0 } }
+    @keyframes pulse    { 0%,100%{ box-shadow:0 0 0 0 rgba(246,103,17,.4) } 70%{ box-shadow:0 0 0 12px rgba(246,103,17,0) } }
+    @keyframes countPop { 0%{ transform:scale(1) } 50%{ transform:scale(1.35) } 100%{ transform:scale(1) } }
+
+    .anim-fade-up { animation: fadeUp .6s ease-out both; }
+    .anim-fade-in { animation: fadeIn .5s ease-out both; }
+    .anim-scale   { animation: scaleIn .5s ease-out both; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      animation: slideDown .4s ease-out;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Cardo', serif; font-size: 22px; font-weight: 700; color: var(--dark);
+    }
+    .nav-logo span { color: var(--primary); }
+    .nav-logo-icon {
+      width: 36px; height: 36px; background: var(--primary); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 18px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 600; color: var(--gray-700); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cart {
+      position: relative; background: none; border: none; padding: 8px;
+      color: var(--gray-700); transition: color .2s;
+    }
+    .nav-cart:hover { color: var(--primary); }
+    .nav-cart svg { width: 24px; height: 24px; }
+    .cart-badge {
+      position: absolute; top: 0; right: -2px;
+      background: var(--primary); color: #fff;
+      font-size: 11px; font-weight: 700;
+      min-width: 20px; height: 20px; border-radius: 10px;
+      display: none; align-items: center; justify-content: center;
+      line-height: 1; padding: 0 5px;
+    }
+    .cart-badge.pop { animation: countPop .3s ease-out; }
+
+    /* Mobile nav */
+    .nav-hamburger { display: none; background: none; border: none; padding: 8px; color: var(--gray-700); }
+    @media(max-width:768px) {
+      .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: #fff; flex-direction: column; padding: 16px 24px; gap: 16px; border-bottom: 1px solid var(--gray-200); box-shadow: var(--shadow-md); }
+      .nav-links.open { display: flex; }
+      .nav-hamburger { display: block; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #1e293b 50%, #0f172a 100%);
+      padding: 80px 24px 90px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(246,103,17,.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(34,197,94,.1) 0%, transparent 50%);
+    }
+    .hero-content { position: relative; max-width: 720px; margin: 0 auto; animation: fadeUp .7s ease-out; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(246,103,17,.15); color: var(--primary); font-size: 13px; font-weight: 700;
+      padding: 6px 16px; border-radius: 50px; margin-bottom: 24px; letter-spacing: .5px;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse 2s infinite; }
+    .hero h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; color: var(--primary); }
+    .hero p { font-size: 18px; color: #94a3b8; max-width: 540px; margin: 0 auto 36px; }
+    .hero-cta { display: inline-flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 700;
+      transition: transform .15s, box-shadow .25s, background .2s; border: none;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(246,103,17,.35); }
+    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.25); }
+    .btn-outline:hover { border-color: rgba(255,255,255,.5); transform: translateY(-2px); }
+
+    /* ===== SECTION WRAPPER ===== */
+    .section { padding: 80px 24px; }
+    .section-header { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+    .section-header .tag {
+      display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--primary); margin-bottom: 12px;
+    }
+    .section-header h2 { font-size: clamp(24px, 3.5vw, 36px); font-weight: 800; color: var(--dark); line-height: 1.2; margin-bottom: 12px; }
+    .section-header p { font-size: 16px; color: var(--gray-500); }
+
+    /* ===== BUNDLE SECTION ===== */
+    .bundle-section { background: #fff; }
+    .bundle-card {
+      max-width: 1100px; margin: 0 auto;
+      background: linear-gradient(145deg, #fff 0%, var(--gray-50) 100%);
+      border: 1px solid var(--gray-200); border-radius: 16px;
+      overflow: hidden; box-shadow: var(--shadow-lg);
+      animation: scaleIn .6s ease-out both;
+    }
+    .bundle-top {
+      background: linear-gradient(135deg, var(--dark), #1e293b);
+      padding: 32px 36px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .bundle-top h3 { font-size: 24px; font-weight: 800; color: #fff; }
+    .bundle-top h3 em { font-style: normal; color: var(--primary); }
+    .bundle-price-tag {
+      display: flex; align-items: baseline; gap: 6px;
+      background: var(--primary); padding: 8px 20px; border-radius: 50px;
+    }
+    .bundle-price-tag .currency { font-size: 16px; font-weight: 700; color: rgba(255,255,255,.8); }
+    .bundle-price-tag .amount { font-size: 28px; font-weight: 900; color: #fff; }
+    .bundle-price-tag .period { font-size: 13px; color: rgba(255,255,255,.7); margin-left: 2px; }
+
+    .bundle-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px; padding: 32px 36px;
+    }
+    .bundle-thumb {
+      position: relative; border-radius: 10px; overflow: hidden;
+      background: #fff; border: 1px solid var(--gray-200);
+      transition: transform .25s, box-shadow .25s; aspect-ratio: 1 / 1.1;
+    }
+    .bundle-thumb:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .bundle-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .bundle-thumb .label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      color: #fff; font-size: 11px; font-weight: 600; padding: 20px 8px 8px;
+      text-align: center; line-height: 1.3;
+    }
+
+    .bundle-bottom {
+      padding: 24px 36px 32px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .bundle-features { display: flex; flex-wrap: wrap; gap: 16px; }
+    .bundle-feat {
+      display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--gray-700);
+    }
+    .bundle-feat .icon { color: var(--accent); font-size: 16px; }
+    .bundle-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-add-cart {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      border: 2px solid var(--primary); background: #fff; color: var(--primary);
+      transition: all .2s;
+    }
+    .btn-add-cart:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }
+    .btn-add-cart svg { width: 18px; height: 18px; }
+    .btn-buy-now {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      background: var(--primary); color: #fff; border: 2px solid var(--primary);
+      transition: all .2s;
+    }
+    .btn-buy-now:hover { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(246,103,17,.3); }
+
+    /* ===== PRODUCTS GRID ===== */
+    .products-section { background: var(--gray-50); }
+    .products-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px;
+    }
+    .product-card {
+      background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius);
+      overflow: hidden; transition: transform .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .product-card-img {
+      height: 160px; background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+      display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+    }
+    .product-card-img .emoji { font-size: 48px; }
+    .product-card-img .coming-tag {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,.15); backdrop-filter: blur(6px);
+      padding: 4px 12px; border-radius: 50px;
+      font-size: 11px; font-weight: 700; color: #fff; letter-spacing: .5px;
+    }
+    .product-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .product-card-body h4 { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 8px; line-height: 1.3; }
+    .product-card-body p { font-size: 13px; color: var(--gray-500); margin-bottom: 16px; flex: 1; }
+    .product-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .product-price { font-size: 22px; font-weight: 800; color: var(--dark); }
+    .product-price .rs { font-size: 14px; font-weight: 600; color: var(--gray-500); }
+    .product-card .btn-add-cart { padding: 10px 18px; font-size: 13px; }
+
+    .product-card.coming-soon { opacity: .7; }
+    .product-card.coming-soon .product-card-footer { justify-content: center; }
+    .product-coming-label { font-size: 14px; font-weight: 700; color: var(--gray-400); letter-spacing: .5px; }
+
+    /* ===== TRUST BAR ===== */
+    .trust-section { background: #fff; border-top: 1px solid var(--gray-200); }
+    .trust-grid {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px;
+      text-align: center;
+    }
+    .trust-item .icon { font-size: 32px; margin-bottom: 10px; }
+    .trust-item h4 { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+    .trust-item p  { font-size: 13px; color: var(--gray-500); }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--dark); color: #94a3b8; padding: 48px 24px 24px; text-align: center;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+    .footer-links a { font-size: 14px; font-weight: 500; color: #94a3b8; transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 13px; color: #475569; }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 10000;
+      background: var(--dark); color: #fff; padding: 14px 24px; border-radius: 10px;
+      font-size: 14px; font-weight: 600; box-shadow: var(--shadow-lg);
+      transform: translateY(100px); opacity: 0; transition: all .35s cubic-bezier(.4,0,.2,1);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast .check { color: var(--accent); font-size: 18px; }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease-out, transform .6s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-icon">CH</div>
+    Code <span>Hunters</span>
+  </a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a href="#products">Products</a>
+    <a href="#bundle">Bundle</a>
+    <a href="/terms.html">Terms</a>
+    <button class="nav-cart cart-trigger" aria-label="Cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+      <span class="cart-badge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> BETA — New Experience</div>
+    <h1>Level Up Your Dev Career with <em>Real-World Projects</em></h1>
+    <p>Curated project bundles, interview kits, and career resources trusted by developers across India.</p>
+    <div class="hero-cta">
+      <a href="#bundle" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Explore Bundle
+      </a>
+      <a href="#products" class="btn btn-outline">Browse Products ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== BUNDLE SECTION ====== -->
+<section class="section bundle-section" id="bundle">
+  <div class="section-header reveal">
+    <div class="tag">★ Flagship Bundle</div>
+    <h2>Developer's Kit — 700+ Job-Ready Projects</h2>
+    <p>Everything you need to build an impressive portfolio. 10+ technologies, lifetime access, source code included.</p>
+  </div>
+
+  <div class="bundle-card reveal">
+    <div class="bundle-top">
+      <h3>Developer's Kit <em>Bundle</em></h3>
+      <div class="bundle-price-tag">
+        <span class="currency">₹</span>
+        <span class="amount">369</span>
+        <span class="period">one-time</span>
+      </div>
+    </div>
+    <div class="bundle-grid" id="bundleGrid">
+      <!-- Populated by JS -->
+    </div>
+    <div class="bundle-bottom">
+      <div class="bundle-features">
+        <div class="bundle-feat"><span class="icon">✓</span> 700+ Projects</div>
+        <div class="bundle-feat"><span class="icon">✓</span> 10+ Technologies</div>
+        <div class="bundle-feat"><span class="icon">✓</span> Lifetime Access</div>
+        <div class="bundle-feat"><span class="icon">✓</span> Source Code</div>
+        <div class="bundle-feat"><span class="icon">✓</span> Priority Support</div>
+      </div>
+      <div class="bundle-actions">
+        <button class="btn-add-cart" data-product="developers-kit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+        <button class="btn-buy-now" data-product="developers-kit">Buy Now →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PRODUCTS SECTION ====== -->
+<section class="section products-section" id="products">
+  <div class="section-header reveal">
+    <div class="tag">Our Products</div>
+    <h2>Career-Boosting Resources</h2>
+    <p>Each product is crafted to help you crack interviews, build skills, and stand out.</p>
+  </div>
+  <div class="products-grid" id="productsGrid">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- ====== TRUST BAR ====== -->
+<section class="section trust-section">
+  <div class="trust-grid reveal">
+    <div class="trust-item">
+      <div class="icon">🔒</div>
+      <h4>Secure Payments</h4>
+      <p>256-bit SSL encryption via Razorpay</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">⚡</div>
+      <h4>Instant Delivery</h4>
+      <p>Access within minutes of purchase</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">♾️</div>
+      <h4>Lifetime Access</h4>
+      <p>Buy once, access forever with updates</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">💬</div>
+      <h4>Priority Support</h4>
+      <p>Dedicated help when you need it</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="#products">Products</a>
+    <a href="/checkout.html">Checkout</a>
+    <a href="/terms.html">Terms & Conditions</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 Code Hunters. All rights reserved.</p>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span class="check">✓</span> <span id="toastMsg"></span></div>
+
+<!-- ====== SCRIPTS ====== -->
+<script src="/js/cart.js"></script>
+<script>
+(() => {
+  /* ---- Data ---- */
+  const BUNDLE_IMAGES = [
+    { file: 'Developers-Kit-1943x2048-1-972x1024.png', label: "Developer's Kit" },
+    { file: '300-Python-Projects-915x1024.png', label: '300+ Python Projects' },
+    { file: 'react-915x1024.png', label: 'React Projects' },
+    { file: 'Django-915x1024.png', label: 'Django Projects' },
+    { file: 'Java-915x1024.png', label: 'Java Projects' },
+    { file: 'C-915x1024.png', label: 'C Projects' },
+    { file: 'PHP-915x1024.png', label: 'PHP Projects' },
+    { file: '150-Front-end-Projects-915x1024.png', label: '150+ Front-end Projects' },
+    { file: '150-Machine-Learnig-918x1024.png', label: '150+ ML Projects' },
+    { file: '50-Natural-Language-Processing-919x1024.png', label: '50+ NLP Projects' },
+    { file: '100-Natural-Language-Processing-918x1024.png', label: '100+ NLP Projects' },
+    { file: '100-Editable-Resume-Templates-922x1024.jpg', label: '100+ Resume Templates' },
+    { file: '100-VS-Code-Keyboard-Shortcuts-927x1024.jpg', label: 'VS Code Shortcuts' },
+    { file: '100-Programming-Tools-927x1024.jpg', label: '100+ Programmer Tools' },
+    { file: 'Roadmap-927x1024.jpg', label: 'Developer Roadmaps' },
+    { file: 'Lifetime-Validity-Updates-927x1024.jpg', label: 'Lifetime Updates' },
+    { file: 'softare-919x1024.png', label: 'Software Collection' },
+    { file: '100-email-919x1024.png', label: '100+ Email Templates' },
+  ];
+
+  const PRODUCTS = [
+    { id: 'ats-resume-template', name: 'ATS Resume Template – WebDev', price: 129, emoji: '📄', desc: 'ATS-approved, editable resume template designed for web developers. Includes cover letter.' },
+    { id: '30-day-data-analyst-kit', name: '30-Day Data Analyst Kit', price: 299, emoji: '📊', desc: '30-day structured plan with real datasets, portfolio projects, and certificate.' },
+    { id: '5-day-js-bootcamp', name: '5-Day JavaScript Bootcamp', price: 201, emoji: '⚡', desc: 'Intensive 5-day JS training with hands-on projects building real apps.' },
+    { id: 'interview-mastery', name: 'Interview Mastery System', price: 1499, emoji: '🎯', desc: 'Clear every interview round — HR + tech prep, mock guides, 200+ questions.' },
+    { id: 'vip-pass', name: 'VIP Pass — Exclusive Access', price: 149, emoji: '👑', desc: 'Exclusive content, early access to new products, priority support, special discounts.' },
+    // Coming soon
+    { id: 'coming-1', name: 'Full-Stack Project Bundle', price: null, emoji: '🛠️', desc: 'Complete full-stack projects with deployment guides. Coming soon!', comingSoon: true },
+    { id: 'coming-2', name: 'DSA Interview Prep Kit', price: null, emoji: '🧠', desc: 'Data structures & algorithms mastery with visual explanations. Coming soon!', comingSoon: true },
+  ];
+
+  /* ---- Render bundle grid ---- */
+  const bundleGrid = document.getElementById('bundleGrid');
+  bundleGrid.innerHTML = BUNDLE_IMAGES.map(img => `
+    <div class="bundle-thumb">
+      <img src="/images/${img.file}" alt="${img.label}" loading="lazy">
+      <div class="label">${img.label}</div>
+    </div>
+  `).join('');
+
+  /* ---- Render products grid ---- */
+  const productsGrid = document.getElementById('productsGrid');
+  productsGrid.innerHTML = PRODUCTS.map((p, i) => `
+    <div class="product-card ${p.comingSoon ? 'coming-soon' : ''} reveal" style="animation-delay:${i * .08}s">
+      <div class="product-card-img">
+        <span class="emoji">${p.emoji}</span>
+        ${p.comingSoon ? '<span class="coming-tag">COMING SOON</span>' : ''}
+      </div>
+      <div class="product-card-body">
+        <h4>${p.name}</h4>
+        <p>${p.desc}</p>
+        <div class="product-card-footer">
+          ${p.comingSoon
+            ? '<span class="product-coming-label">Coming Soon</span>'
+            : `<span class="product-price"><span class="rs">₹</span>${p.price}</span>
+               <button class="btn-add-cart" data-product="${p.id}">
+                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                 Add to Cart
+               </button>`
+          }
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  /* ---- Product lookup for add-to-cart ---- */
+  const allProducts = {
+    'developers-kit': { id: 'developers-kit', name: "Developer's Kit – 700+ Projects Bundle", price: 369, image: '/images/Developers-Kit-1943x2048-1-972x1024.png' },
+    'ats-resume-template': { id: 'ats-resume-template', name: 'ATS Resume Template – WebDev', price: 129 },
+    '30-day-data-analyst-kit': { id: '30-day-data-analyst-kit', name: '30-Day Data Analyst Kit', price: 299 },
+    '5-day-js-bootcamp': { id: '5-day-js-bootcamp', name: '5-Day JavaScript Bootcamp', price: 201 },
+    'interview-mastery': { id: 'interview-mastery', name: 'Interview Mastery System', price: 1499 },
+    'vip-pass': { id: 'vip-pass', name: 'VIP Pass — Exclusive Access', price: 149 },
+  };
+
+  /* ---- Add to cart handlers ---- */
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-product]');
+    if (!btn) return;
+    const id = btn.dataset.product;
+    const product = allProducts[id];
+    if (!product) return;
+
+    if (btn.classList.contains('btn-buy-now')) {
+      // Buy now = add to cart then go to checkout
+      CartModule.addToCart(product);
+      setTimeout(() => { window.location.href = '/checkout.html'; }, 300);
+      return;
+    }
+
+    CartModule.addToCart(product);
+    showToast(`${product.name} added to cart!`);
+  });
+
+  /* ---- Toast ---- */
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  /* ---- Mobile nav toggle ---- */
+  document.getElementById('navHamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  /* ---- Scroll reveal ---- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+</script>
+
+</body>
+</html>
