@@ -12,7 +12,7 @@ const PRODUCTS = {
   'developers-kit': {
     id: 'developers-kit',
     name: "Developer's Kit – 700+ Job-Ready Projects Bundle",
-    price: 881,
+    price: 369,
     currency: 'INR',
     description: '700+ real-world projects across 10+ technologies with lifetime access & updates'
   },
