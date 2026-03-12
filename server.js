@@ -207,9 +207,16 @@ app.post('/api/verify-payment', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-app.get('/cart', (req, res) => {
+app.get('/cart.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'cart.html'));
+});
+
+// Legacy 301 redirects
+app.get('/sp/developers-kit.html', (req, res) => {
+  res.redirect(301, '/');
+});
+app.get('/sp/', (req, res) => {
+  res.redirect(301, '/');
 });
 
 // --- Static files ---
@@ -231,9 +238,9 @@ if (require.main === module) {
     console.log(`  Code Hunters - Local Store`);
     console.log(`  ====================================`);
     console.log(`  Server running at: http://localhost:${PORT}`);
-    console.log(`  Homepage:          http://localhost:${PORT}/`);
-    console.log(`  Cart:              http://localhost:${PORT}/cart`);
+    console.log(`  Landing page:      http://localhost:${PORT}/`);
     console.log(`  Checkout:          http://localhost:${PORT}/checkout.html`);
+    console.log(`  Shop:              http://localhost:${PORT}/PAyment_gate/shop.html`);
     console.log(`  ====================================\n`);
 
     const rz = getRazorpay();

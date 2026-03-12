@@ -1,222 +1,276 @@
-/* ============================================================
-   Code Hunters — Shared Cart Module (localStorage)
-   Include this script on any page to get:
-     • Cart data API (add, remove, update, get, totals)
-     • Auto-injected slide-in drawer (right side)
-     • Navbar badge auto-update
-   ============================================================ */
+// js/cart.js — Code Hunters guest cart
+// Storage: sessionStorage, key: ch_cart
+// Schema: { id, title, price, type: "bundle"|"product", quantity }
+var CartModule = (function () {
+  var KEY = 'ch_cart';
 
-const CartModule = (() => {
-  const STORAGE_KEY = 'codehunters_cart';
-
-  /* ---------- helpers ---------- */
   function _read() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { return []; }
+    try { return JSON.parse(sessionStorage.getItem(KEY)) || []; } catch (e) { return []; }
   }
+
   function _write(cart) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    _updateBadge();
-    _renderDrawer();
-    document.dispatchEvent(new CustomEvent('cart:changed', { detail: getCart() }));
+    sessionStorage.setItem(KEY, JSON.stringify(cart));
+    _updateBadge(cart);
+    _renderDrawer(cart);
+    window.dispatchEvent(new CustomEvent('cart:changed', { detail: { cart: cart } }));
   }
 
-  /* ---------- public API ---------- */
-  function getCart()       { return _read(); }
-  function getCartCount()  { return _read().reduce((s, i) => s + i.quantity, 0); }
-  function getCartTotal()  { return _read().reduce((s, i) => s + i.price * i.quantity, 0); }
+  function getCart() { return _read(); }
 
-  function addToCart(product) {
-    // product = { id, name, price, image (optional) }
-    const cart = _read();
-    const idx = cart.findIndex(i => i.id === product.id);
-    if (idx >= 0) {
-      cart[idx].quantity += 1;
+  function getCartCount() {
+    return _read().reduce(function (s, i) { return s + (i.quantity || 1); }, 0);
+  }
+
+  function getCartTotal() {
+    return _read().reduce(function (s, i) { return s + (i.price || 0) * (i.quantity || 1); }, 0);
+  }
+
+  function addToCart(item) {
+    // item: { id, title, price, type, quantity? }
+    var cart = _read();
+    var existing = cart.find(function (i) { return i.id === item.id; });
+    if (item.type === 'bundle') {
+      if (!existing) {
+        cart.push({ id: item.id, title: item.title, price: Number(item.price), type: 'bundle', quantity: 1 });
+      }
+      // bundles: silently ignore duplicate adds
     } else {
-      cart.push({ ...product, quantity: 1 });
+      if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({ id: item.id, title: item.title, price: Number(item.price), type: item.type || 'product', quantity: item.quantity || 1 });
+      }
     }
     _write(cart);
-    openDrawer();
   }
 
   function removeFromCart(id) {
-    _write(_read().filter(i => i.id !== id));
+    _write(_read().filter(function (i) { return i.id !== id; }));
   }
 
   function updateQuantity(id, qty) {
-    const cart = _read();
-    const idx = cart.findIndex(i => i.id === id);
-    if (idx < 0) return;
-    if (qty <= 0) { cart.splice(idx, 1); }
-    else { cart[idx].quantity = qty; }
+    var cart = _read();
+    var item = cart.find(function (i) { return i.id === id; });
+    if (!item || item.type === 'bundle') return;
+    if (qty < 1) { removeFromCart(id); return; }
+    item.quantity = qty;
     _write(cart);
   }
 
   function clearCart() { _write([]); }
 
-  /* ---------- badge ---------- */
-  function _updateBadge() {
-    document.querySelectorAll('.cart-badge').forEach(el => {
-      const c = getCartCount();
-      el.textContent = c;
-      el.style.display = c > 0 ? 'flex' : 'none';
+  // --- Badge ---
+  function _updateBadge(cart) {
+    var count = cart.reduce(function (s, i) { return s + (i.quantity || 1); }, 0);
+    document.querySelectorAll('[data-cart-badge]').forEach(function (el) {
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+      if (count > 0) {
+        el.classList.remove('badge-pop');
+        void el.offsetWidth;
+        el.classList.add('badge-pop');
+      }
     });
   }
 
-  /* ---------- drawer DOM ---------- */
-  let drawerInjected = false;
-
+  // --- Drawer ---
   function _injectDrawer() {
-    if (drawerInjected) return;
-    drawerInjected = true;
+    if (document.getElementById('ch-cart-drawer')) return;
 
-    const overlay = document.createElement('div');
-    overlay.id = 'cart-overlay';
+    var style = document.createElement('style');
+    style.id = 'ch-cart-drawer-css';
+    style.textContent = [
+      '#ch-cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;opacity:0;pointer-events:none;transition:opacity .25s}',
+      '#ch-cart-overlay.open{opacity:1;pointer-events:auto}',
+      '#ch-cart-drawer{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:100vw;background:#fff;z-index:9999;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-6px 0 40px rgba(0,0,0,.14);font-family:"Plus Jakarta Sans",system-ui,sans-serif}',
+      '#ch-cart-drawer.open{transform:translateX(0)}',
+      '@media(max-width:500px){#ch-cart-drawer{width:100vw}}',
+      '.ch-dh{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(0,0,0,.08)}',
+      '.ch-dh h2{font-size:18px;font-weight:700;color:#18181A;margin:0;letter-spacing:-.3px}',
+      '.ch-dclose{background:none;border:none;font-size:24px;cursor:pointer;color:#706F6B;padding:2px 6px;line-height:1;border-radius:6px;transition:background .15s,color .15s}',
+      '.ch-dclose:hover{color:#18181A;background:#f0f0ef}',
+      '.ch-db{flex:1;overflow-y:auto;padding:16px 24px}',
+      '.ch-empty{text-align:center;padding:48px 0 32px;color:#706F6B}',
+      '.ch-empty-icon{font-size:52px;margin-bottom:16px}',
+      '.ch-empty p{font-size:15px;font-weight:600;color:#18181A;margin:0 0 6px}',
+      '.ch-empty span{font-size:14px;color:#706F6B}',
+      '.ch-di{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.07)}',
+      '.ch-di:last-child{border-bottom:none}',
+      '.ch-di-icon{width:44px;height:44px;background:#FEF0EB;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}',
+      '.ch-di-info{flex:1;min-width:0}',
+      '.ch-di-title{font-size:14px;font-weight:600;color:#18181A;line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+      '.ch-di-price{font-size:14px;font-weight:700;color:#E8440A;margin-bottom:6px}',
+      '.ch-di-ctrl{display:flex;align-items:center;gap:8px}',
+      '.ch-di-qty{display:flex;align-items:center;border:1px solid rgba(0,0,0,.14);border-radius:6px;overflow:hidden}',
+      '.ch-di-qty button{background:none;border:none;width:28px;height:28px;font-size:15px;cursor:pointer;color:#18181A;display:flex;align-items:center;justify-content:center;transition:background .12s}',
+      '.ch-di-qty button:hover{background:#f0f0ef}',
+      '.ch-di-qty span{font-size:13px;font-weight:700;color:#18181A;min-width:22px;text-align:center;padding:0 2px}',
+      '.ch-di-rm{background:none;border:none;cursor:pointer;color:#ADADAB;font-size:16px;padding:4px;border-radius:4px;line-height:1;transition:color .12s,background .12s;flex-shrink:0;margin-top:2px}',
+      '.ch-di-rm:hover{color:#d50000;background:#fff5f5}',
+      '.ch-df{padding:16px 24px;border-top:1px solid rgba(0,0,0,.08)}',
+      '.ch-subtotal{display:flex;justify-content:space-between;align-items:baseline;font-size:16px;font-weight:700;color:#18181A;margin-bottom:14px}',
+      '.ch-subtotal-val{color:#E8440A;font-size:20px;font-weight:800}',
+      '.ch-da{display:flex;flex-direction:column;gap:10px}',
+      '.ch-btn-co{display:block;width:100%;padding:14px;background:#E8440A;color:#fff;font-size:15px;font-weight:700;text-align:center;border:none;border-radius:8px;cursor:pointer;text-decoration:none;transition:background .15s,transform .1s}',
+      '.ch-btn-co:hover{background:#CC3500;transform:translateY(-1px)}',
+      '.ch-btn-vc{display:block;width:100%;padding:11px;background:#fff;color:#18181A;font-size:14px;font-weight:600;text-align:center;border:1.5px solid rgba(0,0,0,.14);border-radius:8px;cursor:pointer;text-decoration:none;transition:border-color .15s}',
+      '.ch-btn-vc:hover{border-color:#18181A}',
+      '@keyframes badge-pop{0%,100%{transform:scale(1)}50%{transform:scale(1.45)}}',
+      '[data-cart-badge].badge-pop{animation:badge-pop .3s ease}'
+    ].join('');
+    document.head.appendChild(style);
+
+    var overlay = document.createElement('div');
+    overlay.id = 'ch-cart-overlay';
     overlay.addEventListener('click', closeDrawer);
-
-    const drawer = document.createElement('div');
-    drawer.id = 'cart-drawer';
-    drawer.innerHTML = `
-      <div class="cd-header">
-        <h3>Your Cart</h3>
-        <button id="cd-close" aria-label="Close cart">&times;</button>
-      </div>
-      <div class="cd-items" id="cd-items"></div>
-      <div class="cd-footer" id="cd-footer"></div>
-    `;
-
     document.body.appendChild(overlay);
+
+    var drawer = document.createElement('div');
+    drawer.id = 'ch-cart-drawer';
+    drawer.setAttribute('role', 'dialog');
+    drawer.setAttribute('aria-label', 'Shopping cart');
+    drawer.innerHTML =
+      '<div class="ch-dh">' +
+        '<h2>Cart <span id="ch-dcount" style="font-size:14px;font-weight:600;color:#706F6B"></span></h2>' +
+        '<button class="ch-dclose" aria-label="Close cart">&times;</button>' +
+      '</div>' +
+      '<div class="ch-db" id="ch-db"></div>' +
+      '<div id="ch-df" class="ch-df" style="display:none">' +
+        '<div class="ch-subtotal"><span>Subtotal</span><span class="ch-subtotal-val" id="ch-dtotal">&#8377;0</span></div>' +
+        '<div class="ch-da">' +
+          '<a href="/checkout.html" class="ch-btn-co">Checkout &#8594;</a>' +
+          '<a href="/cart.html" class="ch-btn-vc">View Cart</a>' +
+        '</div>' +
+      '</div>';
     document.body.appendChild(drawer);
 
-    document.getElementById('cd-close').addEventListener('click', closeDrawer);
-
-    // inject styles once
-    if (!document.getElementById('cart-drawer-styles')) {
-      const s = document.createElement('style');
-      s.id = 'cart-drawer-styles';
-      s.textContent = `
-        #cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;opacity:0;pointer-events:none;transition:opacity .3s}
-        #cart-overlay.open{opacity:1;pointer-events:auto}
-        #cart-drawer{position:fixed;top:0;right:-420px;width:400px;max-width:92vw;height:100%;background:#fff;z-index:9999;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,.15);transition:right .35s cubic-bezier(.4,0,.2,1)}
-        #cart-drawer.open{right:0}
-        .cd-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid #eee}
-        .cd-header h3{font-size:20px;font-weight:700;color:#222;margin:0}
-        #cd-close{background:none;border:none;font-size:28px;cursor:pointer;color:#666;line-height:1}
-        #cd-close:hover{color:#d50000}
-        .cd-items{flex:1;overflow-y:auto;padding:16px 24px}
-        .cd-empty{text-align:center;padding:60px 0;color:#999}
-        .cd-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f3f3f3}
-        .cd-item img{width:56px;height:56px;object-fit:cover;border-radius:6px;background:#f5f5f5}
-        .cd-item-info{flex:1;min-width:0}
-        .cd-item-name{font-size:14px;font-weight:600;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .cd-item-price{font-size:13px;color:#666;margin-top:2px}
-        .cd-qty{display:flex;align-items:center;gap:0;border:1px solid #ddd;border-radius:6px;overflow:hidden}
-        .cd-qty button{width:30px;height:30px;background:#f9f9f9;border:none;font-size:16px;cursor:pointer;color:#333;transition:background .15s}
-        .cd-qty button:hover{background:#eee}
-        .cd-qty span{width:30px;text-align:center;font-size:13px;font-weight:600}
-        .cd-item-rm{background:none;border:none;color:#ccc;font-size:18px;cursor:pointer;padding:4px;transition:color .15s}
-        .cd-item-rm:hover{color:#d50000}
-        .cd-footer{padding:20px 24px;border-top:1px solid #eee}
-        .cd-subtotal{display:flex;justify-content:space-between;font-size:17px;font-weight:700;color:#222;margin-bottom:16px}
-        .cd-subtotal .amt{color:#22c55e}
-        .cd-actions{display:flex;flex-direction:column;gap:10px}
-        .cd-btn{display:block;text-align:center;padding:13px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s;border:none}
-        .cd-btn:hover{transform:translateY(-1px);text-decoration:none}
-        .cd-btn-primary{background:#F66711;color:#fff}
-        .cd-btn-primary:hover{background:#cf4e01;box-shadow:0 4px 16px rgba(246,103,17,.3)}
-        .cd-btn-secondary{background:#f5f5f5;color:#333}
-        .cd-btn-secondary:hover{background:#eaeaea}
-      `;
-      document.head.appendChild(s);
-    }
+    drawer.querySelector('.ch-dclose').addEventListener('click', closeDrawer);
   }
 
-  function _renderDrawer() {
-    const itemsEl = document.getElementById('cd-items');
-    const footerEl = document.getElementById('cd-footer');
-    if (!itemsEl) return;
+  function _esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
 
-    const cart = _read();
+  function _renderDrawer(cart) {
+    var body = document.getElementById('ch-db');
+    var foot = document.getElementById('ch-df');
+    var countEl = document.getElementById('ch-dcount');
+    if (!body) return;
+
+    var count = cart.reduce(function (s, i) { return s + (i.quantity || 1); }, 0);
+    if (countEl) countEl.textContent = count > 0 ? '(' + count + ' item' + (count !== 1 ? 's' : '') + ')' : '';
 
     if (!cart.length) {
-      itemsEl.innerHTML = '<div class="cd-empty"><p>Your cart is empty</p></div>';
-      footerEl.innerHTML = '';
+      body.innerHTML =
+        '<div class="ch-empty">' +
+          '<div class="ch-empty-icon">&#128722;</div>' +
+          '<p>Your cart is empty</p>' +
+          '<span>Browse our products and start adding!</span>' +
+        '</div>';
+      if (foot) foot.style.display = 'none';
       return;
     }
 
-    itemsEl.innerHTML = cart.map(item => `
-      <div class="cd-item" data-id="${item.id}">
-        ${item.image ? `<img src="${item.image}" alt="${item.name}">` : `<div style="width:56px;height:56px;border-radius:6px;background:linear-gradient(135deg,#F66711,#ff9a56);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px">${item.name.charAt(0)}</div>`}
-        <div class="cd-item-info">
-          <div class="cd-item-name">${item.name}</div>
-          <div class="cd-item-price">₹${item.price} × ${item.quantity}</div>
-        </div>
-        <div class="cd-qty">
-          <button data-action="dec" data-id="${item.id}">−</button>
-          <span>${item.quantity}</span>
-          <button data-action="inc" data-id="${item.id}">+</button>
-        </div>
-        <button class="cd-item-rm" data-action="rm" data-id="${item.id}">✕</button>
-      </div>
-    `).join('');
+    var html = '';
+    cart.forEach(function (item) {
+      var icon = item.type === 'bundle' ? '&#128230;' : '&#128196;';
+      var lineTotal = (item.price * (item.quantity || 1)).toLocaleString('en-IN');
+      var isBundle = item.type === 'bundle';
+      html +=
+        '<div class="ch-di">' +
+          '<div class="ch-di-icon">' + icon + '</div>' +
+          '<div class="ch-di-info">' +
+            '<div class="ch-di-title">' + _esc(item.title) + '</div>' +
+            '<div class="ch-di-price">&#8377;' + lineTotal + '</div>' +
+            '<div class="ch-di-ctrl">' +
+              (isBundle
+                ? '<span style="font-size:11px;color:#706F6B;background:#f3f3f3;padding:2px 8px;border-radius:4px">Bundle &#183; qty fixed</span>'
+                : '<div class="ch-di-qty">' +
+                    '<button data-ch-minus data-id="' + _esc(item.id) + '" aria-label="Decrease">&#8722;</button>' +
+                    '<span>' + (item.quantity || 1) + '</span>' +
+                    '<button data-ch-plus data-id="' + _esc(item.id) + '" aria-label="Increase">+</button>' +
+                  '</div>'
+              ) +
+            '</div>' +
+          '</div>' +
+          '<button class="ch-di-rm" data-ch-rm data-id="' + _esc(item.id) + '" aria-label="Remove item">&#10005;</button>' +
+        '</div>';
+    });
+    body.innerHTML = html;
 
-    footerEl.innerHTML = `
-      <div class="cd-subtotal"><span>Subtotal</span><span class="amt">₹${getCartTotal()}</span></div>
-      <div class="cd-actions">
-        <a href="/checkout.html" class="cd-btn cd-btn-primary">Checkout</a>
-        <a href="/cart" class="cd-btn cd-btn-secondary">View Full Cart</a>
-      </div>
-    `;
+    if (foot) {
+      var subtotal = cart.reduce(function (s, i) { return s + i.price * (i.quantity || 1); }, 0);
+      var totalEl = document.getElementById('ch-dtotal');
+      if (totalEl) totalEl.textContent = '&#8377;' + subtotal.toLocaleString('en-IN');
+      foot.style.display = 'block';
+    }
 
-    // Attach event listeners
-    itemsEl.querySelectorAll('button[data-action]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.dataset.id;
-        const action = e.currentTarget.dataset.action;
-        const cart = _read();
-        const item = cart.find(i => i.id === id);
-        if (!item) return;
-        if (action === 'inc') updateQuantity(id, item.quantity + 1);
-        else if (action === 'dec') updateQuantity(id, item.quantity - 1);
-        else if (action === 'rm') removeFromCart(id);
+    body.querySelectorAll('[data-ch-rm]').forEach(function (btn) {
+      btn.addEventListener('click', function () { removeFromCart(this.dataset.id); });
+    });
+    body.querySelectorAll('[data-ch-plus]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = this.dataset.id;
+        var c = _read();
+        var item = c.find(function (i) { return i.id === id; });
+        if (item) updateQuantity(id, (item.quantity || 1) + 1);
+      });
+    });
+    body.querySelectorAll('[data-ch-minus]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = this.dataset.id;
+        var c = _read();
+        var item = c.find(function (i) { return i.id === id; });
+        if (item) updateQuantity(id, (item.quantity || 1) - 1);
       });
     });
   }
 
-  /* ---------- open / close ---------- */
   function openDrawer() {
     _injectDrawer();
-    requestAnimationFrame(() => {
-      document.getElementById('cart-overlay').classList.add('open');
-      document.getElementById('cart-drawer').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-    _renderDrawer();
+    _renderDrawer(_read());
+    var overlay = document.getElementById('ch-cart-overlay');
+    var drawer = document.getElementById('ch-cart-drawer');
+    if (overlay) overlay.classList.add('open');
+    if (drawer) drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
 
   function closeDrawer() {
-    const overlay = document.getElementById('cart-overlay');
-    const drawer  = document.getElementById('cart-drawer');
+    var overlay = document.getElementById('ch-cart-overlay');
+    var drawer = document.getElementById('ch-cart-drawer');
     if (overlay) overlay.classList.remove('open');
-    if (drawer)  drawer.classList.remove('open');
+    if (drawer) drawer.classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  /* ---------- init ---------- */
-  function init() {
+  function _init() {
     _injectDrawer();
-    _updateBadge();
-    // Listen for cart-open clicks
-    document.addEventListener('click', e => {
-      if (e.target.closest('.cart-trigger')) { e.preventDefault(); openDrawer(); }
+    _updateBadge(_read());
+    document.querySelectorAll('[data-cart-open]').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); openDrawer(); });
     });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', _init);
   } else {
-    init();
+    _init();
   }
 
-  return { getCart, getCartCount, getCartTotal, addToCart, removeFromCart, updateQuantity, clearCart, openDrawer, closeDrawer };
+  return {
+    getCart: getCart,
+    getCartCount: getCartCount,
+    getCartTotal: getCartTotal,
+    addToCart: addToCart,
+    removeFromCart: removeFromCart,
+    updateQuantity: updateQuantity,
+    clearCart: clearCart,
+    openDrawer: openDrawer,
+    closeDrawer: closeDrawer
+  };
 })();
