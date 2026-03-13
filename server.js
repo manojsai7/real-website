@@ -207,21 +207,19 @@ app.post('/api/verify-payment', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+app.get('/cart', (req, res) => {
+  res.sendFile(path.join(__dirname, 'cart.html'));
+});
 app.get('/cart.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'cart.html'));
 });
 
-// Legacy 301 redirects
-app.get('/sp/developers-kit.html', (req, res) => {
-  res.redirect(301, '/');
-});
-app.get('/sp/', (req, res) => {
-  res.redirect(301, '/');
-});
+// Legacy 301 redirects – covers all /sp and /sp/* paths
+app.get('/sp', (req, res) => res.redirect(301, '/'));
+app.get('/sp/*', (req, res) => res.redirect(301, '/'));
 
 // --- Static files ---
 app.use('/PAyment_gate', express.static(path.join(__dirname, 'PAyment_gate')));
-app.use('/sp', express.static(path.join(__dirname, 'sp')));
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));

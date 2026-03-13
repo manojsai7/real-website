@@ -205,7 +205,7 @@ var CartModule = (function () {
     if (foot) {
       var subtotal = cart.reduce(function (s, i) { return s + i.price * (i.quantity || 1); }, 0);
       var totalEl = document.getElementById('ch-dtotal');
-      if (totalEl) totalEl.textContent = '&#8377;' + subtotal.toLocaleString('en-IN');
+      if (totalEl) totalEl.textContent = '\u20B9' + subtotal.toLocaleString('en-IN');
       foot.style.display = 'block';
     }
 
