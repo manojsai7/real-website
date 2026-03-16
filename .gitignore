@@ -1,0 +1,53 @@
+# Environment variables — CRITICAL: Never commit!
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.real
+# Service account & credentials — CRITICAL: Never commit!
+*.json.key
+credentials.json
+service-account-key.json
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE & Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+
+# Vercel & build
+.vercel/
+.next/
+dist/
+build/
+out/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Local development
+.env.test.local
+.cache/

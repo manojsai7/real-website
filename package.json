@@ -10,6 +10,8 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "razorpay": "^2.9.5"
+    "googleapis": "^171.4.0",
+    "razorpay": "^2.9.5",
+    "resend": "^6.4.2"
   }
 }

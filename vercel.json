@@ -12,6 +12,8 @@
           "js/**",
           "fonts/**",
           "images/**",
+          "index.html",
+          "cart.html",
           "checkout.html",
           "success.html",
           "terms.html"
