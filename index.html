@@ -1166,7 +1166,6 @@
         CartModule.addToCart({ id: p.id, title: p.title, price: p.price, type: p.type });
         this.innerHTML = '&#10003; In Cart';
         this.classList.add('in-cart');
-        CartModule.openDrawer();
       });
     });
 
@@ -1229,7 +1228,6 @@
         CartModule.addToCart({ id: p.id, title: p.title, price: p.price, type: p.type });
         this.innerHTML = '&#10003; Added!';
         setTimeout(function(btn){ btn.innerHTML = 'Get Instant Access &#8594;'; }.bind(null, btn), 1500);
-        CartModule.openDrawer();
       }
     });
   }
@@ -1273,7 +1271,6 @@
         toggleWishlist(id);
         renderProducts();
         closeWishlist();
-        CartModule.openDrawer();
       });
     });
 
@@ -1312,7 +1309,6 @@
     updateWishlistBadge();
     renderProducts();
     closeWishlist();
-    CartModule.openDrawer();
   });
 
   // ── URL category param ──

@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
 const Razorpay = require('razorpay');
+const { google } = require('googleapis');
+const { Resend } = require('resend');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -92,7 +94,68 @@ function getRazorpay() {
   return new Razorpay({ key_id: keyId, key_secret: keySecret });
 }
 
+// --- Google Drive + email delivery ---
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+function getDriveClient() {
+  const creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  const auth = new google.auth.GoogleAuth({
+    credentials: creds,
+    scopes: ['https://www.googleapis.com/auth/drive'],
+  });
+  return google.drive({ version: 'v3', auth });
+}
+
+async function grantAccess(customerEmail, paymentId) {
+  const folderId = process.env.GDRIVE_FOLDER_ID;
+  if (!folderId || !process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+    console.warn('Drive delivery not configured — skipping access grant');
+    return;
+  }
+  const drive = getDriveClient();
+  // Share folder — Drive silently ignores duplicate grants for the same email
+  await drive.permissions.create({
+    fileId: folderId,
+    requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+    sendNotificationEmail: false,
+    fields: 'id',
+  });
+  // Send branded confirmation email
+  if (process.env.RESEND_API_KEY) {
+    await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || 'Code Hunters <delivery@codehunters.in>',
+      to: customerEmail,
+      subject: 'Your Code Hunters Access is Ready',
+      html: `
+        <div style="font-family:'Segoe UI',Arial,sans-serif;max-width:560px;margin:0 auto;color:#222;">
+          <div style="background:#E8440A;padding:20px 30px;border-radius:10px 10px 0 0;">
+            <h1 style="color:#fff;margin:0;font-size:22px;">Code Hunters</h1>
+          </div>
+          <div style="background:#fff;padding:32px 30px;border:1px solid #eee;border-top:none;border-radius:0 0 10px 10px;">
+            <h2 style="margin:0 0 12px;">You're in! Your access is ready.</h2>
+            <p style="color:#555;line-height:1.6;margin-bottom:20px;">
+              Your Google Drive folder has been shared with this email address.<br>
+              Click the button below to open your projects.
+            </p>
+            <a href="https://drive.google.com/drive/folders/${folderId}"
+               style="display:inline-block;background:#E8440A;color:#fff;padding:13px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;">
+              Open Your Projects →
+            </a>
+            <p style="font-size:12px;color:#999;margin-top:24px;line-height:1.5;">
+              This folder is shared specifically with <strong>${customerEmail}</strong>.<br>
+              Payment ID: <code>${paymentId}</code><br>
+              Do not share this link — others without explicit access cannot open it.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+  }
+}
+
 // --- Middleware ---
+// Webhook needs raw body for HMAC — mount BEFORE express.json()
+app.use('/api/razorpay-webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -182,8 +245,8 @@ app.post('/api/create-razorpay-order', async (req, res) => {
   }
 });
 
-// Verify payment signature (HMAC-SHA256)
-app.post('/api/verify-payment', (req, res) => {
+// Verify payment signature (HMAC-SHA256) + grant Drive access
+app.post('/api/verify-payment', async (req, res) => {
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keySecret || keySecret.includes('REPLACE')) {
     return res.status(503).json({ error: 'Razorpay not configured' });
@@ -200,7 +263,56 @@ app.post('/api/verify-payment', (req, res) => {
     .digest('hex');
 
   const verified = expectedSignature === razorpay_signature;
+
+  if (verified) {
+    // Fetch order notes from Razorpay to get customer email, then grant Drive access
+    try {
+      const razorpay = getRazorpay();
+      if (razorpay) {
+        const order = await razorpay.orders.fetch(razorpay_order_id);
+        const customerEmail = order.notes && order.notes.customer_email;
+        if (customerEmail) {
+          await grantAccess(customerEmail, razorpay_payment_id);
+        }
+      }
+    } catch (err) {
+      // Do NOT fail the response — payment is confirmed; webhook is the safety net
+      console.error('Access grant error (verify-payment):', err.message);
+    }
+  }
+
   res.json({ verified });
+});
+
+// Razorpay Webhook — belt-and-suspenders delivery for network drops / browser closes
+app.post('/api/razorpay-webhook', async (req, res) => {
+  const sig = req.headers['x-razorpay-signature'];
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  if (!secret) return res.status(503).json({ error: 'Webhook not configured' });
+
+  const expectedSig = crypto.createHmac('sha256', secret).update(req.body).digest('hex');
+  if (sig !== expectedSig) return res.status(400).send('Invalid signature');
+
+  let event;
+  try { event = JSON.parse(req.body.toString()); } catch { return res.status(400).send('Bad JSON'); }
+
+  if (event.event === 'payment.captured') {
+    const payment = event.payload.payment.entity;
+    try {
+      const razorpay = getRazorpay();
+      if (razorpay) {
+        const order = await razorpay.orders.fetch(payment.order_id);
+        const customerEmail = order.notes && order.notes.customer_email;
+        if (customerEmail) {
+          await grantAccess(customerEmail, payment.id);
+        }
+      }
+    } catch (err) {
+      console.error('Access grant error (webhook):', err.message);
+    }
+  }
+
+  res.json({ received: true });
 });
 
 // --- Page routes ---
