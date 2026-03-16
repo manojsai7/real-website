@@ -95,10 +95,20 @@ function getRazorpay() {
 }
 
 // --- Google Drive + email delivery ---
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Resend is initialised lazily so a missing key at cold-start doesn't crash the module
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return null;
+  return new Resend(key);
+}
 
 function getDriveClient() {
-  const creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  let creds;
+  try {
+    creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  } catch (e) {
+    throw new Error('GOOGLE_SERVICE_ACCOUNT_JSON is not valid JSON: ' + e.message);
+  }
   const auth = new google.auth.GoogleAuth({
     credentials: creds,
     scopes: ['https://www.googleapis.com/auth/drive'],
@@ -109,18 +119,33 @@ function getDriveClient() {
 async function grantAccess(customerEmail, paymentId) {
   const folderId = process.env.GDRIVE_FOLDER_ID;
   if (!folderId || !process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
-    console.warn('Drive delivery not configured — skipping access grant');
+    console.warn('[delivery] Drive not configured — GDRIVE_FOLDER_ID or GOOGLE_SERVICE_ACCOUNT_JSON missing');
     return;
   }
-  const drive = getDriveClient();
-  // Share folder — Drive silently ignores duplicate grants for the same email
-  await drive.permissions.create({
-    fileId: folderId,
-    requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
-    sendNotificationEmail: false,
-    fields: 'id',
-  });
-  if (process.env.RESEND_API_KEY) {
+
+  // --- Share Google Drive folder ---
+  try {
+    const drive = getDriveClient();
+    // Drive silently ignores duplicate grants for the same email
+    await drive.permissions.create({
+      fileId: folderId,
+      requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+      sendNotificationEmail: false,
+      fields: 'id',
+    });
+    console.log('[delivery] Drive access granted to', customerEmail, 'for folder', folderId);
+  } catch (err) {
+    console.error('[delivery] Drive grant FAILED for', customerEmail, '—', err.message);
+    throw err; // re-throw so caller logs it as a delivery failure
+  }
+
+  // --- Send confirmation email ---
+  const resend = getResend();
+  if (!resend) {
+    console.warn('[delivery] RESEND_API_KEY not set — skipping confirmation email');
+    return;
+  }
+  try {
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'Code Hunters <noreply@codehunters.dev>',
       to: customerEmail,
@@ -260,6 +285,10 @@ async function grantAccess(customerEmail, paymentId) {
 </body>
 </html>`,
     });
+    console.log('[delivery] Confirmation email sent to', customerEmail);
+  } catch (err) {
+    // Email failure is non-fatal — Drive access is already granted
+    console.error('[delivery] Resend email FAILED for', customerEmail, '—', err.message);
   }
 }
 
@@ -373,6 +402,7 @@ app.post('/api/verify-payment', async (req, res) => {
     .digest('hex');
 
   const verified = expectedSignature === razorpay_signature;
+  let customerEmail = null;
 
   if (verified) {
     // Fetch order notes from Razorpay to get customer email, then grant Drive access
@@ -380,7 +410,7 @@ app.post('/api/verify-payment', async (req, res) => {
       const razorpay = getRazorpay();
       if (razorpay) {
         const order = await razorpay.orders.fetch(razorpay_order_id);
-        const customerEmail = order.notes && order.notes.customer_email;
+        customerEmail = order.notes && order.notes.customer_email;
         if (customerEmail) {
           await grantAccess(customerEmail, razorpay_payment_id);
         }
@@ -391,7 +421,7 @@ app.post('/api/verify-payment', async (req, res) => {
     }
   }
 
-  res.json({ verified });
+  res.json({ verified, email: customerEmail || null });
 });
 
 // Razorpay Webhook — belt-and-suspenders delivery for network drops / browser closes

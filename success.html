@@ -6,37 +6,53 @@
   <title>Order Confirmed – Code Hunters</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Source Sans Pro', 'Segoe UI', Arial, sans-serif; background: #f4f4f4; color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #f4f4f4; color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; -webkit-font-smoothing: antialiased; }
 
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes scaleIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
     @keyframes checkDraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
 
     .header { width: 100%; background: #fff; padding: 16px 30px; text-align: center; border-bottom: 1px solid #e0e0e0; }
-    .header h1 { color: #222; font-size: 22px; font-weight: 700; }
-    .header h1 span { color: #F66711; }
+    .header h1 { color: #222; font-size: 22px; font-weight: 800; letter-spacing: -.4px; }
+    .header h1 span { color: #E8440A; }
 
-    .card { max-width: 560px; margin: 60px auto; background: #fff; border-radius: 12px; padding: 50px 40px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); animation: fadeInUp 0.5s ease-out; }
-    @media (max-width: 600px) { .card { margin: 30px 16px; padding: 36px 24px; } }
+    .card { max-width: 560px; width: 100%; margin: 48px auto; background: #fff; border-radius: 12px; padding: 50px 40px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); animation: fadeInUp 0.5s ease-out; }
+    @media (max-width: 600px) { .card { margin: 24px 16px; padding: 36px 24px; } }
 
     .check { width: 80px; height: 80px; border-radius: 50%; background: #22c55e; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: scaleIn 0.4s ease-out 0.2s both; }
     .check svg { width: 44px; height: 44px; }
     .check svg polyline { stroke-dasharray: 24; animation: checkDraw 0.4s ease-out 0.5s both; }
 
-    .card h2 { font-size: 26px; color: #222; margin-bottom: 8px; font-weight: 700; }
-    .card p { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 10px; }
+    .card h2 { font-size: 26px; color: #222; margin-bottom: 10px; font-weight: 800; letter-spacing: -.4px; }
+    .card .subtitle { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 0; }
 
-    .details { margin: 24px 0; padding: 18px; background: #f9f9f9; border-radius: 8px; text-align: left; border: 1px solid #eee; }
-    .details .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+    /* Email highlight box */
+    .email-box { margin: 20px 0; padding: 14px 20px; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; font-size: 14px; color: #166534; line-height: 1.5; }
+    .email-box strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 4px; word-break: break-all; }
+    .email-box.no-email { background: #fef9ec; border-color: #fcd34d; color: #92400e; }
+
+    /* Steps */
+    .steps { margin: 24px 0 0; text-align: left; }
+    .steps-title { font-size: 13px; font-weight: 700; color: #999; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 12px; }
+    .step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .step:last-child { border-bottom: none; }
+    .step-num { width: 26px; height: 26px; border-radius: 50%; background: #E8440A; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-text { font-size: 14px; color: #444; line-height: 1.5; }
+    .step-text strong { color: #222; }
+
+    .details { margin: 24px 0 0; padding: 16px 18px; background: #f9f9f9; border-radius: 8px; text-align: left; border: 1px solid #eee; }
+    .details .row { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
     .details .row:last-child { border-bottom: none; }
-    .details .row .label { color: #999; font-weight: 600; }
-    .details .row .value { color: #222; font-weight: 700; word-break: break-all; }
+    .details .row .label { color: #999; font-weight: 600; flex-shrink: 0; }
+    .details .row .value { color: #222; font-weight: 600; word-break: break-all; text-align: right; }
 
-    .btn { display: inline-block; margin-top: 24px; padding: 14px 36px; background: #F66711; color: #fff; border-radius: 6px; font-size: 16px; font-weight: 700; text-decoration: none; transition: background 0.2s, transform 0.15s; }
-    .btn:hover { background: #CF4E01; transform: translateY(-2px); text-decoration: none; }
+    .spam-note { margin-top: 16px; font-size: 12px; color: #aaa; line-height: 1.6; }
+
+    .btn { display: inline-block; margin-top: 28px; padding: 14px 36px; background: #E8440A; color: #fff; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; transition: background 0.2s, transform 0.15s; letter-spacing: .2px; }
+    .btn:hover { background: #CC3500; transform: translateY(-2px); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -49,18 +65,38 @@
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     </div>
-    <h2>Payment Successful!</h2>
-    <p>We've shared your Google Drive folder with your email address. Check your inbox for the access link.</p>
+    <h2>You're In! 🎉</h2>
+    <p class="subtitle">Payment confirmed. Your Google Drive access has been granted.</p>
 
-    <div class="details" id="orderDetails" style="display:none;">
-      <div class="row" id="orderKeyRow" style="display:none;"><span class="label">Order Key</span><span class="value" id="orderKey">–</span></div>
-      <div class="row"><span class="label">Payment ID</span><span class="value" id="paymentId">–</span></div>
-      <div class="row"><span class="label">Razorpay Order ID</span><span class="value" id="orderId">–</span></div>
+    <div id="emailBox" class="email-box" style="display:none;">
+      <strong id="emailDisplay"></strong>
+      Check this inbox — your access confirmation email is on its way.
+    </div>
+    <div id="noEmailBox" class="email-box no-email" style="display:none;">
+      Check the inbox of the email you used at checkout — your access link is on its way.
     </div>
 
-    <p style="font-size:13px; color:#999; margin-top:16px;">
-      If you don't receive an email within 5 minutes, please check your spam folder.
-    </p>
+    <div class="steps">
+      <div class="steps-title">How to access your files</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Check your inbox</strong> for an email from Code Hunters with your Drive access link.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Click the link</strong> — your files are shared directly to your Google account. No login needed.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Not in inbox?</strong> Check spam/promotions. If nothing after 10 mins, email <a href="mailto:support@codehunters.dev" style="color:#E8440A;font-weight:700;">support@codehunters.dev</a></div>
+      </div>
+    </div>
+
+    <div class="details" id="orderDetails" style="display:none;">
+      <div class="row" id="orderKeyRow" style="display:none;"><span class="label">Order</span><span class="value" id="orderKey">–</span></div>
+      <div class="row"><span class="label">Payment ID</span><span class="value" id="paymentId">–</span></div>
+      <div class="row"><span class="label">Razorpay Order</span><span class="value" id="orderId">–</span></div>
+    </div>
 
     <a href="/" class="btn">Back to Home</a>
   </div>
@@ -71,6 +107,15 @@
   var paymentId = params.get('payment_id');
   var orderId = params.get('order_id');
   var orderKey = params.get('order_key');
+  var email = params.get('email');
+
+  if (email) {
+    document.getElementById('emailDisplay').textContent = email;
+    document.getElementById('emailBox').style.display = 'block';
+  } else {
+    document.getElementById('noEmailBox').style.display = 'block';
+  }
+
   if (paymentId || orderId) {
     document.getElementById('orderDetails').style.display = 'block';
     if (paymentId) document.getElementById('paymentId').textContent = paymentId;
