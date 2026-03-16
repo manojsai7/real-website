@@ -49,7 +49,7 @@ const PRODUCTS = {
   'Testing-First': {
     id: 'Testing-First',
     name: 'Testing First',
-    price: 12,
+    price: 3,
     currency: 'INR',
     description: 'Complete Tests'
   },
