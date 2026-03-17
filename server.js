@@ -269,7 +269,7 @@ async function grantAccess(customerEmail, paymentId) {
     <td style="background:#f8f8f8;border-top:1px solid #eee;padding:20px 36px 24px;text-align:center;border-radius:0 0 12px 12px;">
       <p style="margin:0 0 5px;font-size:13px;font-weight:700;color:#333;">Code Hunters</p>
       <p style="margin:0 0 8px;font-size:12px;color:#aaa;">
-        Questions? <a href="mailto:support@codehunters.dev" style="color:#E8440A;text-decoration:none;">support@codehunters.dev</a>
+        Questions? <a href="mailto:aohacx@gmail.com" style="color:#E8440A;text-decoration:none;">aohacx@gmail.com</a>
       </p>
       <p style="margin:0;font-size:11px;color:#ccc;">
         Transactional email &mdash; sent to confirm your purchase &nbsp;&middot;&nbsp;

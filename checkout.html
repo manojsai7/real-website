@@ -243,7 +243,7 @@
             <span>Expert<br>Quality</span>
           </div>
         </div>
-        <p class="guarantee-text">100% Secure checkout. Your data is protected. Instant access after payment.</p>
+        <p class="guarantee-text">100% Secure checkout. Your data is protected. Instant access after payment. Need help? <a href="mailto:aohacx@gmail.com" style="color:#E8440A;">aohacx@gmail.com</a></p>
       </div>
 
       <a href="/" class="back-link">&larr; Continue Shopping</a>
@@ -532,14 +532,14 @@
                 (data.orderKey ? '&order_key=' + encodeURIComponent(data.orderKey) : '') +
                 (result.email ? '&email=' + encodeURIComponent(result.email) : '');
             } else {
-              errorEl.textContent = 'Payment verification failed. Please contact support.';
+              errorEl.textContent = 'Payment verification failed. Please contact support at aohacx@gmail.com.';
               errorEl.style.display = 'block';
               btn.disabled = false;
               btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
             }
           })
           .catch(function() {
-            errorEl.textContent = 'Verification error. Please contact support.';
+            errorEl.textContent = 'Verification error. Please contact support at aohacx@gmail.com.';
             errorEl.style.display = 'block';
             btn.disabled = false;
             btn.innerHTML = 'Get Instant Access <span class="shimmer"></span>';
