@@ -98,7 +98,7 @@ function getRazorpay() {
 // Resend is initialised lazily so a missing key at cold-start doesn't crash the module
 function getResend() {
   const key = process.env.RESEND_API_KEY;
-  if (!key) return null;
+  if (!key || key.includes('your_api_key_here') || key.includes('REPLACE')) return null;
   return new Resend(key);
 }
 
@@ -118,25 +118,30 @@ function getDriveClient() {
 
 async function grantAccess(customerEmail, paymentId) {
   const folderId = process.env.GDRIVE_FOLDER_ID;
-  if (!folderId || !process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+  const hasDriveConfig = Boolean(folderId && process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  if (!hasDriveConfig) {
     console.warn('[delivery] Drive not configured — GDRIVE_FOLDER_ID or GOOGLE_SERVICE_ACCOUNT_JSON missing');
-    return;
   }
 
   // --- Share Google Drive folder ---
-  try {
-    const drive = getDriveClient();
-    // Drive silently ignores duplicate grants for the same email
-    await drive.permissions.create({
-      fileId: folderId,
-      requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
-      sendNotificationEmail: false,
-      fields: 'id',
-    });
-    console.log('[delivery] Drive access granted to', customerEmail, 'for folder', folderId);
-  } catch (err) {
-    console.error('[delivery] Drive grant FAILED for', customerEmail, '—', err.message);
-    throw err; // re-throw so caller logs it as a delivery failure
+  if (hasDriveConfig) {
+    try {
+      const drive = getDriveClient();
+      await drive.permissions.create({
+        fileId: folderId,
+        requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+        sendNotificationEmail: false,
+        fields: 'id',
+      });
+      console.log('[delivery] Drive access granted to', customerEmail, 'for folder', folderId);
+    } catch (err) {
+      const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
+      if (duplicateGrant) {
+        console.warn('[delivery] Drive access already exists for', customerEmail, '— continuing');
+      } else {
+        console.error('[delivery] Drive grant FAILED for', customerEmail, '—', err.message);
+      }
+    }
   }
 
   // --- Send confirmation email ---
@@ -145,8 +150,12 @@ async function grantAccess(customerEmail, paymentId) {
     console.warn('[delivery] RESEND_API_KEY not set — skipping confirmation email');
     return;
   }
+  const accessUrl = hasDriveConfig ? `https://drive.google.com/drive/folders/${folderId}` : 'https://codehunters.dev';
+  const accessHelpText = hasDriveConfig
+    ? `Sign in with <strong style="color:#666;">${customerEmail}</strong> if Google prompts you`
+    : 'Drive delivery is being processed. If access is delayed, contact <strong style="color:#666;">support@codehunters.dev</strong>.';
   try {
-    await resend.emails.send({
+    const sendResult = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'Code Hunters <noreply@codehunters.dev>',
       to: customerEmail,
       subject: '\u2705 Your Code Hunters Access is Ready',
@@ -219,12 +228,12 @@ async function grantAccess(customerEmail, paymentId) {
   <!-- CTA BUTTON -->
   <tr>
     <td style="background:#fff;padding:4px 36px 28px;text-align:center;">
-      <a href="https://drive.google.com/drive/folders/${folderId}"
+      <a href="${accessUrl}"
          style="display:block;background:#E8440A;color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:17px 28px;border-radius:8px;letter-spacing:0.3px;">
         Open My Projects in Drive &nbsp;&rarr;
       </a>
       <p style="margin:10px 0 0;color:#aaa;font-size:12px;">
-        Sign in with <strong style="color:#666;">${customerEmail}</strong> if Google prompts you
+        ${accessHelpText}
       </p>
     </td>
   </tr>
@@ -285,7 +294,10 @@ async function grantAccess(customerEmail, paymentId) {
 </body>
 </html>`,
     });
-    console.log('[delivery] Confirmation email sent to', customerEmail);
+    if (sendResult && sendResult.error) {
+      throw new Error(sendResult.error.message || 'Unknown Resend API error');
+    }
+    console.log('[delivery] Confirmation email sent to', customerEmail, 'id=', sendResult?.data?.id || sendResult?.id || 'n/a');
   } catch (err) {
     // Email failure is non-fatal — Drive access is already granted
     console.error('[delivery] Resend email FAILED for', customerEmail, '—', err.message);
