@@ -95,6 +95,8 @@ function getRazorpay() {
 }
 
 // --- Google Drive + email delivery ---
+const processedPayments = new Set();
+
 // Resend is initialised lazily so a missing key at cold-start doesn't crash the module
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -117,6 +119,12 @@ function getDriveClient() {
 }
 
 async function grantAccess(customerEmail, paymentId) {
+  if (processedPayments.has(paymentId)) {
+    console.log('[delivery] Payment already processed:', paymentId);
+    return;
+  }
+  processedPayments.add(paymentId);
+
   const folderId = process.env.GDRIVE_FOLDER_ID;
   const hasDriveConfig = Boolean(folderId && process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
   if (!hasDriveConfig) {
@@ -124,6 +132,7 @@ async function grantAccess(customerEmail, paymentId) {
   }
 
   // --- Share Google Drive folder ---
+  let isDuplicate = false;
   if (hasDriveConfig) {
     try {
       const drive = getDriveClient();
@@ -137,12 +146,15 @@ async function grantAccess(customerEmail, paymentId) {
     } catch (err) {
       const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
       if (duplicateGrant) {
-        console.warn('[delivery] Drive access already exists for', customerEmail, '— continuing');
+        isDuplicate = true;
+        console.warn('[delivery] Drive access already exists for', customerEmail, '— skipping duplicate email');
       } else {
         console.error('[delivery] Drive grant FAILED for', customerEmail, '—', err.message);
       }
     }
   }
+
+  if (isDuplicate) return;
 
   // --- Send confirmation email ---
   const resend = getResend();
