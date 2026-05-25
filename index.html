@@ -113,6 +113,17 @@
       gap: 8px;
       margin-left: auto;
     }
+    .nav-link {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--t2);
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: color .15s, background .15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--t1); background: var(--s2); }
     .nav-icon-btn {
       position: relative;
       width: 40px;
@@ -720,6 +731,26 @@
       font-weight: 800;
       margin-top: 1px;
     }
+    .support-cta {
+      padding: 36px 0;
+      background: var(--s1);
+    }
+    .support-cta-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      border: 1px solid var(--b);
+      border-radius: 14px;
+      padding: 24px;
+      background: linear-gradient(135deg, #ffffff 0%, #FEF0EB 100%);
+    }
+    .support-cta-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
     .footer-top {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -837,6 +868,7 @@
       .hero-price-orig { font-size: 18px; }
       .hero-trust { margin-top: 20px; gap: 12px; }
       .products-section { padding: 32px 0 48px; }
+      .support-cta-inner { padding: 20px; }
     }
     @media (max-width: 500px) {
       .wrap { padding: 0 16px; }
@@ -867,6 +899,7 @@
       <span class="nav-search-icon">&#128269;</span>
     </div>
     <div class="nav-actions">
+      <a href="/about.html" class="nav-link">About</a>
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
        <span class="heart-icon" id="heartIcon">&#9825;</span>
   <span class="badge" id="wishlistBadge">0</span>
@@ -988,6 +1021,24 @@
 
     <!-- Products Grid -->
     <div class="products-grid" id="productsGrid"></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── Support CTA ── -->
+<section class="support-cta" aria-label="Support">
+  <div class="wrap">
+    <div class="support-cta-inner">
+      <div>
+        <h2 class="section-heading" style="margin-bottom:8px;">Need help after purchase?</h2>
+        <p class="section-sub" style="margin-bottom:0;">Lifetime support via Telegram and email. We reply fast and keep it simple.</p>
+      </div>
+      <div class="support-cta-actions">
+        <a class="btn-secondary" href="/support.html">Support Center</a>
+        <a class="btn-primary" href="mailto:aohacx@gmail.com">Email Support</a>
+      </div>
+    </div>
   </div>
 </section>
 
