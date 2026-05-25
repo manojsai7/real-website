@@ -13,9 +13,11 @@
           "fonts/**",
           "images/**",
           "index.html",
+          "about.html",
           "cart.html",
           "checkout.html",
           "success.html",
+          "support.html",
           "terms.html"
         ]
       }
