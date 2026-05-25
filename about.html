@@ -327,11 +327,6 @@
       .page-hero { padding: 48px 0 36px; }
     }
   </style>
-  <script>
-    if(localStorage.getItem('theme')==='dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)){
-      document.documentElement.classList.add('dark-theme');
-    }
-  </script>
 </head>
 <body>
 
@@ -347,9 +342,6 @@
     <div class="nav-actions">
       <a href="/" class="nav-link">Products</a>
       <a href="/about.html" class="nav-link" aria-current="page">About</a>
-      <button class="nav-icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme" style="margin: 0 4px;">
-        <span id="themeIcon">&#9789;</span>
-      </button>
       <a href="/support.html" class="nav-support-pill">&#128172; Support</a>
       <a href="/cart.html" class="nav-icon-btn" aria-label="Cart">&#128722;</a>
     </div>

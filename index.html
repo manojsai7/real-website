@@ -674,8 +674,8 @@
       transition: color .2s, transform .15s;
     }
     .heart-icon.is-active {
-      color: #e91e63;
-      transform: scale(1.15);
+      color: var(--a);
+      transform: scale(1.1);
     }
 
     /* ── Support nav pill ── */
@@ -911,11 +911,6 @@
       .hero-card-img img { max-height: 160px; }
     }
   </style>
-  <script>
-    if(localStorage.getItem('theme')==='dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)){
-      document.documentElement.classList.add('dark-theme');
-    }
-  </script>
 </head>
 <body>
 
@@ -934,14 +929,11 @@
     </div>
     <div class="nav-actions">
       <a href="/about.html" class="nav-link">About</a>
-      <button class="nav-icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
-        <span id="themeIcon">&#9789;</span>
-      </button>
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
        <span class="heart-icon" id="heartIcon">&#9825;</span>
   <span class="badge" id="wishlistBadge">0</span>
       </button>
-      <a href="/support.html" class="nav-support-pill" id="navSupportLink">&#128172; Support</a>
+      <a href="/support.html" class="nav-support-pill" id="navSupportLink" title="Telegram + email support" aria-label="Support via Telegram and email">&#128172; Support</a>
       <div class="nav-cart-wrap">
         <button class="nav-icon-btn" data-cart-open aria-label="Open cart">&#128722;</button>
         <span class="cart-badge" data-cart-badge>0</span>
@@ -955,13 +947,13 @@
   <div class="wrap">
     <div class="hero-inner">
       <div class="hero-left">
-        <div class="hero-badge">&#128293; #1 Bestseller</div>
+        <div class="hero-badge">Interview-Ready Projects</div>
         <h1 class="hero-title">
           Turn your resume into a
           <span class="accent">shortlist magnet.</span>
         </h1>
         <p class="hero-sub">
-          Recruiters scan projects first. Get 700+ role-ready builds across Python, React, JavaScript, and Data Science—complete with source code you can explain, extend, and showcase.
+          Use 700+ industry-ready projects recruiters expect to see. Role-specific builds across Python, Frontend, Backend, Data, and AI so you can show proof without starting from scratch.
         </p>
         <div class="hero-price-row">
           <span class="hero-price">&#8377;369</span>
@@ -1013,15 +1005,15 @@
   <div class="wrap">
     <div class="proof-inner">
       <div class="proof-text-col">
-        <h2 class="section-heading" style="margin-bottom:12px;">Proof beats skills on a resume.</h2>
-        <p>Certificates say you learned it. Projects show you can do it. These kits give you interview-ready builds structured the way hiring teams expect to review them.</p>
+        <h2 class="section-heading" style="margin-bottom:12px;">Proof beats certificates in a 6-second scan.</h2>
+        <p>Recruiters hire proof, not potential. These projects give you clear, role-specific signals you can explain in interviews and showcase on every platform.</p>
       </div>
       <ul class="proof-list">
-        <li>Projects surface fast in the 6-second resume scan</li>
-        <li>Each kit includes source code you can explain and customize</li>
-        <li>Role-specific paths across Python, JS, React, Java, Data, and ML</li>
-        <li>Designed for freshers, switchers, and experienced devs leveling up</li>
-        <li>Reuse the same projects on resume, GitHub, LinkedIn, and interviews</li>
+        <li>Use projects already structured the way interviews expect</li>
+        <li>Show decisions, logic, and trade-offs instead of just syntax</li>
+        <li>Pass the 6-second resume scan with clear role-specific signals</li>
+        <li>Reuse the same projects across resume, GitHub, LinkedIn, and interviews</li>
+        <li>Built for freshers, switchers, and working pros getting shortlisted</li>
       </ul>
     </div>
   </div>
@@ -1507,21 +1499,6 @@
 
   // ── Sync cart state on return to page ──
   window.addEventListener('cart:changed', function() { renderProducts(); });
-
-  // ── Theme Toggle ──
-  var themeBtn = document.getElementById('themeToggleBtn');
-  var themeIcon = document.getElementById('themeIcon');
-  if(themeBtn) {
-    if(document.documentElement.classList.contains('dark-theme')) {
-      themeIcon.innerHTML = '&#9728;';
-    }
-    themeBtn.addEventListener('click', function() {
-      document.documentElement.classList.toggle('dark-theme');
-      var isDark = document.documentElement.classList.contains('dark-theme');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      themeIcon.innerHTML = isDark ? '&#9728;' : '&#9789;';
-    });
-  }
 
   // ── Init ──
   updateWishlistBadge();
