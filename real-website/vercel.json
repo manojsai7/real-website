@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "sp/**",
+          "PAyment_gate/**",
+          "css/**",
+          "js/**",
+          "fonts/**",
+          "images/**",
+          "index.html",
+          "cart.html",
+          "checkout.html",
+          "success.html",
+          "terms.html"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ]
+}
