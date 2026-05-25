@@ -594,6 +594,22 @@
       border-radius: 7px;
       transition: background .15s, transform .1s;
     }
+    .badge {
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  min-width: 14px;
+  height: 14px;
+  font-size: 12px;
+  display: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    }
     .pc-btn-add:hover { background: var(--ah); transform: translateY(-1px); }
     .pc-btn-add.in-cart { background: var(--g); }
     .pc-btn-buy {
@@ -624,6 +640,9 @@
       background: var(--t1);
       color: rgba(255,255,255,.7);
       padding: 48px 0 32px;
+    }
+    .heart-icon{
+      font-size:32px;
     }
     .footer-top {
       display: grid;
@@ -773,7 +792,8 @@
     </div>
     <div class="nav-actions">
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
-        &#9825;
+       <span class="heart-icon">&#9825;</span>
+  <span class="badge" id="wishlistBadge">0</span>
       </button>
       <div class="nav-cart-wrap">
         <button class="nav-icon-btn" data-cart-open aria-label="Open cart">&#128722;</button>
@@ -1055,8 +1075,17 @@
   }
   function updateWishlistBadge() {
     var count = getWishlist().length;
-    var btn = document.getElementById('wishlistBtn');
-    if (btn) btn.textContent = count > 0 ? '\u2665 (' + count + ')' : '\u2665';
+   const badge = document.getElementById("wishlistBadge");
+   const heart = document.querySelector(".heart-icon");
+if (count > 0) {
+  badge.style.display = "flex";
+  badge.textContent = count;
+  heart.innerHTML = "&#9829;";
+  heart.style.color = "red";
+} else {
+  badge.style.display = "none";
+  heart.style.color = "black";
+}
   }
 
   // ── Stars helper ──
