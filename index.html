@@ -49,6 +49,189 @@
       font-weight: 600;
       letter-spacing: .2px;
     }
+    *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+}
+
+body{
+  background:#f7f7f7;
+  color:#111;
+}
+
+.container{
+  width:90%;
+  max-width:1150px;
+  margin:auto;
+}
+
+/* =========================
+   TOP STATS
+========================= */
+
+.stats{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:55px;
+  padding:24px 0;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+}
+
+.stat{
+  text-align:center;
+  position:relative;
+}
+
+.stat:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  right:-28px;
+  top:2px;
+  width:1px;
+  height:42px;
+  background:#d4d4d4;
+}
+
+.stat h2{
+  font-size:32px;
+  font-weight:800;
+  line-height:1;
+}
+
+.plus{
+  color:#ff6b2c;
+}
+
+.stat p{
+  margin-top:6px;
+  font-size:12px;
+  color:#666;
+  font-weight:500;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:55px;
+  padding:70px 0;
+}
+
+/* LEFT SIDE */
+
+.left{
+  flex:1;
+  max-width:560px;
+}
+
+.tag{
+  display:inline-block;
+  padding:7px 14px;
+  border:1px solid #ffc4aa;
+  background:#fff1ea;
+  color:#ff6b2c;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.8px;
+  margin-bottom:22px;
+}
+
+.left h1{
+  font-size:48px;
+  line-height:1.08;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.orange{
+  color:#ff6b2c;
+}
+
+.left p{
+  margin-top:22px;
+  font-size:17px;
+  line-height:1.8;
+  color:#666;
+}
+
+.left strong{
+  color:#333;
+}
+
+/* RIGHT CARD */
+
+.card{
+  width:450px;
+  background:#f5efe9;
+  border-radius:24px;
+  padding:28px;
+}
+
+.card h3{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:22px;
+  color:#222;
+}
+
+.chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.chip{
+  background:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:500;
+  color:#333;
+  box-shadow:0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  .stats{
+    flex-wrap:wrap;
+    gap:28px;
+  }
+
+  .stat:not(:last-child)::after{
+    display:none;
+  }
+
+  .hero{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:50px 0;
+  }
+
+  .left h1{
+    font-size:38px;
+  }
+
+  .left p{
+    font-size:16px;
+  }
+
+  .card{
+    width:100%;
+  }
+}
     .ann-bar span { color: var(--star); }
 
     /* ── Navbar ── */
@@ -864,6 +1047,85 @@
 </section>
 
 <div class="section-divider"></div>
+
+<!-- TOP STATS -->
+
+  <section class="stats">
+
+    <div class="stat">
+      <h2>700<span class="plus">+</span></h2>
+      <p>Projects included</p>
+    </div>
+
+    <div class="stat">
+      <h2>5,200<span class="plus">+</span></h2>
+      <p>Developers trust us</p>
+    </div>
+
+    <div class="stat">
+      <h2>10<span class="plus">+</span></h2>
+      <p>Technologies covered</p>
+    </div>
+
+    <div class="stat">
+      <h2>₹369</h2>
+      <p>One-time, no subscription</p>
+    </div>
+
+  </section>
+
+  <!-- HERO -->
+
+  <div class="container">
+    <section class="hero">
+
+      <!-- LEFT -->
+
+      <div class="left">
+
+        <span class="tag">WHAT IS CODE HUNTERS?</span>
+
+        <h1>
+          Where developers go <br>
+          to build <span class="orange">real things that ship.</span>
+        </h1>
+
+        <p>
+          Code Hunters is a curated library of 
+          <strong>production-grade projects</strong> built by developers for developers. 
+          We skip the toy apps. Every project in our catalog has real architecture, 
+          real code, and real-world context — the kind you actually use at work.
+        </p>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="card">
+
+        <h3>What's in the library</h3>
+
+        <div class="chips">
+          <div class="chip">Python Applications</div>
+          <div class="chip">React Apps</div>
+          <div class="chip">JavaScript Projects</div>
+          <div class="chip">Enterprise Java Applications</div>
+          <div class="chip">Data Science Workflows</div>
+          <div class="chip">ML / AI Systems</div>
+          <div class="chip">Django Full-Stack</div>
+          <div class="chip">Game Development</div>
+          <div class="chip">Resume Templates</div>
+          <div class="chip">Interview Prep</div>
+          <div class="chip">DSA Practice</div>
+          <div class="chip">System Design</div>
+          <div class="chip">HR Interview Q&A</div>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+  <div class="section-divider"></div>
 
 <!-- ── SECTION 2: Products ── -->
 <section class="products-section" id="products">
