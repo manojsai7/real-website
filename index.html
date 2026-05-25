@@ -7,95 +7,157 @@
   <meta name="description" content="700+ real-world coding projects, interview kits, and career tools for developers. Instant digital delivery.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F4F0;
+      --bg: #FAFAFA;
       --s1: #ffffff;
-      --s2: #EEEDE9;
-      --b: rgba(0,0,0,.08);
-      --b2: rgba(0,0,0,.14);
-      --t1: #18181A;
-      --t2: #706F6B;
-      --t3: #ADADAB;
+      --s2: #F3F2EF;
+      --b: rgba(0,0,0,.07);
+      --b2: rgba(0,0,0,.12);
+      --t1: #111111;
+      --t2: #5A5A5A;
+      --t3: #B0B0B0;
       --a: #E8440A;
-      --ah: #CC3500;
+      --ah: #C93A08;
       --abg: #FEF0EB;
       --g: #16A34A;
       --star: #F59E0B;
+      --gradient: linear-gradient(135deg, #E8440A 0%, #FF6B35 100%);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--t1);
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     button { font-family: inherit; cursor: pointer; }
 
+    /* ── Floating blobs ── */
+    .blob-wrap {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.07;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: #E8440A;
+      top: -200px; left: -150px;
+      animation: blobFloat1 18s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 500px; height: 500px;
+      background: #FF6B35;
+      bottom: 10%; right: -150px;
+      animation: blobFloat2 22s ease-in-out infinite;
+    }
+    .blob-3 {
+      width: 350px; height: 350px;
+      background: #F59E0B;
+      top: 40%; left: 30%;
+      animation: blobFloat3 26s ease-in-out infinite;
+    }
+    @keyframes blobFloat1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(60px, 40px) scale(1.05); }
+      66% { transform: translate(-30px, 60px) scale(0.97); }
+    }
+    @keyframes blobFloat2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      40% { transform: translate(-50px,-40px) scale(1.08); }
+      70% { transform: translate(30px,-20px) scale(0.96); }
+    }
+    @keyframes blobFloat3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(40px,-50px) scale(1.06); }
+    }
+
     /* ── Announcement Bar ── */
     .ann-bar {
       background: var(--t1);
-      color: #fff;
+      color: rgba(255,255,255,0.85);
       text-align: center;
-      padding: 10px 20px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: .2px;
+      padding: 9px 20px;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: .3px;
+      position: relative;
+      z-index: 201;
     }
-    .ann-bar span { color: var(--star); }
+    .ann-bar strong { color: #fff; font-weight: 700; }
+    .ann-bar .ann-pill {
+      display: inline-block;
+      background: var(--a);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 8px;
+      border-radius: 100px;
+      margin-right: 6px;
+      letter-spacing: .3px;
+    }
 
-    /* ── Navbar ── */
     .nav {
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(245,244,240,.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(250,250,250,.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--b);
+      box-shadow: 0 1px 0 rgba(0,0,0,.04);
     }
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
       height: 64px;
       display: flex;
       align-items: center;
       gap: 20px;
     }
     .nav-logo {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       color: var(--t1);
       white-space: nowrap;
-      letter-spacing: -.5px;
+      letter-spacing: -0.7px;
     }
     .nav-logo span { color: var(--a); }
     .nav-search {
       flex: 1;
-      max-width: 420px;
+      max-width: 380px;
       position: relative;
     }
     .nav-search input {
       width: 100%;
-      height: 40px;
-      padding: 0 40px 0 16px;
+      height: 38px;
+      padding: 0 40px 0 14px;
       border: 1.5px solid var(--b2);
-      border-radius: 8px;
-      background: var(--s1);
+      border-radius: 10px;
+      background: var(--s2);
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--t1);
       outline: none;
-      transition: border-color .15s, box-shadow .15s;
+      transition: border-color .2s, background .2s, box-shadow .2s;
     }
     .nav-search input::placeholder { color: var(--t3); }
-    .nav-search input:focus { border-color: var(--a); box-shadow: 0 0 0 3px rgba(232,68,10,.12); }
+    .nav-search input:focus { border-color: var(--a); background: #fff; box-shadow: 0 0 0 3px rgba(232,68,10,.1); }
     .nav-search-icon {
       position: absolute;
       right: 12px;
@@ -103,41 +165,42 @@
       transform: translateY(-50%);
       color: var(--t3);
       pointer-events: none;
-      font-size: 15px;
+      display: flex;
+      align-items: center;
     }
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-left: auto;
     }
     .nav-icon-btn {
       position: relative;
-      width: 40px;
-      height: 40px;
-      background: var(--s1);
+      width: 38px;
+      height: 38px;
+      background: transparent;
       border: 1.5px solid var(--b);
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      transition: border-color .15s, box-shadow .15s, transform .1s;
+      font-size: 17px;
+      transition: border-color .2s, background .2s, transform .15s;
       color: var(--t1);
     }
-    .nav-icon-btn:hover { border-color: var(--b2); box-shadow: 0 2px 8px rgba(0,0,0,.06); transform: translateY(-1px); }
+    .nav-icon-btn:hover { border-color: var(--b2); background: var(--s2); transform: translateY(-1px); }
     .nav-cart-wrap {
       position: relative;
     }
     .cart-badge {
       position: absolute;
-      top: -6px;
-      right: -6px;
-      min-width: 18px;
-      height: 18px;
+      top: -5px;
+      right: -5px;
+      min-width: 17px;
+      height: 17px;
       background: var(--a);
       color: #fff;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 800;
       border-radius: 9px;
       display: none;
@@ -153,16 +216,18 @@
 
     /* ── Hero Section ── */
     .hero {
-      padding: 44px 0 36px;
+      padding: 60px 0 52px;
+      position: relative;
+      z-index: 1;
     }
     .hero-inner {
       display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 48px;
+      grid-template-columns: 1fr 370px;
+      gap: 56px;
       align-items: center;
     }
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 36px; }
       .hero-sub { max-width: 100%; }
     }
     .hero-badge {
@@ -171,109 +236,122 @@
       gap: 6px;
       background: var(--abg);
       color: var(--a);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 4px 12px;
+      padding: 5px 13px;
       border-radius: 100px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(232,68,10,.2);
+      margin-bottom: 22px;
+      border: 1px solid rgba(232,68,10,.18);
+      letter-spacing: .2px;
     }
+    .hero-badge svg { width: 13px; height: 13px; }
     .hero-title {
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.5px;
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -2px;
       color: var(--t1);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
-    .hero-title .accent { color: var(--a); }
+    .hero-title .accent {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero-sub {
-      font-size: 17px;
+      font-size: 16.5px;
       color: var(--t2);
-      max-width: 480px;
+      max-width: 460px;
       margin-bottom: 32px;
-      line-height: 1.6;
+      line-height: 1.65;
+      font-weight: 400;
     }
     .hero-price-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       flex-wrap: wrap;
     }
     .hero-price {
-      font-size: 40px;
-      font-weight: 800;
+      font-size: 42px;
+      font-weight: 900;
       color: var(--t1);
-      letter-spacing: -1px;
+      letter-spacing: -1.5px;
     }
     .hero-price-orig {
       font-size: 22px;
       color: var(--t3);
       text-decoration: line-through;
+      font-weight: 500;
     }
     .hero-discount-pill {
       background: #DCFCE7;
       color: var(--g);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 100px;
     }
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .btn-primary {
       padding: 14px 28px;
-      background: var(--a);
+      background: var(--gradient);
       color: #fff;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
       border: none;
-      border-radius: 8px;
-      transition: background .15s, transform .1s, box-shadow .15s;
+      border-radius: 10px;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
       white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(232,68,10,.28);
+      letter-spacing: -.1px;
     }
-    .btn-primary:hover { background: var(--ah); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,68,10,.25); }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,68,10,.38); }
     .btn-primary:active { transform: translateY(0); }
     .btn-secondary {
-      padding: 14px 24px;
+      padding: 14px 22px;
       background: var(--s1);
       color: var(--t1);
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       border: 1.5px solid var(--b2);
-      border-radius: 8px;
-      transition: border-color .15s, background .15s;
+      border-radius: 10px;
+      transition: border-color .2s, background .2s;
       white-space: nowrap;
     }
     .btn-secondary:hover { border-color: var(--t1); background: var(--s2); }
     .hero-trust {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 18px;
       margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--b);
     }
     .hero-trust-item {
       display: flex;
       align-items: center;
       gap: 7px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--t2);
     }
     .hero-trust-item .tick {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       background: #DCFCE7;
       color: var(--g);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -281,13 +359,13 @@
     /* Hero Image Card */
     .hero-card {
       background: var(--s1);
-      border-radius: 16px;
+      border-radius: 20px;
       border: 1px solid var(--b);
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,.08);
-      transition: box-shadow .2s, transform .15s;
+      box-shadow: 0 8px 40px rgba(0,0,0,.09), 0 1px 2px rgba(0,0,0,.05);
+      transition: box-shadow .25s, transform .2s;
     }
-    .hero-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,.12); transform: translateY(-3px); }
+    .hero-card:hover { box-shadow: 0 20px 60px rgba(0,0,0,.14); transform: translateY(-4px); }
     .hero-card-img {
       background: var(--s2);
       padding: 28px;
@@ -297,30 +375,31 @@
     .hero-card-img img {
       max-height: 220px;
       object-fit: contain;
-      border-radius: 8px;
+      border-radius: 10px;
     }
     .hero-card-body {
       padding: 20px 24px 24px;
     }
     .hero-card-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--t1);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      letter-spacing: -.2px;
     }
     .hero-card-features {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 18px;
     }
     .hero-card-features li {
       font-size: 13px;
       color: var(--t2);
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
     }
     .hero-card-features li::before {
       content: '✓';
@@ -332,7 +411,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -342,8 +421,8 @@
       gap: 10px;
       margin-bottom: 14px;
     }
-    .hero-card-price { font-size: 24px; font-weight: 800; color: var(--t1); }
-    .hero-card-orig { font-size: 14px; color: var(--t3); text-decoration: line-through; }
+    .hero-card-price { font-size: 26px; font-weight: 900; color: var(--t1); letter-spacing: -0.8px; }
+    .hero-card-orig { font-size: 14px; color: var(--t3); text-decoration: line-through; font-weight: 500; }
     .hero-card-save {
       background: #DCFCE7;
       color: var(--g);
@@ -355,15 +434,17 @@
     .hero-card-btn {
       width: 100%;
       padding: 13px;
-      background: var(--a);
+      background: var(--gradient);
       color: #fff;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       border: none;
-      border-radius: 8px;
-      transition: background .15s, transform .1s;
+      border-radius: 10px;
+      transition: opacity .2s, transform .15s;
+      box-shadow: 0 3px 12px rgba(232,68,10,.25);
+      letter-spacing: -.1px;
     }
-    .hero-card-btn:hover { background: var(--ah); transform: translateY(-1px); }
+    .hero-card-btn:hover { opacity: .9; transform: translateY(-1px); }
 
     /* ── Divider ── */
     .section-divider {
@@ -374,33 +455,35 @@
 
     /* ── Products Section ── */
     .products-section {
-      padding: 48px 0 64px;
+      padding: 56px 0 72px;
+      position: relative;
+      z-index: 1;
     }
     .section-heading {
-      font-size: 28px;
+      font-size: clamp(24px, 3vw, 32px);
       font-weight: 800;
-      letter-spacing: -.6px;
+      letter-spacing: -1px;
       color: var(--t1);
       margin-bottom: 6px;
     }
-    .section-sub { font-size: 15px; color: var(--t2); margin-bottom: 28px; }
+    .section-sub { font-size: 15px; color: var(--t2); margin-bottom: 28px; font-weight: 400; }
 
     /* Category tabs */
     .cat-strip {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
     .cat-btn {
-      padding: 7px 16px;
+      padding: 7px 15px;
       border-radius: 100px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       border: 1.5px solid var(--b2);
       background: var(--s1);
       color: var(--t2);
-      transition: all .15s;
+      transition: all .2s;
     }
     .cat-btn:hover { border-color: var(--a); color: var(--a); }
     .cat-btn.active {
@@ -409,7 +492,7 @@
       color: #fff;
     }
 
-    /* Toolbar: search (mobile) + sort */
+    /* Toolbar */
     .products-toolbar {
       display: flex;
       align-items: center;
@@ -419,12 +502,12 @@
       flex-wrap: wrap;
     }
     .products-count {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--t2);
       font-weight: 500;
     }
     .sort-select {
-      padding: 8px 12px;
+      padding: 7px 12px;
       border: 1.5px solid var(--b2);
       border-radius: 8px;
       background: var(--s1);
@@ -441,31 +524,32 @@
     /* Products grid */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 18px;
     }
 
     /* Product card */
     .pc {
       background: var(--s1);
-      border-radius: 12px;
+      border-radius: 16px;
       border: 1px solid var(--b);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: box-shadow .2s, transform .15s;
+      transition: box-shadow .25s, transform .2s;
       position: relative;
     }
-    .pc:hover { box-shadow: 0 8px 28px rgba(0,0,0,.1); transform: translateY(-3px); }
+    .pc:hover { box-shadow: 0 12px 36px rgba(0,0,0,.11); transform: translateY(-4px); }
     .pc-badge {
       position: absolute;
       top: 10px;
       left: 10px;
       z-index: 1;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       padding: 3px 9px;
       border-radius: 100px;
+      letter-spacing: .2px;
     }
     .pc-badge.bestseller { background: var(--abg); color: var(--a); }
     .pc-badge.hot { background: #FEF9C3; color: #92400E; }
@@ -477,61 +561,63 @@
       top: 10px;
       right: 10px;
       z-index: 1;
-      width: 32px;
-      height: 32px;
-      background: var(--s1);
+      width: 30px;
+      height: 30px;
+      background: rgba(255,255,255,.9);
       border: 1px solid var(--b);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
-      transition: background .15s, border-color .15s, transform .12s;
-      box-shadow: 0 2px 6px rgba(0,0,0,.06);
+      font-size: 14px;
+      transition: background .15s, border-color .15s, transform .15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      backdrop-filter: blur(4px);
     }
-    .pc-wish:hover { transform: scale(1.15); border-color: #e91e63; }
+    .pc-wish:hover { transform: scale(1.18); border-color: #e91e63; }
     .pc-wish.active { background: #ffe8f0; border-color: #e91e63; color: #e91e63; }
     .pc-thumb {
       background: var(--s2);
-      height: 160px;
+      height: 155px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 18px;
       overflow: hidden;
     }
     .pc-thumb img {
-      max-height: 120px;
+      max-height: 115px;
       object-fit: contain;
-      border-radius: 6px;
-      transition: transform .2s;
+      border-radius: 8px;
+      transition: transform .25s;
     }
-    .pc:hover .pc-thumb img { transform: scale(1.04); }
+    .pc:hover .pc-thumb img { transform: scale(1.06); }
     .pc-thumb-placeholder {
-      font-size: 48px;
-      opacity: .4;
+      font-size: 44px;
+      opacity: .3;
     }
     .pc-body {
-      padding: 16px;
+      padding: 14px 16px 16px;
       display: flex;
       flex-direction: column;
       flex: 1;
     }
     .pc-cat-tag {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: .5px;
+      letter-spacing: .6px;
       color: var(--t3);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
     .pc-title {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--t1);
       line-height: 1.4;
       margin-bottom: 6px;
       flex: 1;
+      letter-spacing: -.1px;
     }
     .pc-stars {
       display: flex;
@@ -544,34 +630,34 @@
       gap: 1px;
     }
     .pc-stars-row span {
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--t3);
     }
     .pc-stars-row span.filled { color: var(--star); }
     .pc-stars-count {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--t2);
       font-weight: 500;
     }
     .pc-price-row {
       display: flex;
       align-items: baseline;
-      gap: 8px;
-      margin-bottom: 12px;
+      gap: 7px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .pc-price { font-size: 20px; font-weight: 800; color: var(--t1); }
-    .pc-orig { font-size: 13px; color: var(--t3); text-decoration: line-through; }
+    .pc-price { font-size: 19px; font-weight: 800; color: var(--t1); letter-spacing: -0.5px; }
+    .pc-orig { font-size: 13px; color: var(--t3); text-decoration: line-through; font-weight: 400; }
     .pc-off {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       background: #DCFCE7;
       color: var(--g);
-      padding: 1px 7px;
+      padding: 1px 6px;
       border-radius: 100px;
     }
     .pc-delivery {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--g);
       font-weight: 600;
       margin-bottom: 12px;
@@ -581,29 +667,30 @@
     }
     .pc-footer {
       display: flex;
-      gap: 8px;
+      gap: 7px;
     }
     .pc-btn-add {
       flex: 1;
-      padding: 10px;
-      background: var(--a);
+      padding: 9px;
+      background: var(--gradient);
       color: #fff;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       border: none;
-      border-radius: 7px;
-      transition: background .15s, transform .1s;
+      border-radius: 8px;
+      transition: opacity .2s, transform .15s;
+      box-shadow: 0 2px 8px rgba(232,68,10,.2);
     }
-    .pc-btn-add:hover { background: var(--ah); transform: translateY(-1px); }
-    .pc-btn-add.in-cart { background: var(--g); }
+    .pc-btn-add:hover { opacity: .88; transform: translateY(-1px); }
+    .pc-btn-add.in-cart { background: var(--g); box-shadow: none; }
     .pc-btn-buy {
-      padding: 10px 12px;
+      padding: 9px 12px;
       background: transparent;
       color: var(--t1);
       font-size: 12px;
       font-weight: 600;
       border: 1.5px solid var(--b2);
-      border-radius: 7px;
+      border-radius: 8px;
       transition: border-color .15s, background .15s;
       white-space: nowrap;
     }
@@ -616,7 +703,7 @@
       color: var(--t2);
       grid-column: 1 / -1;
     }
-    .no-results-icon { font-size: 48px; margin-bottom: 16px; }
+    .no-results-icon { font-size: 44px; margin-bottom: 16px; opacity: .5; }
     .no-results h3 { font-size: 18px; font-weight: 700; color: var(--t1); margin-bottom: 8px; }
 
     /* ── Footer ── */
@@ -759,29 +846,30 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       margin-left: 16px;
     }
     .nav-link {
-      padding: 6px 13px;
+      padding: 6px 12px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--t2);
-      border-radius: 7px;
+      border-radius: 8px;
       transition: color .15s, background .15s;
     }
     .nav-link:hover, .nav-link.active { color: var(--t1); background: var(--s2); }
     .nav-get-started {
       padding: 8px 18px;
-      background: var(--a);
+      background: var(--gradient);
       color: #fff;
       font-size: 13px;
       font-weight: 700;
       border-radius: 8px;
-      transition: background .15s, transform .1s, box-shadow .15s;
+      transition: opacity .2s, transform .1s, box-shadow .15s;
       white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(232,68,10,.22);
     }
-    .nav-get-started:hover { background: var(--ah); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(232,68,10,.3); }
+    .nav-get-started:hover { opacity: .88; transform: translateY(-1px); box-shadow: 0 5px 18px rgba(232,68,10,.34); }
     @media (max-width: 900px) { .nav-links { display: none; } }
 
     /* ── Scroll-entrance animations ── */
@@ -889,88 +977,197 @@
       box-shadow: 0 2px 6px rgba(0,0,0,.04);
     }
 
-    /* ── Features Section ── */
-    .features-section {
-      padding: 64px 0 72px;
-      background: var(--bg);
-    }
-    .features-header { text-align: center; margin-bottom: 48px; }
-    .features-heading {
-      font-size: clamp(24px, 3.5vw, 36px);
-      font-weight: 800;
-      letter-spacing: -.8px;
-      color: var(--t1);
-      margin-bottom: 10px;
-    }
-    .features-sub { font-size: 16px; color: var(--t2); max-width: 480px; margin: 0 auto; }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    @media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 520px) { .features-grid { grid-template-columns: 1fr; } }
-    .feat-card {
+    /* ── Social proof strip ── */
+    .proof-strip {
+      padding: 28px 0;
       background: var(--s1);
-      border-radius: 16px;
-      border: 1px solid var(--b);
-      padding: 28px 24px;
-      transition: box-shadow .2s, transform .15s;
+      border-top: 1px solid var(--b);
+      border-bottom: 1px solid var(--b);
+      position: relative;
+      z-index: 1;
     }
-    .feat-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,.09); transform: translateY(-3px); }
-    .feat-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--abg);
-      border-radius: 12px;
+    .proof-inner {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .proof-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .proof-stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--t1);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .proof-stat-num span { color: var(--a); }
+    .proof-stat-label {
+      font-size: 12px;
+      color: var(--t2);
+      font-weight: 500;
+      text-align: center;
+    }
+    .proof-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--b2);
+    }
+    @media (max-width: 600px) { .proof-divider { display: none; } .proof-inner { gap: 24px; } }
+
+    /* ── About Section ── */
+    .about-section {
+      padding: 72px 0 64px;
+      background: var(--s1);
+      position: relative;
+      z-index: 1;
+    }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    @media (max-width: 900px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--a);
+      background: var(--abg);
+      border: 1px solid rgba(232,68,10,.2);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+    .about-heading {
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      color: var(--t1);
+      line-height: 1.15;
       margin-bottom: 16px;
     }
-    .feat-title { font-size: 16px; font-weight: 700; color: var(--t1); margin-bottom: 8px; }
-    .feat-desc { font-size: 14px; color: var(--t2); line-height: 1.6; }
+    .about-heading .gradient-text {
+      background: linear-gradient(135deg, var(--a) 0%, #FF8C42 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .about-desc { font-size: 15.5px; color: var(--t2); line-height: 1.75; margin-bottom: 36px; font-weight: 400; }
+    .about-stats {
+      display: flex;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: left; }
+    .stat-num {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--t1);
+      letter-spacing: -1.5px;
+      display: inline;
+    }
+    .stat-plus { font-size: 26px; font-weight: 800; color: var(--a); }
+    .stat-label { font-size: 12.5px; color: var(--t2); font-weight: 500; margin-top: 2px; }
+    .about-visual {
+      background: linear-gradient(145deg, #FFF5F1 0%, #FFFBF5 60%, #F9FFF4 100%);
+      border-radius: 24px;
+      border: 1px solid rgba(232,68,10,.1);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 4px 32px rgba(0,0,0,.05);
+    }
+    .about-visual-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 4px;
+      letter-spacing: -.2px;
+    }
+    .about-pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .about-pill {
+      padding: 5px 12px;
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--t1);
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .about-pill:hover { border-color: rgba(232,68,10,.3); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 
     /* ── CTA Banner ── */
     .cta-section {
-      padding: 56px 0;
+      padding: 64px 0;
       background: var(--t1);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(232,68,10,.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 50%, rgba(255,107,53,.1) 0%, transparent 60%);
+      pointer-events: none;
     }
     .cta-inner {
       text-align: center;
-      max-width: 640px;
+      max-width: 600px;
       margin: 0 auto;
+      position: relative;
     }
     .cta-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--star);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .cta-heading {
-      font-size: clamp(24px, 4vw, 38px);
-      font-weight: 800;
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 900;
       color: #fff;
-      letter-spacing: -.8px;
+      letter-spacing: -1.2px;
       margin-bottom: 12px;
+      line-height: 1.1;
     }
-    .cta-sub { font-size: 16px; color: rgba(255,255,255,.65); margin-bottom: 28px; }
+    .cta-sub { font-size: 15.5px; color: rgba(255,255,255,.6); margin-bottom: 28px; font-weight: 400; }
     .cta-btn {
       display: inline-block;
       padding: 15px 36px;
-      background: var(--a);
+      background: var(--gradient);
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       border-radius: 10px;
       border: none;
-      transition: background .15s, transform .12s, box-shadow .15s;
+      transition: opacity .2s, transform .12s, box-shadow .15s;
+      box-shadow: 0 4px 20px rgba(232,68,10,.4);
+      letter-spacing: -.1px;
     }
-    .cta-btn:hover { background: var(--ah); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,68,10,.4); }
-    .cta-note { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 12px; }
+    .cta-btn:hover { opacity: .9; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(232,68,10,.5); }
+    .cta-note { font-size: 12px; color: rgba(255,255,255,.35); margin-top: 14px; }
   </style>
   <link rel="icon" href="/images/toplogo.png" sizes="32x32">
   <link rel="apple-touch-icon" href="/images/toplogo.png">
@@ -979,7 +1176,7 @@
 
 <!-- Announcement bar -->
 <div class="ann-bar">
-  &#9889; <span>Free Instant Delivery</span> on all digital products &middot; 30 Days Exclusive Support*
+  <span class="ann-pill">New</span> <strong>Free Instant Delivery</strong> on all digital products &middot; 30-day exclusive support included
 </div>
 
 <!-- Navbar -->
@@ -988,40 +1185,53 @@
     <a href="/" class="nav-logo">Code <span>Hunters</span></a>
     <div class="nav-links">
       <a href="/" class="nav-link active">Home</a>
-      <a href="#features" class="nav-link">Features</a>
+      <a href="#about" class="nav-link">About</a>
       <a href="#products" class="nav-link">Products</a>
     </div>
     <div class="nav-search">
       <input type="text" id="searchInput" placeholder="Search products&#8230;" autocomplete="off" aria-label="Search products">
-      <span class="nav-search-icon">&#128269;</span>
+      <span class="nav-search-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
     </div>
     <div class="nav-actions">
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
-        &#9825;
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </button>
       <div class="nav-cart-wrap">
-        <button class="nav-icon-btn" data-cart-open aria-label="Open cart">&#128722;</button>
+        <button class="nav-icon-btn" data-cart-open aria-label="Open cart">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </button>
         <span class="cart-badge" data-cart-badge>0</span>
       </div>
-      <a href="#products" class="nav-get-started">Get Started</a>
+      <a href="#products" class="nav-get-started">Browse Kits</a>
     </div>
   </div>
 </nav>
+
+<!-- Background blobs -->
+<div class="blob-wrap" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
 
 <!-- ── SECTION 1: Hero ── -->
 <section class="hero">
   <div class="wrap">
     <div class="hero-inner">
       <div class="hero-left">
-        <div class="hero-badge">&#128293; #1 Bestseller</div>
+        <div class="hero-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          Trusted by 5,200+ developers across India
+        </div>
         <h1 class="hero-title">
-          Build &amp; Ship<br>
-          Real Projects.<br>
-          Get <span class="accent">Hired.</span>
+          700 real projects.<br>
+          Built like real<br>
+          teams <span class="accent">ship code.</span>
         </h1>
         <p class="hero-sub">
-          700+ job-ready projects across Python, JavaScript, React, Java &amp; more.
-          Instant access, lifetime validity, source code included.
+          From Django backends to React frontends — every project includes full source code, architecture notes, and is ready to ship to production.
         </p>
         <div class="hero-price-row">
           <span class="hero-price">&#8377;369</span>
@@ -1029,14 +1239,14 @@
           <span class="hero-discount-pill">82% OFF</span>
         </div>
         <div class="hero-actions">
-          <button class="btn-primary" id="heroBuyBtn">Get Instant Access &#8594;</button>
-          <button class="btn-secondary" data-cart-open>View Cart &#128722;</button>
+          <button class="btn-primary" id="heroBuyBtn">Get the Full Library &rarr;</button>
+          <button class="btn-secondary" data-cart-open>View Cart</button>
         </div>
         <div class="hero-trust">
-          <span class="hero-trust-item"><span class="tick">&#10003;</span>Instant delivery</span>
+          <span class="hero-trust-item"><span class="tick">&#10003;</span>Delivered in seconds</span>
           <span class="hero-trust-item"><span class="tick">&#10003;</span>Lifetime access</span>
-          <span class="hero-trust-item"><span class="tick">&#10003;</span>Source code included</span>
-          <span class="hero-trust-item"><span class="tick">&#10003;</span>30-day support*</span>
+          <span class="hero-trust-item"><span class="tick">&#10003;</span>Source code for every project</span>
+          <span class="hero-trust-item"><span class="tick">&#10003;</span>30-day support</span>
         </div>
       </div>
       <div class="hero-right">
@@ -1045,13 +1255,13 @@
             <img src="/images/Developers-Kit-1943x2048-1-972x1024.png" alt="Developer's Kit Bundle" loading="eager">
           </div>
           <div class="hero-card-body">
-            <div class="hero-card-title">Developer's Kit – 700+ Projects Bundle</div>
+            <div class="hero-card-title">Developer's Kit &mdash; 700+ Projects Bundle</div>
             <ul class="hero-card-features">
-              <li>700+ real-world projects</li>
+              <li>700+ production-ready projects</li>
               <li>Python, React, Java, JS &amp; more</li>
-              <li>Lifetime access &amp; updates</li>
-              <li>Source code for every project</li>
-              <li>Priority community support</li>
+              <li>Lifetime access &amp; free updates</li>
+              <li>Full source code every project</li>
+              <li>30-day dedicated email support</li>
             </ul>
             <div class="hero-card-price-row">
               <span class="hero-card-price">&#8377;369</span>
@@ -1068,19 +1278,45 @@
 
 <div class="section-divider"></div>
 
+<!-- ── SOCIAL PROOF STRIP ── -->
+<div class="proof-strip" data-animate>
+  <div class="wrap">
+    <div class="proof-inner">
+      <div class="proof-stat">
+        <div class="proof-stat-num">700<span>+</span></div>
+        <div class="proof-stat-label">Projects included</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">5,200<span>+</span></div>
+        <div class="proof-stat-label">Developers trust us</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">10<span>+</span></div>
+        <div class="proof-stat-label">Technologies covered</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">&#8377;369</div>
+        <div class="proof-stat-label">One-time, no subscription</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ── ABOUT SECTION ── -->
 <section class="about-section" id="about">
   <div class="wrap">
     <div class="about-inner">
       <div class="about-text" data-animate="left">
-        <div class="section-eyebrow">&#128073; What is Code Hunters?</div>
+        <div class="section-eyebrow">What is Code Hunters?</div>
         <h2 class="about-heading">
-          India's go-to platform for<br>
-          <span class="gradient-text">developer career resources</span>
+          Where developers go<br>
+          to build <span class="gradient-text">real things that ship.</span>
         </h2>
         <p class="about-desc">
-          Code Hunters sells <strong>premium digital resources for developers</strong> — 700+ real-world projects, interview mastery kits, and career accelerators — all delivered instantly to your inbox.
-          Whether you're a fresher or a pro, we have everything you need to build, learn, and get hired.
+          Code Hunters is a curated library of <strong>production-grade projects</strong> built by developers for developers. We skip the toy apps. Every project in our catalog has real architecture, real code, and real-world context &mdash; the kind you actually use at work.
         </p>
         <div class="about-stats">
           <div class="stat">
@@ -1088,7 +1324,7 @@
             <div class="stat-label">Projects</div>
           </div>
           <div class="stat">
-            <span class="stat-num" data-count="5000">0</span><span class="stat-plus">+</span>
+            <span class="stat-num" data-count="5200">0</span><span class="stat-plus">+</span>
             <div class="stat-label">Developers</div>
           </div>
           <div class="stat">
@@ -1098,20 +1334,19 @@
         </div>
       </div>
       <div class="about-visual" data-animate data-delay="2">
-        <div class="about-visual-title">&#128218; What's inside the platform</div>
+        <div class="about-visual-title">What's in the library</div>
         <div class="about-pill-grid">
           <span class="about-pill">Python Projects</span>
           <span class="about-pill">React Apps</span>
           <span class="about-pill">JavaScript</span>
           <span class="about-pill">Java Apps</span>
           <span class="about-pill">Data Science</span>
-          <span class="about-pill">ML/AI Projects</span>
+          <span class="about-pill">ML / AI</span>
           <span class="about-pill">Resume Templates</span>
           <span class="about-pill">Interview Prep</span>
           <span class="about-pill">DSA Practice</span>
           <span class="about-pill">System Design</span>
           <span class="about-pill">HR Interview Q&amp;A</span>
-          <span class="about-pill">Career Roadmaps</span>
         </div>
       </div>
     </div>
@@ -1169,11 +1404,11 @@
 <section class="cta-section" data-animate>
   <div class="wrap">
     <div class="cta-inner">
-      <div class="cta-label">&#128293; Limited Time Offer</div>
-      <h2 class="cta-heading">Start building today for &#8377;369</h2>
-      <p class="cta-sub">700+ projects, instant access, lifetime validity. The most affordable developer kit in India.</p>
-      <a href="#products" class="cta-btn">Get Instant Access &#8594;</a>
-      <p class="cta-note">* 30 days exclusive email support included after purchase</p>
+      <div class="cta-label">Limited Offer</div>
+      <h2 class="cta-heading">Get the full library for &#8377;369</h2>
+      <p class="cta-sub">700+ projects, instant delivery, lifetime access. No subscriptions ever.</p>
+      <a href="#products" class="cta-btn">Browse All Kits &rarr;</a>
+      <p class="cta-note">30-day exclusive email support included with every purchase</p>
     </div>
   </div>
 </section>
@@ -1183,8 +1418,8 @@
 <!-- ── SECTION 2: Products ── -->
 <section class="products-section" id="products">
   <div class="wrap">
-    <h2 class="section-heading">Browse All Products</h2>
-    <p class="section-sub">Curated kits for developers at every level — career, projects, interviews &amp; more.</p>
+    <h2 class="section-heading">The full library</h2>
+    <p class="section-sub">Handpicked kits for every stage &mdash; projects, interviews, career growth, and more.</p>
 
     <!-- Category Tabs -->
     <div class="cat-strip" id="catStrip">
