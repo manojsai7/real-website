@@ -27,6 +27,20 @@
       --star: #F59E0B;
       --tg: #2AABEE;
     }
+    :root.dark-theme {
+      --bg: #121212;
+      --s1: #1e1e1e;
+      --s2: #2a2a2a;
+      --b: rgba(255,255,255,.1);
+      --b2: rgba(255,255,255,.2);
+      --t1: #F5F4F0;
+      --t2: #A1A1AA;
+      --t3: #71717A;
+      --a: #FF5A1F;
+      --ah: #FF7B4C;
+      --abg: rgba(255, 90, 31, 0.15);
+      --g: #22C55E;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -384,6 +398,11 @@
       .page-hero { padding: 48px 0 36px; }
     }
   </style>
+  <script>
+    if(localStorage.getItem('theme')==='dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+      document.documentElement.classList.add('dark-theme');
+    }
+  </script>
 </head>
 <body>
 
@@ -398,6 +417,9 @@
     <a href="/" class="nav-logo">Code <span>Hunters</span></a>
     <div class="nav-actions">
       <a href="/" class="nav-link">Products</a>
+      <button class="nav-icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme" style="margin: 0 4px;">
+        <span id="themeIcon">&#9789;</span>
+      </button>
       <span class="nav-support-pill">&#128172; Support</span>
       <a href="/cart.html" class="nav-icon-btn" aria-label="Cart">&#128722;</a>
     </div>
@@ -559,6 +581,21 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     }
   });
 });
+
+// ── Theme Toggle ──
+var themeBtn = document.getElementById('themeToggleBtn');
+var themeIcon = document.getElementById('themeIcon');
+if(themeBtn) {
+  if(document.documentElement.classList.contains('dark-theme')) {
+    themeIcon.innerHTML = '&#9728;';
+  }
+  themeBtn.addEventListener('click', function() {
+    document.documentElement.classList.toggle('dark-theme');
+    var isDark = document.documentElement.classList.contains('dark-theme');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    themeIcon.innerHTML = isDark ? '&#9728;' : '&#9789;';
+  });
+}
 </script>
 </body>
 </html>

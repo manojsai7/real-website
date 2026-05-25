@@ -26,6 +26,20 @@
       --g: #16A34A;
       --star: #F59E0B;
     }
+    :root.dark-theme {
+      --bg: #121212;
+      --s1: #1e1e1e;
+      --s2: #2a2a2a;
+      --b: rgba(255,255,255,.1);
+      --b2: rgba(255,255,255,.2);
+      --t1: #F5F4F0;
+      --t2: #A1A1AA;
+      --t3: #71717A;
+      --a: #FF5A1F;
+      --ah: #FF7B4C;
+      --abg: rgba(255, 90, 31, 0.15);
+      --g: #22C55E;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -751,6 +765,21 @@
       gap: 10px;
       flex-wrap: wrap;
     }
+    /* ── Newsletter ── */
+    .newsletter-cta { padding: 48px 0; background: var(--abg); }
+    .nl-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .nl-text { flex: 1; min-width: 300px; }
+    .nl-form { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nl-form input { flex: 1; min-width: 240px; padding: 12px 16px; border: 1.5px solid var(--b2); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--s1); color: var(--t1); }
+    .nl-form input:focus { border-color: var(--a); outline: none; box-shadow: 0 0 0 3px rgba(232,68,10,.12); }
+    /* ── Testimonials ── */
+    .testimonials-section { padding: 48px 0; background: var(--s2); }
+    .t-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .t-card { background: var(--s1); padding: 24px; border: 1px solid var(--b); border-radius: 12px; display: flex; flex-direction: column; }
+    .t-stars { color: var(--star); font-size: 16px; margin-bottom: 12px; }
+    .t-quote { font-size: 15px; color: var(--t2); line-height: 1.6; margin-bottom: 20px; font-style: italic; flex: 1; }
+    .t-author strong { display: block; font-size: 14px; color: var(--t1); font-weight: 700; }
+    .t-author span { font-size: 13px; color: var(--t3); }
     .footer-top {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -882,6 +911,11 @@
       .hero-card-img img { max-height: 160px; }
     }
   </style>
+  <script>
+    if(localStorage.getItem('theme')==='dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+      document.documentElement.classList.add('dark-theme');
+    }
+  </script>
 </head>
 <body>
 
@@ -900,6 +934,9 @@
     </div>
     <div class="nav-actions">
       <a href="/about.html" class="nav-link">About</a>
+      <button class="nav-icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+        <span id="themeIcon">&#9789;</span>
+      </button>
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
        <span class="heart-icon" id="heartIcon">&#9825;</span>
   <span class="badge" id="wishlistBadge">0</span>
@@ -1044,6 +1081,51 @@
 
 <div class="section-divider"></div>
 
+<!-- ── Testimonials ── -->
+<section class="testimonials-section">
+  <div class="wrap">
+    <h2 class="section-heading">Wall of Love</h2>
+    <p class="section-sub">See how developers are upgrading their careers with Code Hunters.</p>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="t-quote">"The interview kit gave me exactly the structure I needed. I reused two of the React projects for my portfolio and landed a Frontend role at a major tech firm!"</p>
+        <div class="t-author"><strong>Sarah J.</strong> <span>Frontend Developer</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="t-quote">"I was struggling to explain my self-taught projects. The source code in these kits helped me understand professional architecture and explain it confidently."</p>
+        <div class="t-author"><strong>David M.</strong> <span>Full-Stack Engineer</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="t-quote">"The Data Analyst 30-day plan is no joke. It's intense, but I had 4 solid projects to showcase by the end of it. Highly recommend it for career switchers."</p>
+        <div class="t-author"><strong>Priya K.</strong> <span>Data Analyst</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── Newsletter / Lead Capture ── -->
+<section class="newsletter-cta">
+  <div class="wrap">
+    <div class="nl-inner">
+      <div class="nl-text">
+        <h2 class="section-heading">Join 5,000+ developers</h2>
+        <p class="section-sub" style="margin-bottom:0;">Get weekly coding tips, interview prep strategies, and a free mini-project to build this weekend.</p>
+      </div>
+      <form class="nl-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+        <input type="email" placeholder="Enter your email" required>
+        <button class="btn-primary" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- ── SECTION 3: Footer ── -->
 <footer class="footer">
   <div class="wrap">
@@ -1122,92 +1204,9 @@
 </div>
 
 <script src="/js/cart.js"></script>
+<script src="/js/products.js"></script>
 <script>
 (function () {
-  // ── Product Catalog ──
-  var PRODUCTS = [
-    {
-      id: 'developers-kit',
-      title: "Developer's Kit – 700+ Projects Bundle",
-      price: 369, origPrice: 1999,
-      type: 'bundle', badge: 'bestseller', badgeLabel: 'Bestseller',
-      stars: 5, reviewCount: 412,
-      image: '/images/Developers-Kit-1943x2048-1-972x1024.png',
-      cat: 'bundles',
-      desc: '700+ real-world projects across 10+ technologies'
-    },
-    {
-      id: '30-day-data-analyst-kit',
-      title: '30-Day Data Analyst Kit',
-      price: 299, origPrice: 799,
-      type: 'product', badge: 'hot', badgeLabel: 'Hot Deal',
-      stars: 5, reviewCount: 187,
-      image: '/images/100-Natural-Language-Processing-918x1024.png',
-      cat: 'data',
-      desc: 'Complete data analyst prep – 30-day structured plan'
-    },
-    {
-      id: '5-day-js-bootcamp',
-      title: '5-Day JavaScript Bootcamp',
-      price: 201, origPrice: 599,
-      type: 'product', badge: 'new', badgeLabel: 'New',
-      stars: 4, reviewCount: 94,
-      image: '/images/react-915x1024.png',
-      cat: 'web',
-      desc: 'Intensive 5-day JavaScript for everything bootcamp'
-    },
-    {
-      id: 'interview-mastery',
-      title: 'Interview Mastery System',
-      price: 1499, origPrice: 3999,
-      type: 'product', badge: 'premium', badgeLabel: 'Premium',
-      stars: 5, reviewCount: 231,
-      image: '/images/softare-919x1024.png',
-      cat: 'career',
-      desc: 'Clear every interview round – HR &amp; Technical prep'
-    },
-    {
-      id: 'interview-cracking-2026',
-      title: 'Interview-Cracking System 2026',
-      price: 399, origPrice: 999,
-      type: 'product', badge: 'new', badgeLabel: 'New',
-      stars: 4, reviewCount: 68,
-      image: '/images/100-Programming-Tools-927x1024.jpg',
-      cat: 'career',
-      desc: 'AI-powered interview cracking system for 2026'
-    },
-    {
-      id: 'ats-resume-template',
-      title: 'ATS Resume Template – WebDev',
-      price: 129, origPrice: 499,
-      type: 'product', badge: '', badgeLabel: '',
-      stars: 4, reviewCount: 155,
-      image: '/images/100-Editable-Resume-Templates-922x1024.jpg',
-      cat: 'career',
-      desc: 'ATS-approved resume template for web developers'
-    },
-    {
-      id: 'vip-pass',
-      title: 'Upgrade to VIP Pass',
-      price: 149, origPrice: 499,
-      type: 'product', badge: 'exclusive', badgeLabel: 'Exclusive',
-      stars: 5, reviewCount: 43,
-      image: null,
-      cat: 'bundles',
-      desc: 'VIP pass with exclusive benefits &amp; early access'
-    },
-    {
-      id: 'Testing-First',
-      title: 'Testing First – QA Starter Kit',
-      price: 12, origPrice: 99,
-      type: 'product', badge: '', badgeLabel: '',
-      stars: 3, reviewCount: 21,
-      image: '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg',
-      cat: 'web',
-      desc: 'Complete testing starter – unit, integration, e2e'
-    }
-  ];
-
   // ── Wishlist (sessionStorage) ──
   var WL_KEY = 'ch_wishlist';
   function getWishlist() { try { return JSON.parse(sessionStorage.getItem(WL_KEY)) || []; } catch(e) { return []; } }
@@ -1306,15 +1305,19 @@
           '<button class="pc-wish' + (wished ? ' active' : '') + '" data-wish-id="' + esc(p.id) + '" title="' + (wished ? 'Remove from wishlist' : 'Add to wishlist') + '">' +
             (wished ? '&#9829;' : '&#9825;') +
           '</button>' +
+          '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration: none; color: inherit; display: contents;">' +
           '<div class="pc-thumb">' +
             (p.image
               ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy">'
               : '<div class="pc-thumb-placeholder">&#128196;</div>'
             ) +
           '</div>' +
+          '</a>' +
           '<div class="pc-body">' +
             '<div class="pc-cat-tag">' + esc(catLabel) + '</div>' +
+            '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration: none; color: inherit;">' +
             '<div class="pc-title">' + esc(p.title) + '</div>' +
+            '</a>' +
             '<div class="pc-stars">' +
               starsHtml(p.stars) +
               '<span class="pc-stars-count">(' + p.reviewCount + ')</span>' +
@@ -1504,6 +1507,21 @@
 
   // ── Sync cart state on return to page ──
   window.addEventListener('cart:changed', function() { renderProducts(); });
+
+  // ── Theme Toggle ──
+  var themeBtn = document.getElementById('themeToggleBtn');
+  var themeIcon = document.getElementById('themeIcon');
+  if(themeBtn) {
+    if(document.documentElement.classList.contains('dark-theme')) {
+      themeIcon.innerHTML = '&#9728;';
+    }
+    themeBtn.addEventListener('click', function() {
+      document.documentElement.classList.toggle('dark-theme');
+      var isDark = document.documentElement.classList.contains('dark-theme');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      themeIcon.innerHTML = isDark ? '&#9728;' : '&#9789;';
+    });
+  }
 
   // ── Init ──
   updateWishlistBadge();
