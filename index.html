@@ -644,7 +644,81 @@
       padding: 48px 0 32px;
     }
     .heart-icon{
-      font-size:32px;
+      font-size:22px;
+      line-height:1;
+      transition: color .2s, transform .15s;
+    }
+    .heart-icon.is-active {
+      color: #e91e63;
+      transform: scale(1.15);
+    }
+
+    /* ── Support nav pill ── */
+    .nav-support-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      background: var(--s1);
+      border: 1.5px solid var(--b2);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--t2);
+      white-space: nowrap;
+      transition: border-color .15s, color .15s, background .15s;
+      text-decoration: none;
+    }
+    .nav-support-pill:hover { border-color: var(--a); color: var(--a); background: var(--abg); }
+
+    /* ── Proof Section ── */
+    .proof-section {
+      padding: 40px 0;
+      background: var(--s2);
+    }
+    .proof-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      .proof-inner { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .proof-text-col p {
+      font-size: 15px;
+      color: var(--t2);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+    .proof-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .proof-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.5;
+    }
+    .proof-list li::before {
+      content: '✓';
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: #DCFCE7;
+      color: var(--g);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      margin-top: 1px;
     }
     .footer-top {
       display: grid;
@@ -794,9 +868,10 @@
     </div>
     <div class="nav-actions">
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
-       <span class="heart-icon">&#9825;</span>
+       <span class="heart-icon" id="heartIcon">&#9825;</span>
   <span class="badge" id="wishlistBadge">0</span>
       </button>
+      <a href="/support.html" class="nav-support-pill" id="navSupportLink">&#128172; Support</a>
       <div class="nav-cart-wrap">
         <button class="nav-icon-btn" data-cart-open aria-label="Open cart">&#128722;</button>
         <span class="cart-badge" data-cart-badge>0</span>
@@ -812,13 +887,11 @@
       <div class="hero-left">
         <div class="hero-badge">&#128293; #1 Bestseller</div>
         <h1 class="hero-title">
-          Build &amp; Ship<br>
-          Real Projects.<br>
-          Get <span class="accent">Hired.</span>
+          Your Resume's
+          Missing <span class="accent">Proof.</span>
         </h1>
         <p class="hero-sub">
-          700+ job-ready projects across Python, JavaScript, React, Java &amp; more.
-          Instant access, lifetime validity, source code included.
+          Recruiters skip past certificates — they scan for real work. Get 700+ interview-ready projects across Python, React, JavaScript &amp; Data Science. Walk in with proof, not promises.
         </p>
         <div class="hero-price-row">
           <span class="hero-price">&#8377;369</span>
@@ -859,6 +932,27 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── Proof Section ── -->
+<section class="proof-section" id="why-proof">
+  <div class="wrap">
+    <div class="proof-inner">
+      <div class="proof-text-col">
+        <h2 class="section-heading" style="margin-bottom:12px;">Proof beats skills on a resume.</h2>
+        <p>Saying "I know Python" gets you ignored. Showing a deployed ML dashboard, a REST API, or a React app gets you shortlisted. Our kits give you exactly that — structured, role-specific projects built the way interviewers expect to see them.</p>
+      </div>
+      <ul class="proof-list">
+        <li>Recruiters spend 6 seconds on a resume — projects are the first thing they look for</li>
+        <li>Every project comes with source code you can explain, extend, and showcase on GitHub</li>
+        <li>Covers Python, JavaScript, React, Java, Data Science, ML, and more</li>
+        <li>Works for freshers, career switchers, and experienced devs leveling up</li>
+        <li>One purchase — use the same projects on resume, LinkedIn, GitHub, and in interviews</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -917,8 +1011,10 @@
         </ul>
       </div>
       <div>
-        <div class="footer-col-title">Support</div>
+        <div class="footer-col-title">Company</div>
         <ul class="footer-links">
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/support.html">Support</a></li>
           <li><a href="/terms.html">Terms &amp; Conditions</a></li>
           <li><a href="/checkout.html">Checkout</a></li>
         </ul>
@@ -1077,17 +1173,18 @@
   }
   function updateWishlistBadge() {
     var count = getWishlist().length;
-   const badge = document.getElementById("wishlistBadge");
-   const heart = document.querySelector(".heart-icon");
-if (count > 0) {
-  badge.style.display = "flex";
-  badge.textContent = count;
-  heart.innerHTML = "&#9829;";
-  heart.style.color = "red";
-} else {
-  badge.style.display = "none";
-  heart.style.color = "black";
-}
+    var badge = document.getElementById('wishlistBadge');
+    var heart = document.getElementById('heartIcon');
+    if (count > 0) {
+      badge.style.display = 'flex';
+      badge.textContent = count;
+      heart.innerHTML = '&#9829;';
+      heart.classList.add('is-active');
+    } else {
+      badge.style.display = 'none';
+      heart.innerHTML = '&#9825;';
+      heart.classList.remove('is-active');
+    }
   }
 
   // ── Stars helper ──
