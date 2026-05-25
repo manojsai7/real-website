@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/codehnt.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/codehnt.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support – Code Hunters</title>
+  <meta name="description" content="Get help from Code Hunters. Lifetime support via Telegram and email. We're here for every purchase — before, during, and after.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F4F0;
+      --s1: #ffffff;
+      --s2: #EEEDE9;
+      --b: rgba(0,0,0,.08);
+      --b2: rgba(0,0,0,.14);
+      --t1: #18181A;
+      --t2: #706F6B;
+      --t3: #ADADAB;
+      --a: #E8440A;
+      --ah: #CC3500;
+      --abg: #FEF0EB;
+      --g: #16A34A;
+      --star: #F59E0B;
+      --tg: #2AABEE;
+    }
+    :root.dark-theme {
+      --bg: #121212;
+      --s1: #1e1e1e;
+      --s2: #2a2a2a;
+      --b: rgba(255,255,255,.1);
+      --b2: rgba(255,255,255,.2);
+      --t1: #F5F4F0;
+      --t2: #A1A1AA;
+      --t3: #71717A;
+      --a: #FF5A1F;
+      --ah: #FF7B4C;
+      --abg: rgba(255, 90, 31, 0.15);
+      --g: #22C55E;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Announcement Bar ── */
+    .ann-bar {
+      background: var(--t1);
+      color: #fff;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+    .ann-bar span { color: var(--star); }
+
+    /* ── Navbar ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(245,244,240,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--b);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--t1);
+      white-space: nowrap;
+      letter-spacing: -.5px;
+    }
+    .nav-logo span { color: var(--a); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .nav-icon-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      background: var(--s1);
+      border: 1.5px solid var(--b);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: border-color .15s, box-shadow .15s, transform .1s;
+      color: var(--t1);
+    }
+    .nav-icon-btn:hover { border-color: var(--b2); box-shadow: 0 2px 8px rgba(0,0,0,.06); transform: translateY(-1px); }
+    .nav-support-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      background: var(--abg);
+      border: 1.5px solid rgba(232,68,10,.25);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--a);
+      white-space: nowrap;
+    }
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--t2);
+      transition: color .15s;
+    }
+    .nav-link:hover { color: var(--t1); }
+
+    /* ── Container ── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Page Hero ── */
+    .page-hero {
+      padding: 64px 0 48px;
+      text-align: center;
+    }
+    .page-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--abg);
+      color: var(--a);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(232,68,10,.2);
+    }
+    .page-hero h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.2px;
+      color: var(--t1);
+      margin-bottom: 16px;
+    }
+    .page-hero h1 span { color: var(--a); }
+    .page-hero p {
+      font-size: 17px;
+      color: var(--t2);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── Section divider ── */
+    .section-divider { height: 1px; background: var(--b); }
+
+    /* ── Support Channels ── */
+    .support-section {
+      padding: 64px 0;
+    }
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 700px) {
+      .support-grid { grid-template-columns: 1fr; }
+    }
+    .support-card {
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 16px;
+      padding: 32px;
+      transition: box-shadow .2s, transform .15s;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .support-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.1); transform: translateY(-3px); }
+    .support-card.telegram { border-color: rgba(42,171,238,.3); }
+    .support-card.email { border-color: rgba(232,68,10,.2); }
+    .support-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+    .telegram .support-card-icon { background: rgba(42,171,238,.12); }
+    .email .support-card-icon { background: var(--abg); }
+    .support-card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--t1);
+      letter-spacing: -.3px;
+    }
+    .support-card p {
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .support-card-meta {
+      font-size: 13px;
+      color: var(--t3);
+      font-weight: 600;
+    }
+    .support-card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      transition: background .15s, transform .1s;
+      cursor: pointer;
+      width: fit-content;
+    }
+    .telegram .support-card-action {
+      background: #2AABEE;
+      color: #fff;
+    }
+    .telegram .support-card-action:hover { background: #1a9bd5; transform: translateY(-1px); }
+    .email .support-card-action {
+      background: var(--a);
+      color: #fff;
+    }
+    .email .support-card-action:hover { background: var(--ah); transform: translateY(-1px); }
+
+    /* ── FAQ ── */
+    .faq-section {
+      padding: 0 0 64px;
+    }
+    .faq-section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      margin-bottom: 24px;
+      color: var(--t1);
+    }
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 720px;
+    }
+    .faq-item {
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      padding: 18px 20px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--t1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: background .15s;
+    }
+    .faq-q:hover { background: var(--s2); }
+    .faq-q-icon {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--t3);
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+    .faq-item.open .faq-q-icon { transform: rotate(45deg); color: var(--a); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .25s ease, padding .2s;
+      padding: 0 20px;
+    }
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding: 0 20px 18px;
+    }
+    .faq-a p {
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.65;
+    }
+
+    /* ── Lifetime badge ── */
+    .lifetime-banner {
+      background: linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%);
+      border: 1px solid rgba(22,163,74,.2);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .lifetime-banner-icon { font-size: 36px; margin-bottom: 12px; }
+    .lifetime-banner h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--g);
+      margin-bottom: 8px;
+      letter-spacing: -.3px;
+    }
+    .lifetime-banner p {
+      font-size: 14px;
+      color: #166534;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--t1);
+      color: rgba(255,255,255,.7);
+      padding: 48px 0 32px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    }
+    .footer-brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -.4px;
+    }
+    .footer-brand-name span { color: var(--a); }
+    .footer-brand-desc { font-size: 14px; line-height: 1.6; }
+    .footer-col-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 14px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links a {
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      transition: color .15s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 24px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.6); }
+    .footer-bottom a:hover { color: #fff; }
+
+    @media (max-width: 768px) {
+      .page-hero { padding: 48px 0 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Announcement bar -->
+<div class="ann-bar">
+  &#9889; <span>Free Instant Delivery</span> on all digital products &middot; 30-Day Money-Back Guarantee
+</div>
+
+<!-- Navbar -->
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Code <span>Hunters</span></a>
+    <div class="nav-actions">
+      <a href="/" class="nav-link">Products</a>
+      <span class="nav-support-pill">&#128172; Support</span>
+      <a href="/cart.html" class="nav-icon-btn" aria-label="Cart">&#128722;</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="page-hero-badge">&#128172; We're here for you</div>
+    <h1>Lifetime Support,<br><span>Not Just a Purchase.</span></h1>
+    <p>Every product you buy comes with ongoing support. Ask questions, get help, and access our admin directly — no ticket system, no wait queues.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Support channels -->
+<section class="support-section">
+  <div class="wrap">
+    <div class="support-grid">
+      <!-- Telegram -->
+      <div class="support-card telegram" id="telegram-support">
+        <div class="support-card-icon">&#128172;</div>
+        <h2>Telegram Admin Support</h2>
+        <p>Message our admin directly on Telegram. Get fast, personal responses — ideal for delivery issues, access questions, or anything about your purchase. We respond within a few hours.</p>
+        <div class="support-card-meta">&#8226; Fastest response time &nbsp;&#8226; Real person, not a bot</div>
+        <a href="https://t.me/codehuntersdev" target="_blank" rel="noopener" class="support-card-action" id="telegramBtn">
+          &#128172; Open Telegram
+        </a>
+      </div>
+
+      <!-- Email -->
+      <div class="support-card email" id="email-support">
+        <div class="support-card-icon">&#9993;</div>
+        <h2>Email Support</h2>
+        <p>Prefer email? Reach us at <strong>aohacx@gmail.com</strong>. Send us your order details, any issue you're facing, or a general question. We aim to reply within 24 hours on business days.</p>
+        <div class="support-card-meta">&#8226; Within 24 hours &nbsp;&#8226; Best for detailed queries</div>
+        <a href="mailto:aohacx@gmail.com" class="support-card-action" id="emailBtn">
+          &#9993; Send an Email
+        </a>
+      </div>
+    </div>
+
+    <!-- Lifetime Support Banner -->
+    <div class="lifetime-banner" id="lifetime-support-banner">
+      <div class="lifetime-banner-icon">&#9854;</div>
+      <h3>Lifetime Support Included</h3>
+      <p>
+        Your purchase doesn't expire — and neither does our support. Whether you bought a kit last week or two years ago, we're still here to help you get the most out of it.
+      </p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section" style="margin-top: 64px;" id="faq">
+      <h2>Common Questions</h2>
+      <div class="faq-list">
+        <div class="faq-item" id="faq-1">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-1-a">
+            How do I access my purchase after payment?
+            <span class="faq-q-icon">+</span>
+          </button>
+          <div class="faq-a" id="faq-1-a" role="region">
+            <p>You'll receive an email with your download link instantly after payment. If you don't see it within a few minutes, check your spam folder. If you still can't find it, reach out via Telegram or email and we'll sort it out immediately.</p>
+          </div>
+        </div>
+        <div class="faq-item" id="faq-2">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-2-a">
+            Is access really lifetime? What if the site goes down?
+            <span class="faq-q-icon">+</span>
+          </button>
+          <div class="faq-a" id="faq-2-a" role="region">
+            <p>Yes, lifetime means you keep it forever. You get the files as a download, not a streaming link — so once you have them, they're yours regardless of what happens to the site.</p>
+          </div>
+        </div>
+        <div class="faq-item" id="faq-3">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-3-a">
+            Can I get a refund?
+            <span class="faq-q-icon">+</span>
+          </button>
+          <div class="faq-a" id="faq-3-a" role="region">
+            <p>Yes. We offer a 30-day money-back guarantee, no questions asked. Just reach out via email or Telegram with your order details and we'll process it promptly.</p>
+          </div>
+        </div>
+        <div class="faq-item" id="faq-4">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-4-a">
+            Can I use these projects commercially or on my portfolio?
+            <span class="faq-q-icon">+</span>
+          </button>
+          <div class="faq-a" id="faq-4-a" role="region">
+            <p>Yes. You're free to include these in your resume, portfolio, GitHub, and LinkedIn. You can also extend and modify them. The only restriction is reselling the raw kits — that's not allowed.</p>
+          </div>
+        </div>
+        <div class="faq-item" id="faq-5">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-5-a">
+            What if I have a question about the content?
+            <span class="faq-q-icon">+</span>
+          </button>
+          <div class="faq-a" id="faq-5-a" role="region">
+            <p>Message us on Telegram or email us. If it's a technical question about a specific project, include the project name and what you're trying to do, and we'll help you work through it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Code <span>Hunters</span></div>
+        <p class="footer-brand-desc">Premium developer resources for building job-ready skills. Real projects, real code, real results.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Products</div>
+        <ul class="footer-links">
+          <li><a href="/?cat=bundles">Developer Bundles</a></li>
+          <li><a href="/?cat=web">Web Dev Kits</a></li>
+          <li><a href="/?cat=data">Data &amp; ML</a></li>
+          <li><a href="/?cat=career">Career &amp; Interview</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li><a href="/terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="/checkout.html">Checkout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Code Hunters. All rights reserved.</span>
+      <span><a href="/terms.html">Terms</a> &middot; <a href="/about.html">About</a> &middot; <a href="/support.html">Support</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var item = this.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(function(i) {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    // Toggle current
+    if (!isOpen) {
+      item.classList.add('open');
+      this.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+</script>
+</body>
+</html>

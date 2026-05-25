@@ -3,6 +3,1250 @@
 <head>
   <link rel="icon" href="../images/codehnt.png" type="image/png">
   <link rel="apple-touch-icon" href="../images/codehnt.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="max-image-preview:large">
+  <title>700+ Job-Ready Projects Bundle | Code Hunters</title>
+  <meta name="description" content="Turn your resume into a shortlist magnet with 700+ real-world IT projects. Used by freshers, career switchers, and working professionals.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0F172A;
+      --primary-light: #1E293B;
+      --accent: #F59E0B;
+      --accent-hover: #D97706;
+      --text: #111827;
+      --text-muted: #6B7280;
+      --bg: #FFFFFF;
+      --bg-alt: #F9FAFB;
+      --border: #E5E7EB;
+      --success: #10B981;
+      --danger: #EF4444;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    
+    /* Header & Navigation */
+    .header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    
+    .nav-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+    }
+    
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--text);
+    }
+    
+    .nav-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    
+    .nav-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .mobile-menu-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+      padding: 4rem 1.5rem 5rem;
+    }
+    
+    .hero-container {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      text-wrap: balance;
+    }
+    
+    .hero h1 span {
+      color: var(--accent);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+    }
+    
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+    
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      background: var(--bg-alt);
+    }
+    
+    .btn-large {
+      padding: 1.25rem 2.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .price-highlight {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .price-original {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    
+    .price-current {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--success);
+    }
+    
+    .price-tag {
+      background: var(--danger);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    /* Stats Section */
+    .stats {
+      padding: 3rem 1.5rem;
+      background: var(--primary);
+    }
+    
+    .stats-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+    
+    .stat-item h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-item p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+    }
+    
+    /* What You Get Section */
+    .whats-included {
+      padding: 5rem 1.5rem;
+      background: var(--bg);
+    }
+    
+    .section-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    
+    .section-header h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .section-header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .feature-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: all 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+    
+    .feature-card.highlighted {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-color: transparent;
+      grid-column: span 2;
+    }
+    
+    .feature-card.highlighted h3,
+    .feature-card.highlighted p {
+      color: white;
+    }
+    
+    .feature-card.highlighted .feature-count {
+      color: var(--accent);
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      color: var(--primary);
+    }
+    
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-count {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    
+    /* Problem Section */
+    .problem-section {
+      padding: 5rem 1.5rem;
+      background: var(--bg-alt);
+    }
+    
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    
+    .problem-content h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .problem-list {
+      list-style: none;
+    }
+    
+    .problem-list li {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    
+    .problem-list li::before {
+      content: "✕";
+      color: var(--danger);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .solution-list li::before {
+      content: "✓";
+      color: var(--success);
+    }
+    
+    /* Pricing Section */
+    .pricing-section {
+      padding: 5rem 1.5rem;
+      background: var(--bg);
+    }
+    
+    .pricing-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(245, 158, 11, 0.15);
+    }
+    
+    .pricing-header {
+      background: var(--primary);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .pricing-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .pricing-header p {
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+    
+    .pricing-body {
+      padding: 2.5rem;
+    }
+    
+    .pricing-value {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .value-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    
+    .value-row span:first-child {
+      color: var(--text-muted);
+    }
+    
+    .value-row span:last-child {
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      margin-top: 1rem;
+    }
+    
+    .total-row span:first-child {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .final-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    
+    .final-price .original {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    
+    .final-price .current {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--success);
+    }
+    
+    .pricing-cta {
+      text-align: center;
+    }
+    
+    .pricing-cta .btn {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    
+    .guarantee {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    
+    .guarantee svg {
+      width: 18px;
+      height: 18px;
+      color: var(--success);
+    }
+    
+    /* FAQ Section */
+    .faq-section {
+      padding: 5rem 1.5rem;
+      background: var(--bg-alt);
+    }
+    
+    .faq-list {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      width: 100%;
+      padding: 1.25rem 1.5rem;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .faq-question:hover {
+      background: var(--bg-alt);
+    }
+    
+    .faq-question svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s;
+    }
+    
+    .faq-item.active .faq-question svg {
+      transform: rotate(180deg);
+    }
+    
+    .faq-answer {
+      display: none;
+      padding: 0 1.5rem 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+    
+    /* CTA Section */
+    .final-cta {
+      padding: 5rem 1.5rem;
+      background: var(--primary);
+      text-align: center;
+    }
+    
+    .final-cta h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    
+    .final-cta p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* Footer */
+    .footer {
+      background: var(--primary-light);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 3rem 1.5rem 2rem;
+    }
+    
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    
+    .footer-brand h3 {
+      color: white;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    .footer-links h4 {
+      color: white;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links ul {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+    
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 2rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .feature-card.highlighted {
+        grid-column: span 2;
+      }
+      
+      .problem-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    @media (max-width: 700px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .feature-card.highlighted {
+        grid-column: span 1;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      
+      .stat-item h3 {
+        font-size: 2rem;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      z-index: 1001;
+      padding: 1.5rem;
+      flex-direction: column;
+    }
+    
+    .mobile-menu.active {
+      display: flex;
+    }
+    
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .mobile-menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .mobile-menu-links a {
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .mobile-menu-group {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .mobile-menu-group a {
+      border: none;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="/index.html" class="logo">Code Hunters</a>
+      
+      <nav class="nav-links">
+        <div class="nav-group">
+          <a href="/shop.html">Shop</a>
+          <a href="/product/developers-kit-700-job-ready-projects-bundle.html">Projects Bundle</a>
+        </div>
+        
+        <div class="nav-divider"></div>
+        
+        <div class="nav-group">
+          <a href="/about.html">About</a>
+          <a href="/support.html">Support</a>
+        </div>
+        
+        <div class="nav-divider"></div>
+        
+        <div class="nav-group">
+          <a href="/wishlist.html" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+            Wishlist
+          </a>
+          <a href="/cart.html" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+            Cart
+          </a>
+        </div>
+      </nav>
+      
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="/index.html" class="logo">Code Hunters</a>
+      <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="/shop.html">Shop</a>
+      <a href="/product/developers-kit-700-job-ready-projects-bundle.html">Projects Bundle</a>
+      <div class="mobile-menu-group">
+        <a href="/about.html">About</a>
+        <a href="/support.html">Support</a>
+      </div>
+      <div class="mobile-menu-group">
+        <a href="/wishlist.html">Wishlist</a>
+        <a href="/cart.html">Cart</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <span class="badge">Interview-Ready Projects</span>
+      <h1>Turn Your Resume Into a <span>Shortlist Magnet</span> Using 700+ Real-World IT Projects</h1>
+      <p class="hero-subtitle">Use the same project portfolios recruiters expect - without building everything from scratch. Used by freshers, career switchers, and working professionals preparing for interviews.</p>
+      
+      <div class="hero-cta">
+        <a href="/product/developers-kit-700-job-ready-projects-bundle.html" class="btn btn-primary btn-large">
+          Get Instant Access Now
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="price-highlight">
+        <span class="price-original">Rs 97,400</span>
+        <span class="price-current">Rs 200</span>
+        <span class="price-tag">97% OFF</span>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stats-container">
+      <div class="stat-item">
+        <h3>700+</h3>
+        <p>Ready Projects</p>
+      </div>
+      <div class="stat-item">
+        <h3>1000+</h3>
+        <p>Interview Questions</p>
+      </div>
+      <div class="stat-item">
+        <h3>100+</h3>
+        <p>Resume Templates</p>
+      </div>
+      <div class="stat-item">
+        <h3>Lifetime</h3>
+        <p>Access Included</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- What's Included -->
+  <section class="whats-included">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>What You Get Inside the Project Kit</h2>
+        <p>A complete library of recruiter-ready projects designed to turn your skills into visible proof.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card highlighted">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+            </svg>
+          </div>
+          <div class="feature-count">300+</div>
+          <h3>Python Projects</h3>
+          <p>From automation scripts to data analysis, web scrapers to machine learning models - everything recruiters look for.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+          <div class="feature-count">150+</div>
+          <h3>Frontend Projects</h3>
+          <p>Modern HTML, CSS, JavaScript projects with responsive designs.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+            </svg>
+          </div>
+          <div class="feature-count">150+</div>
+          <h3>ML & Deep Learning</h3>
+          <p>Industry-standard machine learning and deep learning projects.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+            </svg>
+          </div>
+          <div class="feature-count">50+</div>
+          <h3>C/C++ Projects</h3>
+          <p>System-level programming projects for core understanding.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
+            </svg>
+          </div>
+          <div class="feature-count">30+</div>
+          <h3>Java Projects</h3>
+          <p>Enterprise-grade Java applications and utilities.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+          </div>
+          <div class="feature-count">60+</div>
+          <h3>Django/Flask/PHP</h3>
+          <p>Full-stack web development projects with backend frameworks.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+            </svg>
+          </div>
+          <div class="feature-count">200+</div>
+          <h3>GPT Prompts for Coders</h3>
+          <p>AI-powered prompts to accelerate your coding and learning.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            </svg>
+          </div>
+          <div class="feature-count">1000+</div>
+          <h3>Interview Questions</h3>
+          <p>Real interview questions with context and explanations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Problem/Solution Section -->
+  <section class="problem-section">
+    <div class="section-container">
+      <div class="problem-grid">
+        <div class="problem-content">
+          <h2>Why Most Developers Never Get Shortlisted (Even With Skills)</h2>
+          <ul class="problem-list">
+            <li>Skills don&apos;t get you hired - proof does. Most resumes get rejected because they show learning, not real execution.</li>
+            <li>Building projects from scratch is the slowest path. Months of trial-and-error still won&apos;t match what hiring managers expect.</li>
+            <li>Interviews fail when you can&apos;t explain real decisions. Knowing syntax isn&apos;t enough.</li>
+            <li>One strong project beats 10 weak ones. The right projects instantly signal &quot;job-ready&quot; in the first few seconds.</li>
+          </ul>
+        </div>
+        
+        <div class="problem-content">
+          <h2>How This Bundle Converts Skills Into Offers</h2>
+          <ul class="problem-list solution-list">
+            <li>Turn &quot;I Know Coding&quot; into proof recruiters trust with role-specific projects.</li>
+            <li>Remove guesswork from what to build - each project is pre-aligned to interview expectations.</li>
+            <li>Walk into interviews with confidence - explain decisions, logic, and trade-offs.</li>
+            <li>One asset used everywhere - resume, GitHub, LinkedIn, and interviews.</li>
+            <li>Signal &quot;Job-Ready&quot; in the first 6 seconds when recruiters scan your profile.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pricing Section -->
+  <section class="pricing-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Everything You Need to Look Job-Ready</h2>
+        <p>Individually, these tools cost time, money, and confusion. Together, they remove the exact reasons developers get rejected.</p>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>700+ Job-Ready Projects Bundle</h3>
+          <p>One-time payment. Lifetime access.</p>
+        </div>
+        
+        <div class="pricing-body">
+          <div class="pricing-value">
+            <div class="value-row">
+              <span>700+ role-specific projects</span>
+              <span>Rs 36,000</span>
+            </div>
+            <div class="value-row">
+              <span>1,000+ real interview questions</span>
+              <span>Rs 20,000</span>
+            </div>
+            <div class="value-row">
+              <span>100+ resume templates</span>
+              <span>Rs 8,000</span>
+            </div>
+            <div class="value-row">
+              <span>200+ ChatGPT prompts for coding</span>
+              <span>Rs 8,000</span>
+            </div>
+            <div class="value-row">
+              <span>Lifetime access + updates</span>
+              <span>Rs 5,000</span>
+            </div>
+          </div>
+          
+          <div class="total-row">
+            <span>Total Value:</span>
+            <div class="final-price">
+              <span class="original">Rs 97,400</span>
+              <span class="current">Rs 200</span>
+            </div>
+          </div>
+          
+          <div class="pricing-cta">
+            <a href="/product/developers-kit-700-job-ready-projects-bundle.html" class="btn btn-primary btn-large">
+              Get Instant Access Now
+            </a>
+            <div class="guarantee">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              30-Day Money Back Guarantee
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      
+      <div class="faq-list">
+        <div class="faq-item active">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What exactly do I get in the bundle?
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="faq-answer">
+            You get instant access to 700+ real-world programming projects across Python, Frontend, Java, C/C++, Django, React, PHP, AI/ML, plus resume templates, interview questions, developer tools, and career roadmaps. Everything is designed to help you present real project work, not just theory.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Is this a one-time payment or subscription?
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="faq-answer">
+            This is a one-time payment. Once you purchase, you get lifetime access to all materials including any future updates we add to the bundle.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Can I use these projects in my portfolio?
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="faq-answer">
+            Absolutely! These projects are designed specifically to be used on your resume, GitHub, LinkedIn, and in interviews. You can customize them, learn from them, and present them as your portfolio work.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What if I&apos;m a complete beginner?
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="faq-answer">
+            The bundle includes projects of varying complexity. Start with simpler projects and work your way up. The included documentation and explanations will help you understand how each project works.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Do you offer refunds?
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="faq-answer">
+            Yes! We offer a 30-day money-back guarantee. If you&apos;re not satisfied with the bundle, simply email us and we&apos;ll process your refund - no questions asked.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <h2>Recruiters Shortlist Proof - Not Certificates</h2>
+    <p>Stop wasting months building from scratch. Get 700+ ready-to-use projects and start applying with confidence today.</p>
+    <a href="/product/developers-kit-700-job-ready-projects-bundle.html" class="btn btn-primary btn-large">
+      Get Instant Access - Only Rs 200
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+      </svg>
+    </a>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>Code Hunters</h3>
+        <p>Let&apos;s Code Your Career. We help developers build job-ready portfolios and land their dream tech roles.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="/shop.html">Shop</a></li>
+          <li><a href="/product/developers-kit-700-job-ready-projects-bundle.html">700+ Projects Bundle</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li><a href="/contact-us.html">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="/terms-conditions.html">Terms & Conditions</a></li>
+          <li><a href="/refund-policy.html">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 Code Hunters. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <script>
+    // Mobile Menu Toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('active');
+    }
+    
+    // FAQ Toggle
+    function toggleFaq(button) {
+      const faqItem = button.parentElement;
+      const allFaqs = document.querySelectorAll('.faq-item');
+      
+      allFaqs.forEach(item => {
+        if (item !== faqItem) {
+          item.classList.remove('active');
+        }
+      });
+      
+      faqItem.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
+=======
+<head>
+  <link rel="icon" href="../images/codehnt.png" type="image/png">
+  <link rel="apple-touch-icon" href="../images/codehnt.png">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="max-image-preview:large">
@@ -814,6 +2058,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 		<script src="js/tccl-tti.min.js" onload="window.tti.calculateTTI()"></script>
 		</body>
 </html><!-- Page supported by LiteSpeed Cache 7.8 on 2026-03-09 10:55:39 -->
+
 
 
 

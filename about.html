@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/codehnt.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/codehnt.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us – Code Hunters</title>
+  <meta name="description" content="Learn about Code Hunters — a team of developers building AI-powered tools and real-world project kits for Data Science, ML, and software development careers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F4F0;
+      --s1: #ffffff;
+      --s2: #EEEDE9;
+      --b: rgba(0,0,0,.08);
+      --b2: rgba(0,0,0,.14);
+      --t1: #18181A;
+      --t2: #706F6B;
+      --t3: #ADADAB;
+      --a: #E8440A;
+      --ah: #CC3500;
+      --abg: #FEF0EB;
+      --g: #16A34A;
+      --star: #F59E0B;
+    }
+    :root.dark-theme {
+      --bg: #121212;
+      --s1: #1e1e1e;
+      --s2: #2a2a2a;
+      --b: rgba(255,255,255,.1);
+      --b2: rgba(255,255,255,.2);
+      --t1: #F5F4F0;
+      --t2: #A1A1AA;
+      --t3: #71717A;
+      --a: #FF5A1F;
+      --ah: #FF7B4C;
+      --abg: rgba(255, 90, 31, 0.15);
+      --g: #22C55E;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Announcement Bar ── */
+    .ann-bar {
+      background: var(--t1);
+      color: #fff;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+    .ann-bar span { color: var(--star); }
+
+    /* ── Navbar ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(245,244,240,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--b);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--t1);
+      white-space: nowrap;
+      letter-spacing: -.5px;
+    }
+    .nav-logo span { color: var(--a); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .nav-icon-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      background: var(--s1);
+      border: 1.5px solid var(--b);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: border-color .15s, box-shadow .15s, transform .1s;
+      color: var(--t1);
+    }
+    .nav-icon-btn:hover { border-color: var(--b2); box-shadow: 0 2px 8px rgba(0,0,0,.06); transform: translateY(-1px); }
+    .nav-support-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      background: var(--s1);
+      border: 1.5px solid var(--b2);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--t2);
+      white-space: nowrap;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .nav-support-pill:hover { border-color: var(--a); color: var(--a); background: var(--abg); }
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--t2);
+      transition: color .15s;
+    }
+    .nav-link:hover { color: var(--t1); }
+
+    /* ── Container ── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Page Hero ── */
+    .page-hero {
+      padding: 64px 0 48px;
+      text-align: center;
+    }
+    .page-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--abg);
+      color: var(--a);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(232,68,10,.2);
+    }
+    .page-hero h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.2px;
+      color: var(--t1);
+      margin-bottom: 16px;
+    }
+    .page-hero h1 span { color: var(--a); }
+    .page-hero p {
+      font-size: 17px;
+      color: var(--t2);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── Section divider ── */
+    .section-divider { height: 1px; background: var(--b); }
+
+    /* ── About Content ── */
+    .about-content {
+      padding: 64px 0;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .about-story h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      margin-bottom: 16px;
+      color: var(--t1);
+    }
+    .about-story p {
+      font-size: 15px;
+      color: var(--t2);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .about-story p:last-child { margin-bottom: 0; }
+
+    /* ── Values / Focus Areas ── */
+    .about-values { display: flex; flex-direction: column; gap: 20px; }
+    .value-card {
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: box-shadow .2s, transform .15s;
+    }
+    .value-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+    .value-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--abg);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .value-text h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 4px;
+    }
+    .value-text p {
+      font-size: 13px;
+      color: var(--t2);
+      line-height: 1.55;
+    }
+
+    /* ── Stats row ── */
+    .stats-section {
+      padding: 48px 0;
+      background: var(--s2);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+    @media (max-width: 700px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    .stat-item {}
+    .stat-num {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--a);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--t2);
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--t1);
+      color: rgba(255,255,255,.7);
+      padding: 48px 0 32px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    }
+    .footer-brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -.4px;
+    }
+    .footer-brand-name span { color: var(--a); }
+    .footer-brand-desc { font-size: 14px; line-height: 1.6; }
+    .footer-col-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 14px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links a {
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      transition: color .15s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 24px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.6); }
+    .footer-bottom a:hover { color: #fff; }
+
+    @media (max-width: 768px) {
+      .nav-support-pill { display: none; }
+      .page-hero { padding: 48px 0 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Announcement bar -->
+<div class="ann-bar">
+  &#9889; <span>Free Instant Delivery</span> on all digital products &middot; 30-Day Money-Back Guarantee
+</div>
+
+<!-- Navbar -->
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Code <span>Hunters</span></a>
+    <div class="nav-actions">
+      <a href="/" class="nav-link">Products</a>
+      <a href="/about.html" class="nav-link" aria-current="page">About</a>
+      <a href="/support.html" class="nav-support-pill">&#128172; Support</a>
+      <a href="/cart.html" class="nav-icon-btn" aria-label="Cart">&#128722;</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="page-hero-badge">&#128640; Our Story</div>
+    <h1>Built by Developers,<br>for <span>Developers.</span></h1>
+    <p>We build project kits that turn learning into proof so you can ship, showcase, and get shortlisted faster.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Stats -->
+<section class="stats-section">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">700+</div>
+        <div class="stat-label">Real-world projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Tech stacks covered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5,000+</div>
+        <div class="stat-label">Developers helped</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">&#8734;</div>
+        <div class="stat-label">Lifetime access</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- About Content -->
+<section class="about-content">
+  <div class="wrap">
+    <div class="about-grid">
+      <!-- Story -->
+      <div class="about-story">
+        <h2>Who we are</h2>
+        <p>
+          Most courses teach syntax. Interviews reward what you have built. Code Hunters started to bridge that gap.
+        </p>
+        <p>
+          Our team has built and interviewed across software and data roles. We know what recruiters spot in seconds, so we package projects that are easy to present and explain.
+        </p>
+        <p>
+          Today, freshers, switchers, and working developers use our kits across software, data science, ML, and full-stack roles.
+        </p>
+        <p>
+          We use AI to keep the library current, but every kit is structured by humans for clarity, confidence, and outcomes.
+        </p>
+      </div>
+
+      <!-- Values / Focus Areas -->
+      <div class="about-values">
+        <div class="value-card">
+          <div class="value-icon">&#128202;</div>
+          <div class="value-text">
+            <h3>Data Science &amp; ML</h3>
+            <p>End-to-end ML projects — from data cleaning to model deployment. Structured for interviews at top tech and analytics companies.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">&#127760;</div>
+          <div class="value-text">
+            <h3>Full-Stack &amp; Web Dev</h3>
+            <p>React, Node, JavaScript, and more. Real apps, not toy examples — built the way teams at actual companies would build them.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">&#129302;</div>
+          <div class="value-text">
+            <h3>AI-Assisted Content</h3>
+            <p>We use AI tools to help structure, update, and expand our project library — so you always get content aligned with what the industry actually needs.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">&#128270;</div>
+          <div class="value-text">
+            <h3>Interview-Focused</h3>
+            <p>Every project is designed to answer the question interviewers ask: "Tell me about something you built." You'll know exactly what to say.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Code <span>Hunters</span></div>
+        <p class="footer-brand-desc">Premium developer resources for building job-ready skills. Real projects, real code, real results.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Products</div>
+        <ul class="footer-links">
+          <li><a href="/?cat=bundles">Developer Bundles</a></li>
+          <li><a href="/?cat=web">Web Dev Kits</a></li>
+          <li><a href="/?cat=data">Data &amp; ML</a></li>
+          <li><a href="/?cat=career">Career &amp; Interview</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/support.html">Support</a></li>
+          <li><a href="/terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="/checkout.html">Checkout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Code Hunters. All rights reserved.</span>
+      <span><a href="/terms.html">Terms</a> &middot; <a href="/about.html">About</a> &middot; <a href="/support.html">Support</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/cart.js"></script>
+<script>
+  // ── Theme Toggle ──
+  var themeBtn = document.getElementById('themeToggleBtn');
+  var themeIcon = document.getElementById('themeIcon');
+  if(themeBtn) {
+    if(document.documentElement.classList.contains('dark-theme')) {
+      themeIcon.innerHTML = '&#9728;';
+    }
+    themeBtn.addEventListener('click', function() {
+      document.documentElement.classList.toggle('dark-theme');
+      var isDark = document.documentElement.classList.contains('dark-theme');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      themeIcon.innerHTML = isDark ? '&#9728;' : '&#9789;';
+    });
+  }
+</script>
+</body>
+</html>

@@ -26,6 +26,20 @@
       --g: #16A34A;
       --star: #F59E0B;
     }
+    :root.dark-theme {
+      --bg: #121212;
+      --s1: #1e1e1e;
+      --s2: #2a2a2a;
+      --b: rgba(255,255,255,.1);
+      --b2: rgba(255,255,255,.2);
+      --t1: #F5F4F0;
+      --t2: #A1A1AA;
+      --t3: #71717A;
+      --a: #FF5A1F;
+      --ah: #FF7B4C;
+      --abg: rgba(255, 90, 31, 0.15);
+      --g: #22C55E;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -113,6 +127,17 @@
       gap: 8px;
       margin-left: auto;
     }
+    .nav-link {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--t2);
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: color .15s, background .15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--t1); background: var(--s2); }
     .nav-icon-btn {
       position: relative;
       width: 40px;
@@ -596,6 +621,22 @@
       border-radius: 7px;
       transition: background .15s, transform .1s;
     }
+    .badge {
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  min-width: 14px;
+  height: 14px;
+  font-size: 12px;
+  display: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    }
     .pc-btn-add:hover { background: var(--ah); transform: translateY(-1px); }
     .pc-btn-add.in-cart { background: var(--g); }
     .pc-btn-buy {
@@ -627,6 +668,118 @@
       color: rgba(255,255,255,.7);
       padding: 48px 0 32px;
     }
+    .heart-icon{
+      font-size:22px;
+      line-height:1;
+      transition: color .2s, transform .15s;
+    }
+    .heart-icon.is-active {
+      color: var(--a);
+      transform: scale(1.1);
+    }
+
+    /* ── Support nav pill ── */
+    .nav-support-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 13px;
+      background: var(--s1);
+      border: 1.5px solid var(--b2);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--t2);
+      white-space: nowrap;
+      transition: border-color .15s, color .15s, background .15s;
+      text-decoration: none;
+    }
+    .nav-support-pill:hover { border-color: var(--a); color: var(--a); background: var(--abg); }
+
+    /* ── Proof Section ── */
+    .proof-section {
+      padding: 40px 0;
+      background: var(--s2);
+    }
+    .proof-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      .proof-inner { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .proof-text-col p {
+      font-size: 15px;
+      color: var(--t2);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+    .proof-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .proof-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.5;
+    }
+    .proof-list li::before {
+      content: '✓';
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: #DCFCE7;
+      color: var(--g);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+    .support-cta {
+      padding: 36px 0;
+      background: var(--s1);
+    }
+    .support-cta-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      border: 1px solid var(--b);
+      border-radius: 14px;
+      padding: 24px;
+      background: linear-gradient(135deg, #ffffff 0%, #FEF0EB 100%);
+    }
+    .support-cta-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    /* ── Newsletter ── */
+    .newsletter-cta { padding: 48px 0; background: var(--abg); }
+    .nl-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .nl-text { flex: 1; min-width: 300px; }
+    .nl-form { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nl-form input { flex: 1; min-width: 240px; padding: 12px 16px; border: 1.5px solid var(--b2); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--s1); color: var(--t1); }
+    .nl-form input:focus { border-color: var(--a); outline: none; box-shadow: 0 0 0 3px rgba(232,68,10,.12); }
+    /* ── Testimonials ── */
+    .testimonials-section { padding: 48px 0; background: var(--s2); }
+    .t-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .t-card { background: var(--s1); padding: 24px; border: 1px solid var(--b); border-radius: 12px; display: flex; flex-direction: column; }
+    .t-stars { color: var(--star); font-size: 16px; margin-bottom: 12px; }
+    .t-quote { font-size: 15px; color: var(--t2); line-height: 1.6; margin-bottom: 20px; font-style: italic; flex: 1; }
+    .t-author strong { display: block; font-size: 14px; color: var(--t1); font-weight: 700; }
+    .t-author span { font-size: 13px; color: var(--t3); }
     .footer-top {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -744,6 +897,7 @@
       .hero-price-orig { font-size: 18px; }
       .hero-trust { margin-top: 20px; gap: 12px; }
       .products-section { padding: 32px 0 48px; }
+      .support-cta-inner { padding: 20px; }
     }
     @media (max-width: 500px) {
       .wrap { padding: 0 16px; }
@@ -762,7 +916,7 @@
 
 <!-- Announcement bar -->
 <div class="ann-bar">
-  &#9889; <span>Free Instant Delivery</span> on all digital products &middot; 30-Day Money-Back Guarantee
+  &#9889; <span>Free Instant Delivery</span> on all digital products &middot; 30-Day Excusive Support Guarantee
 </div>
 
 <!-- Navbar -->
@@ -774,9 +928,12 @@
       <span class="nav-search-icon">&#128269;</span>
     </div>
     <div class="nav-actions">
+      <a href="/about.html" class="nav-link">About</a>
       <button class="nav-icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Open wishlist">
-        &#9825;
+       <span class="heart-icon" id="heartIcon">&#9825;</span>
+  <span class="badge" id="wishlistBadge">0</span>
       </button>
+      <a href="/support.html" class="nav-support-pill" id="navSupportLink" title="Telegram + email support" aria-label="Support via Telegram and email">&#128172; Support</a>
       <div class="nav-cart-wrap">
         <button class="nav-icon-btn" data-cart-open aria-label="Open cart">&#128722;</button>
         <span class="cart-badge" data-cart-badge>0</span>
@@ -790,15 +947,13 @@
   <div class="wrap">
     <div class="hero-inner">
       <div class="hero-left">
-        <div class="hero-badge">&#128293; #1 Bestseller</div>
+        <div class="hero-badge">Interview-Ready Projects</div>
         <h1 class="hero-title">
-          Build &amp; Ship<br>
-          Real Projects.<br>
-          Get <span class="accent">Hired.</span>
+          Turn your resume into a
+          <span class="accent">shortlist magnet.</span>
         </h1>
         <p class="hero-sub">
-          700+ job-ready projects across Python, JavaScript, React, Java &amp; more.
-          Instant access, lifetime validity, source code included.
+          Use 700+ industry-ready projects recruiters expect to see. Role-specific builds across Python, Frontend, Backend, Data, and AI so you can show proof without starting from scratch.
         </p>
         <div class="hero-price-row">
           <span class="hero-price">&#8377;369</span>
@@ -845,6 +1000,27 @@
 
 <div class="section-divider"></div>
 
+<!-- ── Proof Section ── -->
+<section class="proof-section" id="why-proof">
+  <div class="wrap">
+    <div class="proof-inner">
+      <div class="proof-text-col">
+        <h2 class="section-heading" style="margin-bottom:12px;">Proof beats certificates in a 6-second scan.</h2>
+        <p>Recruiters hire proof, not potential. These projects give you clear, role-specific signals you can explain in interviews and showcase on every platform.</p>
+      </div>
+      <ul class="proof-list">
+        <li>Use projects already structured the way interviews expect</li>
+        <li>Show decisions, logic, and trade-offs instead of just syntax</li>
+        <li>Pass the 6-second resume scan with clear role-specific signals</li>
+        <li>Reuse the same projects across resume, GitHub, LinkedIn, and interviews</li>
+        <li>Built for freshers, switchers, and working pros getting shortlisted</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- ── SECTION 2: Products ── -->
 <section class="products-section" id="products">
   <div class="wrap">
@@ -879,6 +1055,69 @@
 
 <div class="section-divider"></div>
 
+<!-- ── Support CTA ── -->
+<section class="support-cta" aria-label="Support">
+  <div class="wrap">
+    <div class="support-cta-inner">
+      <div>
+        <h2 class="section-heading" style="margin-bottom:8px;">Need help after purchase?</h2>
+        <p class="section-sub" style="margin-bottom:0;">Lifetime support via Telegram and email. We reply fast and keep it simple.</p>
+      </div>
+      <div class="support-cta-actions">
+        <a class="btn-secondary" href="/support.html">Support Center</a>
+        <a class="btn-primary" href="mailto:aohacx@gmail.com">Email Support</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── Testimonials ── -->
+<section class="testimonials-section">
+  <div class="wrap">
+    <h2 class="section-heading">Wall of Love</h2>
+    <p class="section-sub">See how developers are upgrading their careers with Code Hunters.</p>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="t-quote">"The interview kit gave me exactly the structure I needed. I reused two of the React projects for my portfolio and landed a Frontend role at a major tech firm!"</p>
+        <div class="t-author"><strong>Sarah J.</strong> <span>Frontend Developer</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="t-quote">"I was struggling to explain my self-taught projects. The source code in these kits helped me understand professional architecture and explain it confidently."</p>
+        <div class="t-author"><strong>David M.</strong> <span>Full-Stack Engineer</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="t-quote">"The Data Analyst 30-day plan is no joke. It's intense, but I had 4 solid projects to showcase by the end of it. Highly recommend it for career switchers."</p>
+        <div class="t-author"><strong>Priya K.</strong> <span>Data Analyst</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── Newsletter / Lead Capture ── -->
+<section class="newsletter-cta">
+  <div class="wrap">
+    <div class="nl-inner">
+      <div class="nl-text">
+        <h2 class="section-heading">Join 5,000+ developers</h2>
+        <p class="section-sub" style="margin-bottom:0;">Get weekly coding tips, interview prep strategies, and a free mini-project to build this weekend.</p>
+      </div>
+      <form class="nl-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+        <input type="email" placeholder="Enter your email" required>
+        <button class="btn-primary" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- ── SECTION 3: Footer ── -->
 <footer class="footer">
   <div class="wrap">
@@ -897,8 +1136,10 @@
         </ul>
       </div>
       <div>
-        <div class="footer-col-title">Support</div>
+        <div class="footer-col-title">Company</div>
         <ul class="footer-links">
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/support.html">Support</a></li>
           <li><a href="/terms.html">Terms &amp; Conditions</a></li>
           <li><a href="/checkout.html">Checkout</a></li>
         </ul>
@@ -955,92 +1196,9 @@
 </div>
 
 <script src="/js/cart.js"></script>
+<script src="/js/products.js"></script>
 <script>
 (function () {
-  // ── Product Catalog ──
-  var PRODUCTS = [
-    {
-      id: 'developers-kit',
-      title: "Developer's Kit – 700+ Projects Bundle",
-      price: 369, origPrice: 1999,
-      type: 'bundle', badge: 'bestseller', badgeLabel: 'Bestseller',
-      stars: 5, reviewCount: 412,
-      image: '/images/Developers-Kit-1943x2048-1-972x1024.png',
-      cat: 'bundles',
-      desc: '700+ real-world projects across 10+ technologies'
-    },
-    {
-      id: '30-day-data-analyst-kit',
-      title: '30-Day Data Analyst Kit',
-      price: 299, origPrice: 799,
-      type: 'product', badge: 'hot', badgeLabel: 'Hot Deal',
-      stars: 5, reviewCount: 187,
-      image: '/images/100-Natural-Language-Processing-918x1024.png',
-      cat: 'data',
-      desc: 'Complete data analyst prep – 30-day structured plan'
-    },
-    {
-      id: '5-day-js-bootcamp',
-      title: '5-Day JavaScript Bootcamp',
-      price: 201, origPrice: 599,
-      type: 'product', badge: 'new', badgeLabel: 'New',
-      stars: 4, reviewCount: 94,
-      image: '/images/react-915x1024.png',
-      cat: 'web',
-      desc: 'Intensive 5-day JavaScript for everything bootcamp'
-    },
-    {
-      id: 'interview-mastery',
-      title: 'Interview Mastery System',
-      price: 1499, origPrice: 3999,
-      type: 'product', badge: 'premium', badgeLabel: 'Premium',
-      stars: 5, reviewCount: 231,
-      image: '/images/softare-919x1024.png',
-      cat: 'career',
-      desc: 'Clear every interview round – HR &amp; Technical prep'
-    },
-    {
-      id: 'interview-cracking-2026',
-      title: 'Interview-Cracking System 2026',
-      price: 399, origPrice: 999,
-      type: 'product', badge: 'new', badgeLabel: 'New',
-      stars: 4, reviewCount: 68,
-      image: '/images/100-Programming-Tools-927x1024.jpg',
-      cat: 'career',
-      desc: 'AI-powered interview cracking system for 2026'
-    },
-    {
-      id: 'ats-resume-template',
-      title: 'ATS Resume Template – WebDev',
-      price: 129, origPrice: 499,
-      type: 'product', badge: '', badgeLabel: '',
-      stars: 4, reviewCount: 155,
-      image: '/images/100-Editable-Resume-Templates-922x1024.jpg',
-      cat: 'career',
-      desc: 'ATS-approved resume template for web developers'
-    },
-    {
-      id: 'vip-pass',
-      title: 'Upgrade to VIP Pass',
-      price: 149, origPrice: 499,
-      type: 'product', badge: 'exclusive', badgeLabel: 'Exclusive',
-      stars: 5, reviewCount: 43,
-      image: null,
-      cat: 'bundles',
-      desc: 'VIP pass with exclusive benefits &amp; early access'
-    },
-    {
-      id: 'Testing-First',
-      title: 'Testing First – QA Starter Kit',
-      price: 12, origPrice: 99,
-      type: 'product', badge: '', badgeLabel: '',
-      stars: 3, reviewCount: 21,
-      image: '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg',
-      cat: 'web',
-      desc: 'Complete testing starter – unit, integration, e2e'
-    }
-  ];
-
   // ── Wishlist (sessionStorage) ──
   var WL_KEY = 'ch_wishlist';
   function getWishlist() { try { return JSON.parse(sessionStorage.getItem(WL_KEY)) || []; } catch(e) { return []; } }
@@ -1057,8 +1215,18 @@
   }
   function updateWishlistBadge() {
     var count = getWishlist().length;
-    var btn = document.getElementById('wishlistBtn');
-    if (btn) btn.textContent = count > 0 ? '\u2665 (' + count + ')' : '\u2665';
+    var badge = document.getElementById('wishlistBadge');
+    var heart = document.getElementById('heartIcon');
+    if (count > 0) {
+      badge.style.display = 'flex';
+      badge.textContent = count;
+      heart.innerHTML = '&#9829;';
+      heart.classList.add('is-active');
+    } else {
+      badge.style.display = 'none';
+      heart.innerHTML = '&#9825;';
+      heart.classList.remove('is-active');
+    }
   }
 
   // ── Stars helper ──
@@ -1129,15 +1297,19 @@
           '<button class="pc-wish' + (wished ? ' active' : '') + '" data-wish-id="' + esc(p.id) + '" title="' + (wished ? 'Remove from wishlist' : 'Add to wishlist') + '">' +
             (wished ? '&#9829;' : '&#9825;') +
           '</button>' +
+          '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration: none; color: inherit; display: contents;">' +
           '<div class="pc-thumb">' +
             (p.image
               ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy">'
               : '<div class="pc-thumb-placeholder">&#128196;</div>'
             ) +
           '</div>' +
+          '</a>' +
           '<div class="pc-body">' +
             '<div class="pc-cat-tag">' + esc(catLabel) + '</div>' +
+            '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration: none; color: inherit;">' +
             '<div class="pc-title">' + esc(p.title) + '</div>' +
+            '</a>' +
             '<div class="pc-stars">' +
               starsHtml(p.stars) +
               '<span class="pc-stars-count">(' + p.reviewCount + ')</span>' +
