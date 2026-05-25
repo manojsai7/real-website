@@ -502,6 +502,15 @@ app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.static(__dirname));
 
+// Serve a site-wide favicon so browsers that request /favicon.ico pick up our image
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'images', 'toplogo.png'));
+});
+// Also serve apple-touch-icon at the common path
+app.get('/apple-touch-icon.png', (req, res) => {
+  res.sendFile(path.join(__dirname, 'images', 'toplogo.png'));
+});
+
 // Export app for Vercel serverless runtime
 module.exports = app;
 
