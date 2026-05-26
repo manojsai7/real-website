@@ -54,7 +54,7 @@ const PRODUCTS = {
   'mega_bundle': {
     id: 'mega_bundle',
     name: 'Ultimate Mega Bundle',
-    price: 999,
+    price: 2,
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
