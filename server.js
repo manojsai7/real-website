@@ -11,61 +11,53 @@ const PORT = process.env.PORT || 3000;
 
 // --- Product catalog (prices from actual product pages) ---
 const PRODUCTS = {
-  'developers-kit': {
-    id: 'developers-kit',
-    name: "Developer's Kit – 700+ Job-Ready Projects Bundle",
-    price: 369,
+  'ai_bundle': {
+    id: 'ai_bundle',
+    name: 'AI Engineer Bundle',
+    price: 499,
     currency: 'INR',
-    description: '700+ real-world projects across 10+ technologies with lifetime access & updates'
+    description: '150+ Machine Learning Resources, Deep Learning Projects, and NLP Toolkit with lifetime access',
+    folderEnv: 'GDRIVE_FOLDER_AI'
   },
-  '30-day-data-analyst-kit': {
-    id: '30-day-data-analyst-kit',
-    name: '30-Day Data Analyst Kit',
-    price: 299,
+  'python_bundle': {
+    id: 'python_bundle',
+    name: 'Python Developer Bundle',
+    price: 499,
     currency: 'INR',
-    description: 'Complete data analyst preparation kit – 30 day structured plan'
+    description: '200+ Python Project Source Codes, Django Full Stack, and ML implementations',
+    folderEnv: 'GDRIVE_FOLDER_PYTHON'
   },
-  '5-day-js-bootcamp': {
-    id: '5-day-js-bootcamp',
-    name: '5-Day JavaScript Bootcamp',
-    price: 201,
-    currency: 'INR',
-    description: '5-day intensive JavaScript for everything bootcamp'
-  },
-  'interview-mastery': {
-    id: 'interview-mastery',
-    name: 'Interview Mastery System – Clear Every Interview Round',
-    price: 1499,
-    currency: 'INR',
-    description: 'Complete interview preparation system covering every round'
-  },
-  'interview-cracking-2026': {
-    id: 'interview-cracking-2026',
-    name: 'Complete Interview-Cracking System (2026 AI-Based)',
+  'web_bundle': {
+    id: 'web_bundle',
+    name: 'Full Stack Web Bundle',
     price: 399,
     currency: 'INR',
-    description: 'AI-powered interview cracking system for 2026'
+    description: 'HTML/CSS/JS, React Frontend Projects, PHP Backend, and UI Templates',
+    folderEnv: 'GDRIVE_FOLDER_WEB'
   },
-  'Testing-First': {
-    id: 'Testing-First',
-    name: 'Testing First',
-    price: 3,
+  'programming_bundle': {
+    id: 'programming_bundle',
+    name: 'Programming Master Bundle',
+    price: 449,
     currency: 'INR',
-    description: 'Complete Tests'
+    description: 'Java, C/C++, C# Projects with DSA Resources and Programming Roadmaps',
+    folderEnv: 'GDRIVE_FOLDER_PROGRAMMING'
   },
-  'ats-resume-template': {
-    id: 'ats-resume-template',
-    name: 'ATS Approved Resume Template - WebDev',
-    price: 129,
+  'career_bundle': {
+    id: 'career_bundle',
+    name: 'Career Accelerator Bundle',
+    price: 299,
     currency: 'INR',
-    description: 'ATS-approved resume template designed for web developers'
+    description: 'Resume Templates, Interview Prep, Productivity Tools, and Career Growth Guides',
+    folderEnv: 'GDRIVE_FOLDER_CAREER'
   },
-  'vip-pass': {
-    id: 'vip-pass',
-    name: 'Upgrade to VIP Pass',
-    price: 149,
+  'mega_bundle': {
+    id: 'mega_bundle',
+    name: 'Ultimate Mega Bundle',
+    price: 999,
     currency: 'INR',
-    description: 'VIP pass upgrade with exclusive benefits'
+    description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
+    folderEnv: 'GDRIVE_FOLDER_MEGA'
   }
 };
 

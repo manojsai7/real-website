@@ -598,6 +598,73 @@
       padding: 1px 7px;
       border-radius: 100px;
     }
+    
+    /* ── Bundle Dropdown Premium Features ── */
+    .pc-features {
+      margin: 10px 0;
+    }
+    .pc-highlight-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+    .pc-highlight-list li {
+      font-size: 13px;
+      color: var(--t2);
+      line-height: 1.4;
+    }
+    .pc-acc-btn {
+      width: 100%;
+      background: var(--s2);
+      border: 1px solid var(--b);
+      color: var(--t1);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 6px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background .15s;
+    }
+    .pc-acc-btn:hover { background: var(--b); }
+    .pc-acc-btn::after {
+      content: '+';
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .pc-acc-btn.expanded::after { content: '−'; }
+    .pc-acc-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+      background: var(--s1);
+      border: 1px solid transparent;
+      border-radius: 0 0 6px 6px;
+      opacity: 0;
+    }
+    .pc-acc-content.expanded {
+      max-height: 500px;
+      padding: 12px;
+      opacity: 1;
+      border-color: var(--b);
+      border-top: none;
+      overflow-y: auto;
+    }
+    .pc-expanded-list {
+      list-style: disc;
+      padding-left: 20px;
+      margin: 0;
+      color: var(--t2);
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
     .pc-delivery {
       font-size: 12px;
       color: var(--g);
@@ -980,18 +1047,30 @@
             <img src="/images/Developers-Kit-1943x2048-1-972x1024.png" alt="Developer's Kit Bundle" loading="eager">
           </div>
           <div class="hero-card-body">
-            <div class="hero-card-title">Developer's Kit – 700+ Projects Bundle</div>
+            <div class="hero-card-title">Ultimate Mega Bundle</div>
             <ul class="hero-card-features">
-              <li>700+ real-world projects</li>
-              <li>Python, React, Java, JS &amp; more</li>
-              <li>Lifetime access &amp; updates</li>
-              <li>Source code for every project</li>
-              <li>Priority community support</li>
+              <li>Access to All AI, Python, Web &amp; Programming Projects</li>
+              <li>Complete Collection of Coding Notes &amp; Interview Prep</li>
+              <li>All Resume Templates &amp; Productivity PDF Toolkit</li>
+              <li>All Bonus Materials and Roadmaps</li>
+              <li>Lifetime Community Support &amp; Free Updates</li>
             </ul>
+            <div class="pc-features">
+              <button class="pc-acc-btn" onclick="var isEx = this.classList.contains('expanded'); event.preventDefault(); if (isEx) { this.classList.remove('expanded'); this.nextElementSibling.classList.remove('expanded'); } else { this.classList.add('expanded'); this.nextElementSibling.classList.add('expanded'); }">View Everything Included</button>
+              <div class="pc-acc-content"><ul class="pc-expanded-list">
+                <li>Everything in AI Engineer Bundle</li>
+                <li>Everything in Python Developer Bundle</li>
+                <li>Everything in Full Stack Web Bundle</li>
+                <li>Everything in Programming Master Bundle</li>
+                <li>Everything in Career Accelerator Bundle</li>
+                <li>All Future Updates Included</li>
+                <li>Priority Developer Access</li>
+              </ul></div>
+            </div>
             <div class="hero-card-price-row">
-              <span class="hero-card-price">&#8377;369</span>
-              <span class="hero-card-orig">&#8377;1,999</span>
-              <span class="hero-card-save">Save &#8377;1,630</span>
+              <span class="hero-card-price">&#8377;999</span>
+              <span class="hero-card-orig">&#8377;4,999</span>
+              <span class="hero-card-save">Save &#8377;4,000</span>
             </div>
             <button class="hero-card-btn" id="heroCardBtn">Add to Cart</button>
           </div>
@@ -1318,6 +1397,25 @@
       var inCart = cartIds.indexOf(p.id) !== -1;
       var wished = isWishlisted(p.id);
       var off = discountPct(p.price, p.origPrice);
+      
+      var featuresHtml = '';
+      if (p.features && p.features.length) {
+        featuresHtml += '<div class="pc-features"><ul class="pc-highlight-list">';
+        for (var i = 0; i < p.features.length; i++) {
+          featuresHtml += '<li>' + esc(p.features[i]) + '</li>';
+        }
+        featuresHtml += '</ul>';
+        if (p.expandedFeatures && p.expandedFeatures.length) {
+          featuresHtml += '<button class="pc-acc-btn" onclick="var isEx = this.classList.contains(\'expanded\'); event.preventDefault(); if (isEx) { this.classList.remove(\'expanded\'); this.nextElementSibling.classList.remove(\'expanded\'); } else { this.classList.add(\'expanded\'); this.nextElementSibling.classList.add(\'expanded\'); }">View Everything Included</button>';
+          featuresHtml += '<div class="pc-acc-content"><ul class="pc-expanded-list">';
+          for (var j = 0; j < p.expandedFeatures.length; j++) {
+            featuresHtml += '<li>' + esc(p.expandedFeatures[j]) + '</li>';
+          }
+          featuresHtml += '</ul></div>';
+        }
+        featuresHtml += '</div>';
+      }
+
       var catLabel = { bundles:'Bundle', web:'Web Dev', data:'Data & ML', career:'Career', '':'Product' }[p.cat] || 'Product';
       return (
         '<div class="pc">' +
@@ -1342,6 +1440,7 @@
               starsHtml(p.stars) +
               '<span class="pc-stars-count">(' + p.reviewCount + ')</span>' +
             '</div>' +
+            featuresHtml +
             '<div class="pc-price-row">' +
               '<span class="pc-price">&#8377;' + p.price.toLocaleString('en-IN') + '</span>' +
               '<span class="pc-orig">&#8377;' + p.origPrice.toLocaleString('en-IN') + '</span>' +
@@ -1422,7 +1521,7 @@
     var btn = document.getElementById(id);
     if (!btn) return;
     btn.addEventListener('click', function() {
-      var p = PRODUCTS[0]; // Developer's Kit
+      var p = PRODUCTS.find(function(x) { return x.id === 'mega_bundle'; }) || PRODUCTS[0]; // Ultimate Mega Bundle
       if (action === 'buy') {
         CartModule.addToCart({ id: p.id, title: p.title, price: p.price, type: p.type });
         window.location.href = '/checkout.html';
