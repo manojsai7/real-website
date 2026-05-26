@@ -3,6 +3,128 @@
 // Legacy products share the single global GDRIVE_FOLDER_ID folder (fallback).
 // New bundle products each resolve to their own dedicated folder.
 var PRODUCTS = [
+  // ── New bundle products — each resolves to its own dedicated Google Drive folder ──
+  {
+    id: 'ai_bundle',
+    title: 'AI Engineer Bundle',
+    price: 499, origPrice: 1499,
+    type: 'bundle', badge: 'new', badgeLabel: 'New',
+    stars: 5, reviewCount: 12,
+    image: '/images/AI and DATA SCIENCE BUNDLE.png',
+    previewImages: [
+      '/images/100-Natural-Language-Processing-918x1024.png',
+      '/images/50-Natural-Language-Processing-919x1024.png',
+      '/images/150-Machine-Learnig-918x1024.png',
+      '/images/softare-919x1024.png'
+    ],
+    projectCount: '150+ Projects',
+    cat: 'bundles',
+    folderEnv: 'GDRIVE_FOLDER_AI',
+    desc: 'Complete AI & Machine Learning project bundle',
+    longDesc: 'Everything you need to break into AI engineering — curated projects, notebooks, and guides across LLMs, computer vision, NLP, and MLOps.',
+    features: ['LLM & Prompt Engineering projects', 'Computer Vision with PyTorch', 'NLP pipelines', 'MLOps & deployment guides', 'Lifetime access & updates']
+  },
+  {
+    id: 'python_bundle',
+    title: 'Python Developer Bundle',
+    price: 399, origPrice: 999,
+    type: 'bundle', badge: 'hot', badgeLabel: 'Hot Deal',
+    stars: 5, reviewCount: 34,
+    image: '/images/PYTHON MASTERY BUNDLE.png',
+    previewImages: [
+      '/images/Django-915x1024.png',
+      '/images/100-Programming-Tools-927x1024.jpg',
+      '/images/C-915x1024.png',
+      '/images/Roadmap-927x1024.jpg'
+    ],
+    projectCount: '300+ Projects',
+    cat: 'bundles',
+    folderEnv: 'GDRIVE_FOLDER_PYTHON',
+    desc: '100+ Python projects from beginner to advanced',
+    longDesc: 'Master Python with hands-on projects spanning automation, web scraping, data analysis, and backend development.',
+    features: ['100+ Python projects', 'Automation & scripting', 'Data analysis with Pandas', 'Web scraping with BeautifulSoup', 'FastAPI & Flask backends']
+  },
+  {
+    id: 'web_bundle',
+    title: 'Full Stack Web Bundle',
+    price: 449, origPrice: 1199,
+    type: 'bundle', badge: 'bestseller', badgeLabel: 'Bestseller',
+    stars: 5, reviewCount: 89,
+    image: '/images/WebDevelopment Bundle.png',
+    previewImages: [
+      '/images/react-915x1024.png',
+      '/images/Java-915x1024.png',
+      '/images/PHP-915x1024.png',
+      '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg'
+    ],
+    projectCount: '150+ Projects',
+    cat: 'web',
+    folderEnv: 'GDRIVE_FOLDER_WEB',
+    desc: 'Full-stack web development projects & templates',
+    longDesc: 'React, Node.js, HTML/CSS, and JavaScript projects you can use on your portfolio today. Built the way real companies build software.',
+    features: ['React & Next.js projects', 'Node.js & Express APIs', 'Full-stack CRUD apps', 'Responsive UI templates', 'Source code included']
+  },
+  {
+    id: 'programming_bundle',
+    title: 'Programming Master Bundle',
+    price: 449, origPrice: 1199,
+    type: 'bundle', badge: 'new', badgeLabel: 'New',
+    stars: 4, reviewCount: 7,
+    image: '/images/APP DEVELOPMENT BUNDLE.png',
+    previewImages: [
+      '/images/Java-915x1024.png',
+      '/images/150-Front-end-Projects-915x1024.png',
+      '/images/100-Programming-Tools-927x1024.jpg'
+    ],
+    projectCount: '80+ Projects',
+    cat: 'bundles',
+    folderEnv: 'GDRIVE_FOLDER_PROGRAMMING',
+    desc: 'Java, C/C++, C# projects, roadmaps & coding notes',
+    longDesc: 'Master programming languages. Includes source code, DSA courses, roadmaps, and step-by-step structure.',
+    features: ['Java & C# projects', 'C/C++ starter apps', 'DSA Courses & Notes', 'Programming Roadmaps', 'Lifetime access']
+  },
+  {
+    id: 'career_bundle',
+    title: 'Career Accelerator Bundle',
+    price: 349, origPrice: 899,
+    type: 'bundle', badge: 'exclusive', badgeLabel: 'Exclusive',
+    stars: 5, reviewCount: 56,
+    image: '/images/CAREER and PRODUCTIVITY BUNDLE.png',
+    previewImages: [
+      '/images/100-Editable-Resume-Templates-922x1024.jpg',
+      '/images/Roadmap-927x1024.jpg',
+      '/images/100-Programming-Tools-927x1024.jpg',
+      '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg'
+    ],
+    projectCount: '100+ Resources',
+    cat: 'career',
+    folderEnv: 'GDRIVE_FOLDER_CAREER',
+    desc: 'Resume templates, interview prep & career tools',
+    longDesc: 'The complete career toolkit — ATS resumes, interview Q&A banks, system design guides, and salary negotiation scripts.',
+    features: ['ATS-optimised resume templates', 'Interview Q&A banks', 'System design crash course', 'Salary negotiation scripts', 'LinkedIn profile guide']
+  },
+  {
+    id: 'mega_bundle',
+    title: 'Ultimate Mega Bundle',
+    price: 999, origPrice: 4999,
+    type: 'bundle', badge: 'premium', badgeLabel: 'Premium',
+    stars: 5, reviewCount: 203,
+    image: '/images/Developers-Kit-1943x2048-1-972x1024.png',
+    previewImages: [
+      '/images/150-Machine-Learnig-1-919x1024.png',
+      '/images/300-Python-Projects-915x1024.png',
+      '/images/react-915x1024.png',
+      '/images/softare-919x1024.png'
+    ],
+    projectCount: '700+ Projects',
+    cat: 'bundles',
+    folderEnv: 'GDRIVE_FOLDER_MEGA',
+    desc: 'All bundles — AI, Python, Web Dev, Programming & Career',
+    longDesc: 'Get every single bundle we offer in one purchase. The complete developer arsenal for landing your dream job.',
+    features: ['All AI, Python, Web & App projects', 'Complete career toolkit', 'Lifetime access & future updates', 'Priority support', '80% off vs buying individually']
+  },
+
+  // ── Legacy Individual Products ──
   {
     id: 'developers-kit',
     title: "Developer's Kit – 700+ Projects Bundle",
@@ -106,132 +228,5 @@ var PRODUCTS = [
     desc: 'Complete testing starter – unit, integration, e2e',
     longDesc: 'Learn the fundamentals of testing. Covers Unit testing with Jest, Integration testing, and E2E testing with Cypress.',
     features: ['Jest & React Testing Library', 'Cypress E2E basics', 'Mocking & Stubbing', 'CI/CD pipeline setup', 'Test-Driven Development (TDD)']
-  },
-
-  // ── New bundle products — each resolves to its own dedicated Google Drive folder ──
-  {
-    id: 'ai_bundle',
-    title: 'AI Engineer Bundle',
-    price: 499, origPrice: 1499,
-    type: 'bundle', badge: 'new', badgeLabel: 'New',
-    stars: 5, reviewCount: 12,
-    // Hero: ML cover. Previews: NLP (x2) + software engineering
-    image: '/images/150-Machine-Learnig-1-919x1024.png',
-    previewImages: [
-      '/images/100-Natural-Language-Processing-918x1024.png',
-      '/images/50-Natural-Language-Processing-919x1024.png',
-      '/images/150-Machine-Learnig-918x1024.png',
-      '/images/softare-919x1024.png'
-    ],
-    projectCount: '150+ Projects',
-    cat: 'bundles',
-    folderEnv: 'GDRIVE_FOLDER_AI',
-    desc: 'Complete AI & Machine Learning project bundle',
-    longDesc: 'Everything you need to break into AI engineering — curated projects, notebooks, and guides across LLMs, computer vision, NLP, and MLOps.',
-    features: ['LLM & Prompt Engineering projects', 'Computer Vision with PyTorch', 'NLP pipelines', 'MLOps & deployment guides', 'Lifetime access & updates']
-  },
-  {
-    id: 'python_bundle',
-    title: 'Python Bundle',
-    price: 399, origPrice: 999,
-    type: 'bundle', badge: 'hot', badgeLabel: 'Hot Deal',
-    stars: 5, reviewCount: 34,
-    // Hero: 300 Python projects cover. Previews: Django + tools + C
-    image: '/images/300-Python-Projects-915x1024.png',
-    previewImages: [
-      '/images/Django-915x1024.png',
-      '/images/100-Programming-Tools-927x1024.jpg',
-      '/images/C-915x1024.png',
-      '/images/Roadmap-927x1024.jpg'
-    ],
-    projectCount: '300+ Projects',
-    cat: 'bundles',
-    folderEnv: 'GDRIVE_FOLDER_PYTHON',
-    desc: '100+ Python projects from beginner to advanced',
-    longDesc: 'Master Python with hands-on projects spanning automation, web scraping, data analysis, and backend development.',
-    features: ['100+ Python projects', 'Automation & scripting', 'Data analysis with Pandas', 'Web scraping with BeautifulSoup', 'FastAPI & Flask backends']
-  },
-  {
-    id: 'webdev_bundle',
-    title: 'Web Dev Bundle',
-    price: 449, origPrice: 1199,
-    type: 'bundle', badge: 'bestseller', badgeLabel: 'Bestseller',
-    stars: 5, reviewCount: 89,
-    // Hero: 150 frontend projects cover. Previews: React + Java + PHP
-    image: '/images/150-Front-end-Projects-915x1024.png',
-    previewImages: [
-      '/images/react-915x1024.png',
-      '/images/Java-915x1024.png',
-      '/images/PHP-915x1024.png',
-      '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg'
-    ],
-    projectCount: '150+ Projects',
-    cat: 'web',
-    folderEnv: 'GDRIVE_FOLDER_WEBDEV',
-    desc: 'Full-stack web development projects & templates',
-    longDesc: 'React, Node.js, HTML/CSS, and JavaScript projects you can use on your portfolio today. Built the way real companies build software.',
-    features: ['React & Next.js projects', 'Node.js & Express APIs', 'Full-stack CRUD apps', 'Responsive UI templates', 'Source code included']
-  },
-  {
-    id: 'appdev_bundle',
-    title: 'App Dev Bundle',
-    price: 449, origPrice: 1199,
-    type: 'bundle', badge: 'new', badgeLabel: 'New',
-    stars: 4, reviewCount: 7,
-    // Hero: React cover. Previews: Java + frontend projects + tools
-    image: '/images/react-915x1024.png',
-    previewImages: [
-      '/images/Java-915x1024.png',
-      '/images/150-Front-end-Projects-915x1024.png',
-      '/images/100-Programming-Tools-927x1024.jpg'
-    ],
-    projectCount: '80+ Projects',
-    cat: 'bundles',
-    folderEnv: 'GDRIVE_FOLDER_APPDEV',
-    desc: 'Mobile & cross-platform app development projects',
-    longDesc: 'Build real mobile apps with React Native, Flutter, and Android. Includes source code and step-by-step structure.',
-    features: ['React Native projects', 'Flutter starter apps', 'REST API integration', 'App store ready structure', 'Lifetime access']
-  },
-  {
-    id: 'career_bundle',
-    title: 'Career Bundle',
-    price: 349, origPrice: 899,
-    type: 'bundle', badge: 'exclusive', badgeLabel: 'Exclusive',
-    stars: 5, reviewCount: 56,
-    // Hero: software engineering cover. Previews: resume + roadmap + tools
-    image: '/images/softare-919x1024.png',
-    previewImages: [
-      '/images/100-Editable-Resume-Templates-922x1024.jpg',
-      '/images/Roadmap-927x1024.jpg',
-      '/images/100-Programming-Tools-927x1024.jpg',
-      '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg'
-    ],
-    projectCount: '100+ Resources',
-    cat: 'career',
-    folderEnv: 'GDRIVE_FOLDER_CAREER',
-    desc: 'Resume templates, interview prep & career tools',
-    longDesc: 'The complete career toolkit — ATS resumes, interview Q&A banks, system design guides, and salary negotiation scripts.',
-    features: ['ATS-optimised resume templates', 'Interview Q&A banks', 'System design crash course', 'Salary negotiation scripts', 'LinkedIn profile guide']
-  },
-  {
-    id: 'mega_bundle',
-    title: 'Mega Bundle – Everything',
-    price: 999, origPrice: 4999,
-    type: 'bundle', badge: 'premium', badgeLabel: 'Premium',
-    stars: 5, reviewCount: 203,
-    // Hero: Developer's Kit — the flagship. Previews: ML + Python + React + frontend
-    image: '/images/Developers-Kit-1943x2048-1-972x1024.png',
-    previewImages: [
-      '/images/150-Machine-Learnig-1-919x1024.png',
-      '/images/300-Python-Projects-915x1024.png',
-      '/images/react-915x1024.png',
-      '/images/softare-919x1024.png'
-    ],
-    projectCount: '700+ Projects',
-    cat: 'bundles',
-    folderEnv: 'GDRIVE_FOLDER_MEGA',
-    desc: 'All bundles — AI, Python, Web Dev, App Dev & Career',
-    longDesc: 'Get every single bundle we offer in one purchase. The complete developer arsenal for landing your dream job.',
-    features: ['All AI, Python, Web & App projects', 'Complete career toolkit', 'Lifetime access & future updates', 'Priority support', '80% off vs buying individually']
   }
 ];

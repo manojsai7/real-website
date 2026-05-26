@@ -94,25 +94,25 @@ const PRODUCTS = {
     description: '100+ Python projects from beginner to advanced',
     folderEnv: 'GDRIVE_FOLDER_PYTHON'
   },
-  'webdev_bundle': {
-    id: 'webdev_bundle',
-    name: 'Web Dev Bundle',
+  'web_bundle': {
+    id: 'web_bundle',
+    name: 'Full Stack Web Bundle',
     price: 449,
     currency: 'INR',
     description: 'Full-stack web development projects & templates',
-    folderEnv: 'GDRIVE_FOLDER_WEBDEV'
+    folderEnv: 'GDRIVE_FOLDER_WEB'
   },
-  'appdev_bundle': {
-    id: 'appdev_bundle',
-    name: 'App Dev Bundle',
+  'programming_bundle': {
+    id: 'programming_bundle',
+    name: 'Programming Master Bundle',
     price: 449,
     currency: 'INR',
-    description: 'Mobile & cross-platform app development projects',
-    folderEnv: 'GDRIVE_FOLDER_APPDEV'
+    description: 'Java, C/C++, C# projects, roadmaps & coding notes',
+    folderEnv: 'GDRIVE_FOLDER_PROGRAMMING'
   },
   'career_bundle': {
     id: 'career_bundle',
-    name: 'Career Bundle',
+    name: 'Career Accelerator Bundle',
     price: 349,
     currency: 'INR',
     description: 'Resume templates, interview prep & career tools',
@@ -120,10 +120,10 @@ const PRODUCTS = {
   },
   'mega_bundle': {
     id: 'mega_bundle',
-    name: 'Mega Bundle – Everything',
+    name: 'Ultimate Mega Bundle',
     price: 999,
     currency: 'INR',
-    description: 'All bundles — AI, Python, Web Dev, App Dev & Career',
+    description: 'All bundles — AI, Python, Web Dev, Programming & Career',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
   }
 };
