@@ -22,7 +22,29 @@ var PRODUCTS = [
     folderEnv: 'GDRIVE_FOLDER_AI',
     desc: 'Complete AI & Machine Learning project bundle',
     longDesc: 'Everything you need to break into AI engineering — curated projects, notebooks, and guides across LLMs, computer vision, NLP, and MLOps.',
-    features: ['LLM & Prompt Engineering projects', 'Computer Vision with PyTorch', 'NLP pipelines', 'MLOps & deployment guides', 'Lifetime access & updates']
+    features: ['LLM & Prompt Engineering projects', 'Computer Vision with PyTorch', 'NLP pipelines', 'MLOps & deployment guides', 'Lifetime access & updates'],
+    highlights: [
+      '150+ Machine Learning Resources & Practical Materials',
+      'Deep Learning Project Collection',
+      'Natural Language Processing Toolkit',
+      'AI Prompt Engineering & ChatGPT Prompt Pack',
+      'Company-Level AI Project References',
+      'Lifetime Community Support'
+    ],
+    fullContents: [
+      'Machine Learning Learning Collection',
+      'Deep Learning Projects',
+      'NLP Resources & Datasets',
+      'AI / ChatGPT Prompt Collection',
+      'Coding Notes & AI Reference Materials',
+      'Python Roadmap for AI Developers',
+      'Productivity PDFs for Developers',
+      'Interview Preparation PDFs',
+      'Free DSA Resources',
+      'Additional AI Learning Materials',
+      'Guide to Running AI Projects',
+      'Reel-Based Project Demonstrations'
+    ]
   },
   {
     id: 'python_bundle',
@@ -42,7 +64,32 @@ var PRODUCTS = [
     folderEnv: 'GDRIVE_FOLDER_PYTHON',
     desc: '100+ Python projects from beginner to advanced',
     longDesc: 'Master Python with hands-on projects spanning automation, web scraping, data analysis, and backend development.',
-    features: ['100+ Python projects', 'Automation & scripting', 'Data analysis with Pandas', 'Web scraping with BeautifulSoup', 'FastAPI & Flask backends']
+    features: ['100+ Python projects', 'Automation & scripting', 'Data analysis with Pandas', 'Web scraping with BeautifulSoup', 'FastAPI & Flask backends'],
+    highlights: [
+      '200+ Python Project Source Codes',
+      'Django Full Stack Project Collection',
+      'Python Games & Automation Projects',
+      'ML-Based Python Implementations',
+      'Real-World Company-Level Projects',
+      'Lifetime Community Support'
+    ],
+    fullContents: [
+      '200+ Python Projects',
+      'Django Projects',
+      'Games Built Using Python',
+      'Machine Learning Python Implementations',
+      'Company-Level Project References',
+      'Python Developer Roadmap',
+      'Coding Books & Notes',
+      'Python Interview Questions PDF',
+      'Productivity & Developer Tools PDFs',
+      'VS Code Productivity Shortcuts',
+      'ChatGPT Prompt Pack for Developers',
+      'Free DSA Resources',
+      'Additional Python Learning Materials',
+      'Guide to Running Python Projects',
+      'Reel Video Project Demonstrations'
+    ]
   },
   {
     id: 'web_bundle',
@@ -62,7 +109,31 @@ var PRODUCTS = [
     folderEnv: 'GDRIVE_FOLDER_WEB',
     desc: 'Full-stack web development projects & templates',
     longDesc: 'React, Node.js, HTML/CSS, and JavaScript projects you can use on your portfolio today. Built the way real companies build software.',
-    features: ['React & Next.js projects', 'Node.js & Express APIs', 'Full-stack CRUD apps', 'Responsive UI templates', 'Source code included']
+    features: ['React & Next.js projects', 'Node.js & Express APIs', 'Full-stack CRUD apps', 'Responsive UI templates', 'Source code included'],
+    highlights: [
+      '150+ HTML, CSS & JavaScript Projects',
+      'React Frontend Project Collection',
+      'PHP Backend Development Projects',
+      'Modern UI / Frontend Templates',
+      'Real-World Full Stack Practice Resources',
+      'Lifetime Community Support'
+    ],
+    fullContents: [
+      'HTML / CSS / JavaScript Projects',
+      'React Projects',
+      'PHP Projects',
+      'Frontend UI Components & Templates',
+      'Reel Video Frontend Demonstrations',
+      'Android Development Project References',
+      'Developer Productivity PDFs',
+      'Coding Notes & Reference Materials',
+      'VS Code Keyboard Shortcut Guide',
+      'ChatGPT Prompts for Developers',
+      'Interview Preparation PDFs',
+      'Free DSA Resources',
+      'Guide to Running Web Projects',
+      'Additional Frontend & Backend Materials'
+    ]
   },
   {
     id: 'programming_bundle',
@@ -81,7 +152,32 @@ var PRODUCTS = [
     folderEnv: 'GDRIVE_FOLDER_PROGRAMMING',
     desc: 'Java, C/C++, C# projects, roadmaps & coding notes',
     longDesc: 'Master programming languages. Includes source code, DSA courses, roadmaps, and step-by-step structure.',
-    features: ['Java & C# projects', 'C/C++ starter apps', 'DSA Courses & Notes', 'Programming Roadmaps', 'Lifetime access']
+    features: ['Java & C# projects', 'C/C++ starter apps', 'DSA Courses & Notes', 'Programming Roadmaps', 'Lifetime access'],
+    highlights: [
+      'Java Project Collection',
+      'C & C++ Programming Source Codes',
+      'C# Development Projects',
+      'DSA & Core Programming Resources',
+      'Programming Roadmaps & Notes',
+      'Interview & Placement Preparation Resources'
+    ],
+    fullContents: [
+      'Java Projects',
+      'C / C++ Project Source Codes',
+      'C# Sharp Projects',
+      'Programming Roadmaps',
+      'Premium Coding Notes & Reference Books',
+      'Free Programming Courses',
+      'Games & Mini Programming Projects',
+      'Interview Preparation PDFs',
+      'Productivity & Developer Tools PDFs',
+      'VS Code Keyboard Shortcuts',
+      'ChatGPT Prompts for Programmers',
+      'Free DSA Resources',
+      'Additional Programming Materials',
+      'Guide to Getting Started with Programming',
+      'Reel Video Project Demonstrations'
+    ]
   },
   {
     id: 'career_bundle',
@@ -101,7 +197,28 @@ var PRODUCTS = [
     folderEnv: 'GDRIVE_FOLDER_CAREER',
     desc: 'Resume templates, interview prep & career tools',
     longDesc: 'The complete career toolkit — ATS resumes, interview Q&A banks, system design guides, and salary negotiation scripts.',
-    features: ['ATS-optimised resume templates', 'Interview Q&A banks', 'System design crash course', 'Salary negotiation scripts', 'LinkedIn profile guide']
+    features: ['ATS-optimised resume templates', 'Interview Q&A banks', 'System design crash course', 'Salary negotiation scripts', 'LinkedIn profile guide'],
+    highlights: [
+      'Professional Resume Template Collection',
+      'Premium Coding Notes & Developer Reference Books',
+      'Productivity Toolkit for Programmers',
+      'Placement & Interview Preparation Resources',
+      'Career Growth Guides & Learning Resources',
+      'Lifetime Community Support'
+    ],
+    fullContents: [
+      'Editable Resume Templates',
+      'Coding Books & Reference Notes',
+      'Company-Level Project References',
+      'Interview Preparation PDFs',
+      'Developer Productivity Tools PDF',
+      'VS Code Productivity Shortcuts',
+      'ChatGPT Prompt Pack for Developers',
+      'Free DSA Resources',
+      'Programming Starter Guides',
+      'Free Learning Resources & Courses',
+      'Lifetime Community Support Materials'
+    ]
   },
   {
     id: 'mega_bundle',
@@ -121,7 +238,32 @@ var PRODUCTS = [
     folderEnv: 'GDRIVE_FOLDER_MEGA',
     desc: 'All bundles — AI, Python, Web Dev, Programming & Career',
     longDesc: 'Get every single bundle we offer in one purchase. The complete developer arsenal for landing your dream job.',
-    features: ['All AI, Python, Web & App projects', 'Complete career toolkit', 'Lifetime access & future updates', 'Priority support', '80% off vs buying individually']
+    features: ['All AI, Python, Web & App projects', 'Complete career toolkit', 'Lifetime access & future updates', 'Priority support', '80% off vs buying individually'],
+    highlights: [
+      '700+ Projects Across All Technologies',
+      'AI, ML, DL & NLP Complete Collection',
+      'Python, Django, Web & Programming Projects',
+      'Professional Resume & Career Toolkit',
+      'All Roadmaps, Notes & Interview Prep',
+      'Lifetime Access + Priority Community Support'
+    ],
+    fullContents: [
+      'All 5 Bundles Combined (AI + Python + Web + Programming + Career)',
+      '150+ Machine Learning & AI Projects',
+      '200+ Python Projects',
+      '150+ Web Development Projects',
+      'Java, C/C++, C# Programming Projects',
+      'Professional Resume Templates',
+      'Complete Interview Preparation PDFs',
+      'All Roadmaps & Developer Reference Books',
+      'ChatGPT Prompt Collection for All Domains',
+      'VS Code Productivity Shortcuts',
+      'Free DSA Courses & Resources',
+      'Company-Level Project References',
+      'Developer Productivity Tools PDF',
+      'Reel Video Demonstrations for All Bundles',
+      'Lifetime Community Access & Future Updates'
+    ]
   },
 
   // ── Legacy Individual Products ──

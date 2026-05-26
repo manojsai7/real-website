@@ -1015,6 +1015,79 @@
       .bc-thumb { height: 172px; }
       .bc-previews { height: 38px; }
     }
+
+    /* ── Bundle Feature Highlights + Expandable Accordion ─────────────────
+       Inserted between pc-delivery and pc-footer on bundle cards only.
+       All classes are bc-* so zero collision with existing pc-* styles.
+    ──────────────────────────────────────────────────────────────────── */
+    .bc-features {
+      list-style: none;
+      margin: 0 0 8px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .bc-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--t2);
+      line-height: 1.4;
+    }
+    .bc-feature-icon {
+      color: #22c55e;
+      font-weight: 800;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .bc-accordion-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--a);
+      background: none;
+      border: none;
+      padding: 2px 0 8px;
+      cursor: pointer;
+      letter-spacing: .1px;
+      transition: opacity .15s;
+    }
+    .bc-accordion-btn:hover { opacity: .72; }
+    .bc-accordion-arrow {
+      font-size: 9px;
+      display: inline-block;
+      transition: transform .25s ease;
+    }
+    .bc-accordion-btn.open .bc-accordion-arrow { transform: rotate(180deg); }
+    .bc-accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+    .bc-accordion-content.open { max-height: 800px; }
+    .bc-full-list {
+      list-style: none;
+      margin: 0 0 8px;
+      padding: 10px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-top: 1px solid var(--b);
+    }
+    .bc-full-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--t3);
+      line-height: 1.4;
+    }
+    .bc-full-dot { color: var(--a); font-size: 8px; flex-shrink: 0; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -1445,6 +1518,26 @@
               '<span class="pc-off">' + off + '% off</span>' +
             '</div>' +
             '<div class="pc-delivery">&#9889; Free instant delivery</div>' +
+            // Bundle highlights + expandable accordion
+            (p.highlights && p.highlights.length ?
+              '<ul class="bc-features">' +
+                p.highlights.map(function(h) {
+                  return '<li class="bc-feature-item"><span class="bc-feature-icon">&#10003;</span>' + esc(h) + '</li>';
+                }).join('') +
+              '</ul>' +
+              (p.fullContents && p.fullContents.length ?
+                '<button class="bc-accordion-btn" data-accordion-id="' + esc(p.id) + '">' +
+                  'View Everything Included <span class="bc-accordion-arrow">&#9660;</span>' +
+                '</button>' +
+                '<div class="bc-accordion-content" id="accordion-' + esc(p.id) + '">' +
+                  '<ul class="bc-full-list">' +
+                    p.fullContents.map(function(item) {
+                      return '<li class="bc-full-item"><span class="bc-full-dot">&#9679;</span>' + esc(item) + '</li>';
+                    }).join('') +
+                  '</ul>' +
+                '</div>'
+              : '')
+            : '') +
             '<div class="pc-footer">' +
               '<button class="pc-btn-add' + (inCart ? ' in-cart' : '') + '" data-add-id="' + esc(p.id) + '">' +
                 (inCart ? '&#10003; In Cart' : 'Add to Cart') +
@@ -1488,6 +1581,20 @@
         this.classList.toggle('active', added);
         this.innerHTML = added ? '&#9829;' : '&#9825;';
         this.title = added ? 'Remove from wishlist' : 'Add to wishlist';
+      });
+    });
+
+    // Wire up accordion toggles (bundle feature drawer)
+    grid.querySelectorAll('[data-accordion-id]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var id = this.dataset.accordionId;
+        var drawer = document.getElementById('accordion-' + id);
+        if (!drawer) return;
+        var isOpen = drawer.classList.contains('open');
+        drawer.classList.toggle('open', !isOpen);
+        this.classList.toggle('open', !isOpen);
       });
     });
   }
