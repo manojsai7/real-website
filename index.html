@@ -613,8 +613,9 @@
     /* Products grid */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 22px;
+      align-items: stretch;
     }
 
     /* Product card */
@@ -627,6 +628,7 @@
       flex-direction: column;
       transition: box-shadow .2s, transform .15s;
       position: relative;
+      min-height: 100%;
     }
 
     .pc:hover {
@@ -701,7 +703,7 @@
 
     .pc-thumb {
       background: var(--s2);
-      height: 160px;
+      height: 178px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -710,7 +712,7 @@
     }
 
     .pc-thumb img {
-      max-height: 120px;
+      max-height: 138px;
       object-fit: contain;
       border-radius: 6px;
       transition: transform .2s;
@@ -742,12 +744,12 @@
     }
 
     .pc-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--t1);
       line-height: 1.4;
       margin-bottom: 6px;
-      flex: 1;
+      min-height: 42px;
     }
 
     .pc-stars {
@@ -808,14 +810,15 @@
 
     /* ── Bundle Dropdown Premium Features ── */
     .pc-features {
-      margin: 10px 0;
+      margin: 8px 0 12px;
+      flex: 1;
     }
 
     .pc-highlight-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 7px;
       margin-bottom: 12px;
     }
 
@@ -823,6 +826,25 @@
       font-size: 13px;
       color: var(--t2);
       line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+    }
+
+    .pc-highlight-list li::before {
+      content: '\2713';
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: #DCFCE7;
+      color: var(--g);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 17px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-top: 1px;
     }
 
     .pc-acc-btn {
@@ -883,6 +905,32 @@
       border-radius: 4px;
     }
 
+    .pc-details-btn {
+      width: 100%;
+      background: var(--s2);
+      border: 1px solid var(--b);
+      color: var(--t1);
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 6px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background .15s;
+    }
+
+    .pc-details-btn:hover {
+      background: var(--b);
+    }
+
+    .pc-details-btn::after {
+      content: '\2192';
+      font-size: 15px;
+      font-weight: 800;
+    }
+
     .pc-expanded-list {
       list-style: disc;
       padding-left: 20px;
@@ -908,6 +956,212 @@
       display: flex;
       gap: 8px;
       margin-top: auto;
+    }
+
+    .bundle-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, .48);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .bundle-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bundle-modal {
+      position: fixed;
+      inset: 50% auto auto 50%;
+      z-index: 10001;
+      width: min(680px, calc(100vw - 28px));
+      max-height: min(760px, calc(100vh - 44px));
+      transform: translate(-50%, -46%) scale(.98);
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 14px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .28);
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      transition: opacity .2s ease, transform .2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bundle-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .bundle-modal-head {
+      display: grid;
+      grid-template-columns: 76px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid var(--b);
+      background: var(--s2);
+    }
+
+    .bundle-modal-thumb {
+      width: 76px;
+      height: 76px;
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    .bundle-modal-thumb img {
+      max-height: 60px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .bundle-modal-eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--a);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 4px;
+    }
+
+    .bundle-modal-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--t1);
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+
+    .bundle-modal-desc {
+      font-size: 14px;
+      color: var(--t2);
+      line-height: 1.55;
+    }
+
+    .bundle-modal-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--b2);
+      background: var(--s1);
+      color: var(--t1);
+      border-radius: 8px;
+      font-size: 22px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bundle-modal-body {
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .bundle-modal-section-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--t1);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 12px;
+    }
+
+    .bundle-modal-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .bundle-modal-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 10px;
+      background: var(--s2);
+      border: 1px solid var(--b);
+      border-radius: 8px;
+      color: var(--t1);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .bundle-modal-list li::before {
+      content: '\2713';
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #DCFCE7;
+      color: var(--g);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 18px;
+      font-size: 11px;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+
+    .bundle-modal-foot {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px 20px;
+      border-top: 1px solid var(--b);
+      background: var(--s1);
+    }
+
+    .bundle-modal-price {
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--t2);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .bundle-modal-price strong {
+      color: var(--t1);
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    @media (max-width: 640px) {
+      .bundle-modal-head {
+        grid-template-columns: 58px 1fr auto;
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .bundle-modal-thumb {
+        width: 58px;
+        height: 58px;
+      }
+
+      .bundle-modal-list {
+        grid-template-columns: 1fr;
+      }
+
+      .bundle-modal-foot {
+        flex-direction: column;
+      }
+
+      .bundle-modal-price {
+        margin-right: 0;
+      }
     }
 
     .pc-btn-add {
@@ -1685,20 +1939,7 @@
                 <li>Lifetime Community Support &amp; Free Updates</li>
               </ul>
               <div class="pc-features">
-                <button class="pc-acc-btn"
-                  onclick="var isEx = this.classList.contains('expanded'); event.preventDefault(); if (isEx) { this.classList.remove('expanded'); this.nextElementSibling.classList.remove('expanded'); } else { this.classList.add('expanded'); this.nextElementSibling.classList.add('expanded'); }">View
-                  Everything Included</button>
-                <div class="pc-acc-content">
-                  <ul class="pc-expanded-list">
-                    <li>Everything in AI Engineer Bundle</li>
-                    <li>Everything in Python Developer Bundle</li>
-                    <li>Everything in Full Stack Web Bundle</li>
-                    <li>Everything in Programming Master Bundle</li>
-                    <li>Everything in Career Accelerator Bundle</li>
-                    <li>All Future Updates Included</li>
-                    <li>Priority Developer Access</li>
-                  </ul>
-                </div>
+                <button class="pc-details-btn" id="heroDetailsBtn">View Everything Included</button>
               </div>
               <div class="hero-card-price-row">
                 <span class="hero-card-price">&#8377;2</span>
@@ -1862,11 +2103,13 @@
 
       <!-- Category Tabs -->
       <div class="cat-strip" id="catStrip">
-        <button class="cat-btn active" data-cat="all">All Products</button>
-        <button class="cat-btn" data-cat="bundles">Bundles</button>
+        <button class="cat-btn active" data-cat="all">All Bundles</button>
+        <button class="cat-btn" data-cat="ai">AI Engineer</button>
+        <button class="cat-btn" data-cat="python">Python</button>
         <button class="cat-btn" data-cat="web">Web Dev</button>
-        <button class="cat-btn" data-cat="data">Data &amp; ML</button>
-        <button class="cat-btn" data-cat="career">Career &amp; Interview</button>
+        <button class="cat-btn" data-cat="programming">Programming</button>
+        <button class="cat-btn" data-cat="career">Career</button>
+        <button class="cat-btn" data-cat="mega">Mega</button>
       </div>
 
       <!-- Toolbar -->
@@ -1968,10 +2211,10 @@
         <div>
           <div class="footer-col-title">Products</div>
           <ul class="footer-links">
-            <li><a href="/?cat=bundles">Developer Bundles</a></li>
-            <li><a href="/?cat=web">Web Dev Kits</a></li>
-            <li><a href="/?cat=data">Data &amp; ML</a></li>
-            <li><a href="/?cat=career">Career &amp; Interview</a></li>
+            <li><a href="/?cat=all">All Bundles</a></li>
+            <li><a href="/?cat=ai">AI Engineer Bundle</a></li>
+            <li><a href="/?cat=web">Web Dev Bundle</a></li>
+            <li><a href="/?cat=career">Career Bundle</a></li>
           </ul>
         </div>
         <div>
@@ -2034,6 +2277,33 @@
     </div>
   </div>
 
+  <div class="bundle-modal-overlay" id="bundleModalOverlay"></div>
+  <div class="bundle-modal" id="bundleModal" role="dialog" aria-modal="true" aria-label="Bundle details">
+    <div class="bundle-modal-head">
+      <div class="bundle-modal-thumb" id="bundleModalThumb"></div>
+      <div>
+        <div class="bundle-modal-eyebrow">Everything included</div>
+        <h2 class="bundle-modal-title" id="bundleModalTitle"></h2>
+        <p class="bundle-modal-desc" id="bundleModalDesc"></p>
+      </div>
+      <button class="bundle-modal-close" id="bundleModalClose" aria-label="Close bundle details">&times;</button>
+    </div>
+    <div class="bundle-modal-body">
+      <div class="bundle-modal-section-title">Premium Highlights</div>
+      <ul class="bundle-modal-list" id="bundleModalHighlights"></ul>
+      <div class="bundle-modal-section-title">Expanded Included Resources</div>
+      <ul class="bundle-modal-list" id="bundleModalResources"></ul>
+    </div>
+    <div class="bundle-modal-foot">
+      <div class="bundle-modal-price">
+        Test price
+        <strong id="bundleModalPrice"></strong>
+      </div>
+      <button class="btn-secondary" id="bundleModalCart">Add to Cart</button>
+      <button class="btn-primary" id="bundleModalBuy">Buy Now</button>
+    </div>
+  </div>
+
   <script src="/js/cart.js"></script>
   <script src="/js/products.js"></script>
   <script>
@@ -2087,6 +2357,40 @@
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
       }
 
+      var activeBundle = null;
+      var bundleModal = document.getElementById('bundleModal');
+      var bundleModalOverlay = document.getElementById('bundleModalOverlay');
+
+      function listHtml(items) {
+        return (items || []).map(function (item) {
+          return '<li>' + esc(item) + '</li>';
+        }).join('');
+      }
+
+      function openBundleModal(id) {
+        var p = PRODUCTS.find(function (x) { return x.id === id; });
+        if (!p) return;
+        activeBundle = p;
+        document.getElementById('bundleModalTitle').textContent = p.title;
+        document.getElementById('bundleModalDesc').textContent = p.longDesc || p.desc || '';
+        document.getElementById('bundleModalPrice').textContent = '\u20B9' + p.price.toLocaleString('en-IN');
+        document.getElementById('bundleModalThumb').innerHTML = p.image
+          ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '">'
+          : '<div class="pc-thumb-placeholder">&#128196;</div>';
+        document.getElementById('bundleModalHighlights').innerHTML = listHtml(p.features);
+        document.getElementById('bundleModalResources').innerHTML = listHtml(p.expandedFeatures);
+        bundleModal.classList.add('open');
+        bundleModalOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeBundleModal() {
+        bundleModal.classList.remove('open');
+        bundleModalOverlay.classList.remove('open');
+        activeBundle = null;
+        document.body.style.overflow = '';
+      }
+
       // ── Render products ──
       var currentCat = 'all';
       var currentSort = 'featured';
@@ -2138,17 +2442,12 @@
             }
             featuresHtml += '</ul>';
             if (p.expandedFeatures && p.expandedFeatures.length) {
-              featuresHtml += '<button class="pc-acc-btn" onclick="var isEx = this.classList.contains(\'expanded\'); event.preventDefault(); if (isEx) { this.classList.remove(\'expanded\'); this.nextElementSibling.classList.remove(\'expanded\'); } else { this.classList.add(\'expanded\'); this.nextElementSibling.classList.add(\'expanded\'); }">View Everything Included</button>';
-              featuresHtml += '<div class="pc-acc-content"><ul class="pc-expanded-list">';
-              for (var j = 0; j < p.expandedFeatures.length; j++) {
-                featuresHtml += '<li>' + esc(p.expandedFeatures[j]) + '</li>';
-              }
-              featuresHtml += '</ul></div>';
+              featuresHtml += '<button class="pc-details-btn" data-details-id="' + esc(p.id) + '">View Everything Included</button>';
             }
             featuresHtml += '</div>';
           }
 
-          var catLabel = { bundles: 'Bundle', web: 'Web Dev', data: 'Data & ML', career: 'Career', '': 'Product' }[p.cat] || 'Product';
+          var catLabel = { ai: 'AI Bundle', python: 'Python Bundle', web: 'Web Bundle', programming: 'Programming Bundle', career: 'Career Bundle', mega: 'Mega Bundle' }[p.cat] || 'Bundle';
           return (
             '<div class="pc">' +
             (p.badge ? '<div class="pc-badge ' + esc(p.badge) + '">' + esc(p.badgeLabel) + '</div>' : '') +
@@ -2224,6 +2523,12 @@
             this.title = added ? 'Remove from wishlist' : 'Add to wishlist';
           });
         });
+
+        grid.querySelectorAll('[data-details-id]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            openBundleModal(this.dataset.detailsId);
+          });
+        });
       }
 
       // ── Category strip ──
@@ -2268,6 +2573,13 @@
       attachHeroBtn('heroCardBtn', 'add');
 
       // ── Wishlist Drawer ──
+      var heroDetailsBtn = document.getElementById('heroDetailsBtn');
+      if (heroDetailsBtn) {
+        heroDetailsBtn.addEventListener('click', function () {
+          openBundleModal('mega_bundle');
+        });
+      }
+
       function renderWishlistDrawer() {
         var wl = getWishlist();
         var body = document.getElementById('wlBody');
@@ -2345,6 +2657,23 @@
       });
 
       // ── URL category param ──
+      document.getElementById('bundleModalClose').addEventListener('click', closeBundleModal);
+      document.getElementById('bundleModalOverlay').addEventListener('click', closeBundleModal);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && bundleModal.classList.contains('open')) closeBundleModal();
+      });
+      document.getElementById('bundleModalCart').addEventListener('click', function () {
+        if (!activeBundle) return;
+        CartModule.addToCart({ id: activeBundle.id, title: activeBundle.title, price: activeBundle.price, type: activeBundle.type });
+        closeBundleModal();
+        renderProducts();
+      });
+      document.getElementById('bundleModalBuy').addEventListener('click', function () {
+        if (!activeBundle) return;
+        CartModule.addToCart({ id: activeBundle.id, title: activeBundle.title, price: activeBundle.price, type: activeBundle.type });
+        window.location.href = '/checkout.html';
+      });
+
       var urlParams = new URLSearchParams(window.location.search);
       var catParam = urlParams.get('cat');
       if (catParam) {

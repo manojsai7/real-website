@@ -15,7 +15,7 @@ const PRODUCTS = {
   'ai_bundle': {
     id: 'ai_bundle',
     name: 'AI Engineer Bundle',
-    price: 499,
+    price: 2,
     currency: 'INR',
     description: '150+ Machine Learning Resources, Deep Learning Projects, and NLP Toolkit with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_AI'
@@ -23,7 +23,7 @@ const PRODUCTS = {
   'python_bundle': {
     id: 'python_bundle',
     name: 'Python Developer Bundle',
-    price: 499,
+    price: 2,
     currency: 'INR',
     description: '200+ Python Project Source Codes, Django Full Stack, and ML implementations',
     folderEnv: 'GDRIVE_FOLDER_PYTHON'
@@ -31,7 +31,7 @@ const PRODUCTS = {
   'web_bundle': {
     id: 'web_bundle',
     name: 'Full Stack Web Bundle',
-    price: 399,
+    price: 2,
     currency: 'INR',
     description: 'HTML/CSS/JS, React Frontend Projects, PHP Backend, and UI Templates',
     folderEnv: 'GDRIVE_FOLDER_WEB'
@@ -39,7 +39,7 @@ const PRODUCTS = {
   'programming_bundle': {
     id: 'programming_bundle',
     name: 'Programming Master Bundle',
-    price: 449,
+    price: 2,
     currency: 'INR',
     description: 'Java, C/C++, C# Projects with DSA Resources and Programming Roadmaps',
     folderEnv: 'GDRIVE_FOLDER_PROGRAMMING'
@@ -47,7 +47,7 @@ const PRODUCTS = {
   'career_bundle': {
     id: 'career_bundle',
     name: 'Career Accelerator Bundle',
-    price: 299,
+    price: 2,
     currency: 'INR',
     description: 'Resume Templates, Interview Prep, Productivity Tools, and Career Growth Guides',
     folderEnv: 'GDRIVE_FOLDER_CAREER'
@@ -59,6 +59,7 @@ const PRODUCTS = {
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
+    // can be deleted from here vro
   },
 
   // --- WooCommerce Sub-site Products ---
@@ -169,31 +170,76 @@ function getDriveClient() {
   return google.drive({ version: 'v3', auth });
 }
 
-async function grantAccess(customerEmail, paymentId) {
+function getPurchasedProducts(productIds) {
+  const ids = Array.isArray(productIds) ? productIds : [];
+  return ids
+    .map(id => PRODUCTS[id])
+    .filter(product => product && product.folderEnv);
+}
+
+function parseProductIdsFromNotes(notes) {
+  if (!notes || !notes.product_ids) return [];
+  try {
+    const parsed = JSON.parse(notes.product_ids);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return String(notes.product_ids).split(',').map(id => id.trim()).filter(Boolean);
+  }
+}
+
+async function grantAccess(customerEmail, paymentId, productIds = []) {
   if (processedPayments.has(paymentId)) {
     console.log('[delivery] Payment already processed:', paymentId);
     return;
   }
   processedPayments.add(paymentId);
 
-  const folderId = process.env.GDRIVE_FOLDER_ID;
-  const hasDriveConfig = Boolean(folderId && process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  const purchasedProducts = getPurchasedProducts(productIds);
+  const folders = purchasedProducts
+    .map(product => ({
+      product,
+      folderId: process.env[product.folderEnv],
+    }))
+    .filter(entry => entry.folderId);
+  const legacyFolderId = process.env.GDRIVE_FOLDER_ID;
+  if (!folders.length && legacyFolderId) {
+    folders.push({
+      product: { name: 'Code Hunters Bundle', folderEnv: 'GDRIVE_FOLDER_ID' },
+      folderId: legacyFolderId,
+    });
+  }
+
+  const hasDriveConfig = Boolean(folders.length && process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
   if (!hasDriveConfig) {
     console.warn('[delivery] Drive not configured — GDRIVE_FOLDER_ID or GOOGLE_SERVICE_ACCOUNT_JSON missing');
   }
 
-  // --- Share Google Drive folder ---
+  // --- Share Google Drive folders ---
   let isDuplicate = false;
+  const grantedFolders = [];
   if (hasDriveConfig) {
     try {
       const drive = getDriveClient();
-      await drive.permissions.create({
-        fileId: folderId,
-        requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
-        sendNotificationEmail: false,
-        fields: 'id',
-      });
-      console.log('[delivery] Drive access granted to', customerEmail, 'for folder', folderId);
+      for (const entry of folders) {
+        try {
+          await drive.permissions.create({
+            fileId: entry.folderId,
+            requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+            sendNotificationEmail: false,
+            fields: 'id',
+          });
+          grantedFolders.push(entry);
+          console.log('[delivery] Drive access granted to', customerEmail, 'for', entry.product.name, entry.folderId);
+        } catch (err) {
+          const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
+          if (duplicateGrant) {
+            grantedFolders.push(entry);
+            console.warn('[delivery] Drive access already exists for', customerEmail, 'on', entry.product.name);
+          } else {
+            console.error('[delivery] Drive grant FAILED for', customerEmail, 'on', entry.product.name, '-', err.message);
+          }
+        }
+      }
     } catch (err) {
       const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
       if (duplicateGrant) {
@@ -213,7 +259,7 @@ async function grantAccess(customerEmail, paymentId) {
     console.warn('[delivery] RESEND_API_KEY not set — skipping confirmation email');
     return;
   }
-  const accessUrl = hasDriveConfig ? `https://drive.google.com/drive/folders/${folderId}` : 'https://codehunters.dev';
+  const accessUrl = hasDriveConfig && grantedFolders.length ? `https://drive.google.com/drive/folders/${grantedFolders[0].folderId}` : 'https://codehunters.dev';
   const accessHelpText = hasDriveConfig
     ? `Sign in with <strong style="color:#666;">${customerEmail}</strong> if Google prompts you`
     : 'Drive delivery is being processed. If access is delayed, contact <strong style="color:#666;">support@codehunters.dev</strong>.';
@@ -421,7 +467,7 @@ app.post('/api/create-razorpay-order', async (req, res) => {
     if (!product) continue;
     const qty = item.quantity || 1;
     totalPaise += product.price * 100 * qty;
-    validItems.push({ name: product.name, qty });
+    validItems.push({ id: product.id, name: product.name, qty });
   }
 
   if (!validItems.length) {
@@ -442,6 +488,7 @@ app.post('/api/create-razorpay-order', async (req, res) => {
         customer_email: customerEmail || '',
         customer_phone: customerPhone || '',
         items: validItems.map(i => i.name).join(', '),
+        product_ids: JSON.stringify(validItems.map(i => i.id)),
       },
     });
 
@@ -487,7 +534,7 @@ app.post('/api/verify-payment', async (req, res) => {
         const order = await razorpay.orders.fetch(razorpay_order_id);
         customerEmail = order.notes && order.notes.customer_email;
         if (customerEmail) {
-          await grantAccess(customerEmail, razorpay_payment_id);
+          await grantAccess(customerEmail, razorpay_payment_id, parseProductIdsFromNotes(order.notes));
         }
       }
     } catch (err) {
@@ -519,7 +566,7 @@ app.post('/api/razorpay-webhook', async (req, res) => {
         const order = await razorpay.orders.fetch(payment.order_id);
         const customerEmail = order.notes && order.notes.customer_email;
         if (customerEmail) {
-          await grantAccess(customerEmail, payment.id);
+          await grantAccess(customerEmail, payment.id, parseProductIdsFromNotes(order.notes));
         }
       }
     } catch (err) {
