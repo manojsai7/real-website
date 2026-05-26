@@ -260,6 +260,29 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
     return;
   }
   const accessUrl = hasDriveConfig && grantedFolders.length ? `https://drive.google.com/drive/folders/${grantedFolders[0].folderId}` : 'https://codehunters.dev';
+  const accessRows = grantedFolders.length
+    ? grantedFolders.map((entry, index) => `
+              <tr>
+                <td style="padding:${index === 0 ? '0 0 10px' : '10px 0'};border-top:${index === 0 ? 'none' : '1px solid #eee'};">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td style="color:#222;font-size:14px;line-height:1.5;font-weight:700;">
+                        <span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>${entry.product.name}
+                      </td>
+                      <td align="right" style="white-space:nowrap;">
+                        <a href="https://drive.google.com/drive/folders/${entry.folderId}" style="display:inline-block;background:#E8440A;color:#fff;text-decoration:none;font-size:12px;font-weight:700;padding:7px 12px;border-radius:6px;">Open Drive</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>`).join('')
+    : `
+              <tr>
+                <td style="padding:6px 0;color:#222;font-size:14px;line-height:1.5;">
+                  <span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>Your purchased bundle access is being processed
+                </td>
+              </tr>`;
+  const primaryCtaLabel = grantedFolders.length > 1 ? 'Open First Purchased Bundle' : 'Open My Projects in Drive';
   const accessHelpText = hasDriveConfig
     ? `Sign in with <strong style="color:#666;">${customerEmail}</strong> if Google prompts you`
     : 'Drive delivery is being processed. If access is delayed, contact <strong style="color:#666;">support@codehunters.dev</strong>.';
@@ -323,7 +346,8 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
         <tr>
           <td style="background:#fafafa;padding:16px 20px;">
             <table cellpadding="0" cellspacing="0" width="100%">
-              <tr><td style="padding:6px 0;color:#222;font-size:14px;line-height:1.5;"><span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>700+ real-world projects across 10+ technologies</td></tr>
+              ${accessRows}
+              <tr><td style="padding:10px 0 6px;color:#222;font-size:14px;line-height:1.5;border-top:1px solid #eee;"><span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>Private Google Drive access for every purchased bundle</td></tr>
               <tr><td style="padding:6px 0;color:#222;font-size:14px;line-height:1.5;border-top:1px solid #eee;"><span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>Lifetime access &mdash; all future updates included automatically</td></tr>
               <tr><td style="padding:6px 0;color:#222;font-size:14px;line-height:1.5;border-top:1px solid #eee;"><span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>Shared privately to your Google account — no public link</td></tr>
               <tr><td style="padding:6px 0;color:#222;font-size:14px;line-height:1.5;border-top:1px solid #eee;"><span style="color:#22c55e;font-weight:800;margin-right:10px;">&#10003;</span>No logins, no subscriptions &mdash; direct Google Drive access</td></tr>
@@ -339,7 +363,7 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
     <td style="background:#fff;padding:4px 36px 28px;text-align:center;">
       <a href="${accessUrl}"
          style="display:block;background:#E8440A;color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:17px 28px;border-radius:8px;letter-spacing:0.3px;">
-        Open My Projects in Drive &nbsp;&rarr;
+        ${primaryCtaLabel} &nbsp;&rarr;
       </a>
       <p style="margin:10px 0 0;color:#aaa;font-size:12px;">
         ${accessHelpText}
