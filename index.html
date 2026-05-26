@@ -910,6 +910,111 @@
       .hero-trust { gap: 8px; }
       .hero-card-img img { max-height: 160px; }
     }
+
+    /* ── Bundle Card Composite Thumbnail ──────────────────────────────────
+       Self-contained .bc-* classes. Applied only to cards where type=bundle
+       and previewImages are defined. Zero changes to existing .pc-* styles.
+    ────────────────────────────────────────────────────────────────────── */
+    .bc-thumb {
+      position: relative;
+      height: 196px;
+      overflow: hidden;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Hero image fills top 75% */
+    .bc-hero {
+      flex: 1;
+      width: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform .35s ease;
+    }
+    .pc:hover .bc-hero { transform: scale(1.04); }
+
+    /* Gradient overlay — fades bottom of hero into the preview strip */
+    .bc-thumb::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 40px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,.55));
+      pointer-events: none;
+    }
+
+    /* Mini preview strip — 3-4 small images at bottom */
+    .bc-previews {
+      display: flex;
+      gap: 3px;
+      height: 44px;
+      background: rgba(0,0,0,.82);
+      padding: 4px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .bc-previews img {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+      filter: brightness(.85) saturate(.9);
+      transition: filter .2s;
+    }
+    .pc:hover .bc-previews img { filter: brightness(1) saturate(1.1); }
+
+    /* "Bundle" glassmorphism tag — bottom-left of hero */
+    .bc-tag {
+      position: absolute;
+      bottom: 48px;     /* sits just above the preview strip */
+      left: 10px;
+      z-index: 3;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.22);
+      color: #fff;
+      pointer-events: none;
+    }
+
+    /* Count chip — "X projects" at bottom-right of hero */
+    .bc-count {
+      position: absolute;
+      bottom: 48px;
+      right: 10px;
+      z-index: 3;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: var(--a);
+      color: #fff;
+      pointer-events: none;
+    }
+
+    /* Dark-mode: preview strip slightly lighter */
+    :root.dark-theme .bc-previews {
+      background: rgba(255,255,255,.06);
+    }
+    :root.dark-theme .bc-hero {
+      filter: brightness(.92);
+    }
+
+    /* Responsive: taller card at mobile so hero doesn't look squished */
+    @media (max-width: 500px) {
+      .bc-thumb { height: 172px; }
+      .bc-previews { height: 38px; }
+    }
   </style>
 </head>
 <body>
@@ -1291,23 +1396,43 @@
       var wished = isWishlisted(p.id);
       var off = discountPct(p.price, p.origPrice);
       var catLabel = { bundles:'Bundle', web:'Web Dev', data:'Data & ML', career:'Career', '':'Product' }[p.cat] || 'Product';
+
+      // ── Composite bundle thumbnail (hero + mini preview strip) ──
+      var thumbHtml;
+      if (p.previewImages && p.previewImages.length && p.image) {
+        var previewImgs = p.previewImages.slice(0, 4).map(function(src) {
+          return '<img src="' + esc(src) + '" alt="" loading="lazy">';
+        }).join('');
+        thumbHtml =
+          '<div class="bc-thumb">' +
+            '<img class="bc-hero" src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy">' +
+            '<span class="bc-tag">Bundle</span>' +
+            (p.projectCount ? '<span class="bc-count">' + esc(p.projectCount) + '</span>' : '') +
+            '<div class="bc-previews">' + previewImgs + '</div>' +
+          '</div>';
+      } else {
+        // Standard single-image thumbnail (unchanged behaviour)
+        thumbHtml =
+          '<div class="pc-thumb">' +
+            (p.image
+              ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy">'
+              : '<div class="pc-thumb-placeholder">&#128196;</div>'
+            ) +
+          '</div>';
+      }
+
       return (
         '<div class="pc">' +
           (p.badge ? '<div class="pc-badge ' + esc(p.badge) + '">' + esc(p.badgeLabel) + '</div>' : '') +
           '<button class="pc-wish' + (wished ? ' active' : '') + '" data-wish-id="' + esc(p.id) + '" title="' + (wished ? 'Remove from wishlist' : 'Add to wishlist') + '">' +
             (wished ? '&#9829;' : '&#9825;') +
           '</button>' +
-          '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration: none; color: inherit; display: contents;">' +
-          '<div class="pc-thumb">' +
-            (p.image
-              ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy">'
-              : '<div class="pc-thumb-placeholder">&#128196;</div>'
-            ) +
-          '</div>' +
+          '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration:none;color:inherit;display:contents;">' +
+            thumbHtml +
           '</a>' +
           '<div class="pc-body">' +
             '<div class="pc-cat-tag">' + esc(catLabel) + '</div>' +
-            '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration: none; color: inherit;">' +
+            '<a href="/product.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration:none;color:inherit;">' +
             '<div class="pc-title">' + esc(p.title) + '</div>' +
             '</a>' +
             '<div class="pc-stars">' +

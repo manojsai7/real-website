@@ -115,7 +115,15 @@ var PRODUCTS = [
     price: 499, origPrice: 1499,
     type: 'bundle', badge: 'new', badgeLabel: 'New',
     stars: 5, reviewCount: 12,
-    image: null,
+    // Hero: ML cover. Previews: NLP (x2) + software engineering
+    image: '/images/150-Machine-Learnig-1-919x1024.png',
+    previewImages: [
+      '/images/100-Natural-Language-Processing-918x1024.png',
+      '/images/50-Natural-Language-Processing-919x1024.png',
+      '/images/150-Machine-Learnig-918x1024.png',
+      '/images/softare-919x1024.png'
+    ],
+    projectCount: '150+ Projects',
     cat: 'bundles',
     folderEnv: 'GDRIVE_FOLDER_AI',
     desc: 'Complete AI & Machine Learning project bundle',
@@ -128,7 +136,15 @@ var PRODUCTS = [
     price: 399, origPrice: 999,
     type: 'bundle', badge: 'hot', badgeLabel: 'Hot Deal',
     stars: 5, reviewCount: 34,
-    image: null,
+    // Hero: 300 Python projects cover. Previews: Django + tools + C
+    image: '/images/300-Python-Projects-915x1024.png',
+    previewImages: [
+      '/images/Django-915x1024.png',
+      '/images/100-Programming-Tools-927x1024.jpg',
+      '/images/C-915x1024.png',
+      '/images/Roadmap-927x1024.jpg'
+    ],
+    projectCount: '300+ Projects',
     cat: 'bundles',
     folderEnv: 'GDRIVE_FOLDER_PYTHON',
     desc: '100+ Python projects from beginner to advanced',
@@ -141,7 +157,15 @@ var PRODUCTS = [
     price: 449, origPrice: 1199,
     type: 'bundle', badge: 'bestseller', badgeLabel: 'Bestseller',
     stars: 5, reviewCount: 89,
-    image: null,
+    // Hero: 150 frontend projects cover. Previews: React + Java + PHP
+    image: '/images/150-Front-end-Projects-915x1024.png',
+    previewImages: [
+      '/images/react-915x1024.png',
+      '/images/Java-915x1024.png',
+      '/images/PHP-915x1024.png',
+      '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg'
+    ],
+    projectCount: '150+ Projects',
     cat: 'web',
     folderEnv: 'GDRIVE_FOLDER_WEBDEV',
     desc: 'Full-stack web development projects & templates',
@@ -154,7 +178,14 @@ var PRODUCTS = [
     price: 449, origPrice: 1199,
     type: 'bundle', badge: 'new', badgeLabel: 'New',
     stars: 4, reviewCount: 7,
-    image: null,
+    // Hero: React cover. Previews: Java + frontend projects + tools
+    image: '/images/react-915x1024.png',
+    previewImages: [
+      '/images/Java-915x1024.png',
+      '/images/150-Front-end-Projects-915x1024.png',
+      '/images/100-Programming-Tools-927x1024.jpg'
+    ],
+    projectCount: '80+ Projects',
     cat: 'bundles',
     folderEnv: 'GDRIVE_FOLDER_APPDEV',
     desc: 'Mobile & cross-platform app development projects',
@@ -167,7 +198,15 @@ var PRODUCTS = [
     price: 349, origPrice: 899,
     type: 'bundle', badge: 'exclusive', badgeLabel: 'Exclusive',
     stars: 5, reviewCount: 56,
-    image: null,
+    // Hero: software engineering cover. Previews: resume + roadmap + tools
+    image: '/images/softare-919x1024.png',
+    previewImages: [
+      '/images/100-Editable-Resume-Templates-922x1024.jpg',
+      '/images/Roadmap-927x1024.jpg',
+      '/images/100-Programming-Tools-927x1024.jpg',
+      '/images/100-VS-Code-Keyboard-Shortcuts-927x1024.jpg'
+    ],
+    projectCount: '100+ Resources',
     cat: 'career',
     folderEnv: 'GDRIVE_FOLDER_CAREER',
     desc: 'Resume templates, interview prep & career tools',
@@ -180,7 +219,15 @@ var PRODUCTS = [
     price: 999, origPrice: 4999,
     type: 'bundle', badge: 'premium', badgeLabel: 'Premium',
     stars: 5, reviewCount: 203,
-    image: null,
+    // Hero: Developer's Kit — the flagship. Previews: ML + Python + React + frontend
+    image: '/images/Developers-Kit-1943x2048-1-972x1024.png',
+    previewImages: [
+      '/images/150-Machine-Learnig-1-919x1024.png',
+      '/images/300-Python-Projects-915x1024.png',
+      '/images/react-915x1024.png',
+      '/images/softare-919x1024.png'
+    ],
+    projectCount: '700+ Projects',
     cat: 'bundles',
     folderEnv: 'GDRIVE_FOLDER_MEGA',
     desc: 'All bundles — AI, Python, Web Dev, App Dev & Career',
