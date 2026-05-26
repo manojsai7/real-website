@@ -259,7 +259,7 @@
     'ai_bundle': {
       id: 'ai_bundle',
       name: 'AI Engineer Bundle',
-      price: 2,
+      price: 1,
       features: [
         '150+ Machine Learning Resources & Practical Materials',
         'Deep Learning Project Collection',
@@ -272,7 +272,7 @@
     'python_bundle': {
       id: 'python_bundle',
       name: 'Python Developer Bundle',
-      price: 2,
+      price: 1,
       features: [
         '200+ Python Project Source Codes',
         'Django Full Stack Project Collection',
@@ -285,7 +285,7 @@
     'web_bundle': {
       id: 'web_bundle',
       name: 'Full Stack Web Bundle',
-      price: 2,
+      price: 1,
       features: [
         '150+ HTML CSS JavaScript Projects',
         'React Frontend Project Collection',
@@ -298,7 +298,7 @@
     'programming_bundle': {
       id: 'programming_bundle',
       name: 'Programming Master Bundle',
-      price: 2,
+      price: 1,
       features: [
         'Java Project Collection',
         'C & C++ Programming Source Codes',
@@ -311,7 +311,7 @@
     'career_bundle': {
       id: 'career_bundle',
       name: 'Career Accelerator Bundle',
-      price: 2,
+      price: 1,
       features: [
         'Professional Resume Template Collection',
         'Coding Books & Developer Notes',
@@ -324,7 +324,7 @@
     'mega_bundle': {
       id: 'mega_bundle',
       name: 'Ultimate Mega Bundle',
-      price: 2,
+      price: 1,
       features: [
         'Access to All AI, Python, Web & Programming Projects',
         'Complete Collection of Coding Notes & Interview Prep',
@@ -339,49 +339,49 @@
     'developers-kit': {
       id: 'developers-kit',
       name: "Developer's Kit \u2013 700+ Projects Bundle",
-      price: 369,
+      price: 1,
       features: ['700+ real-world projects', '10+ technologies covered', 'Lifetime access & updates', 'Source code included', 'Priority support']
     },
     '30-day-data-analyst-kit': {
       id: '30-day-data-analyst-kit',
       name: '30-Day Data Analyst Kit',
-      price: 299,
+      price: 1,
       features: ['30-day structured plan', 'Real datasets', 'Portfolio projects', 'Certificate ready']
     },
     '5-day-js-bootcamp': {
       id: '5-day-js-bootcamp',
       name: '5-Day JavaScript Bootcamp',
-      price: 201,
+      price: 1,
       features: ['5-day intensive training', 'Hands-on projects', 'Modern JS (ES6+)', 'Build real apps']
     },
     'interview-mastery': {
       id: 'interview-mastery',
       name: 'Interview Mastery System',
-      price: 1499,
+      price: 1,
       features: ['Cover every interview round', 'HR + Technical prep', 'Mock interview guides', '200+ curated questions']
     },
     'interview-cracking-2026': {
       id: 'interview-cracking-2026',
       name: 'Interview-Cracking System (2026 AI)',
-      price: 399,
+      price: 1,
       features: ['AI-powered preparation', '2026 updated questions', 'Industry focused', 'Strategy guides']
     },
     'Testing-First': {
       id: 'Testing-First',
       name: 'Testing First',
-      price: 3,
+      price: 1,
       features: ['Cover every Test', 'HR + Technical prep', 'Mock interview guides', '200+ curated questions']
     },
     'ats-resume-template': {
       id: 'ats-resume-template',
       name: 'ATS Resume Template - WebDev',
-      price: 129,
+      price: 1,
       features: ['ATS-approved format', 'Web developer focused', 'Editable template', 'Cover letter included']
     },
     'vip-pass': {
       id: 'vip-pass',
       name: 'Upgrade to VIP Pass',
-      price: 149,
+      price: 1,
       features: ['Exclusive VIP content', 'Early access to courses', 'Priority support', 'Special discounts']
     }
   };
@@ -616,7 +616,8 @@
               window.location.href = '/success.html?payment_id=' + encodeURIComponent(response.razorpay_payment_id) +
                 '&order_id=' + encodeURIComponent(response.razorpay_order_id) +
                 (data.orderKey ? '&order_key=' + encodeURIComponent(data.orderKey) : '') +
-                (result.email ? '&email=' + encodeURIComponent(result.email) : '');
+                (result.email ? '&email=' + encodeURIComponent(result.email) : '') +
+                (result.products && result.products.length ? '&products=' + encodeURIComponent(result.products.map(function(p) { return p.name; }).join('|')) : '');
             } else {
               errorEl.textContent = 'Payment verification failed. Please contact support.';
               errorEl.style.display = 'block';

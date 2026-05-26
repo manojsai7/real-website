@@ -1140,15 +1140,43 @@
     }
 
     @media (max-width: 640px) {
+      .pc-thumb {
+        height: 138px;
+        padding: 14px;
+      }
+
+      .pc-thumb img {
+        max-height: 110px;
+      }
+
+      .pc-body {
+        padding: 14px;
+      }
+
+      .pc-title {
+        min-height: 0;
+        font-size: 15px;
+      }
+
+      .pc-highlight-list li:nth-child(n+4) {
+        display: none;
+      }
+
+      .pc-features {
+        margin-bottom: 10px;
+      }
+
       .bundle-modal {
         inset: 10px;
         width: auto;
-        max-height: none;
-        transform: translateY(12px) scale(.98);
+        height: calc(100vh - 20px);
+        height: calc(100dvh - 20px);
+        max-height: calc(100dvh - 20px);
+        transform: translateY(10px);
       }
 
       .bundle-modal.open {
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
 
       .bundle-modal-head {
@@ -1172,6 +1200,10 @@
 
       .bundle-modal-body {
         padding: 14px;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .bundle-modal-list {
@@ -1187,6 +1219,7 @@
       .bundle-modal-foot {
         flex-direction: column;
         padding: 12px 14px 14px;
+        flex-shrink: 0;
       }
 
       .bundle-modal-price {
@@ -1946,7 +1979,7 @@
             Backend, Data, and AI so you can show proof without starting from scratch.
           </p>
           <div class="hero-price-row">
-            <span class="hero-price">&#8377;2</span>
+            <span class="hero-price">&#8377;1</span>
             <span class="hero-price-orig">&#8377;4,999</span>
             <span class="hero-discount-pill">99% OFF</span>
           </div>
@@ -1964,7 +1997,7 @@
         <div class="hero-right">
           <div class="hero-card">
             <div class="hero-card-img">
-              <img src="/images/Developers-Kit-1943x2048-1-972x1024.png" alt="Developer's Kit Bundle" loading="eager">
+              <img src="/images/codehnt.png" alt="Ultimate Mega Bundle" loading="eager">
             </div>
             <div class="hero-card-body">
               <div class="hero-card-title">Ultimate Mega Bundle</div>
@@ -1979,9 +2012,9 @@
                 <button class="pc-details-btn" id="heroDetailsBtn">View Everything Included</button>
               </div>
               <div class="hero-card-price-row">
-                <span class="hero-card-price">&#8377;2</span>
+                <span class="hero-card-price">&#8377;1</span>
                 <span class="hero-card-orig">&#8377;4,999</span>
-                <span class="hero-card-save">Save &#8377;4,997</span>
+                <span class="hero-card-save">Save &#8377;4,998</span>
               </div>
               <button class="hero-card-btn" id="heroCardBtn">Add to Cart</button>
             </div>

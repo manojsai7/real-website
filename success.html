@@ -51,10 +51,22 @@
     .details .row .label { color: #999; font-weight: 600; flex-shrink: 0; }
     .details .row .value { color: #222; font-weight: 600; word-break: break-all; text-align: right; }
 
+    .notice-box { margin: 22px 0 0; padding: 14px 16px; background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 8px; text-align: left; color: #7c2d12; font-size: 13px; line-height: 1.6; }
+    .notice-box strong { color: #431407; font-weight: 800; }
+    .products-box { margin: 20px 0 0; padding: 16px 18px; background: #f9f9f9; border-radius: 8px; text-align: left; border: 1px solid #eee; display: none; }
+    .products-title { font-size: 12px; font-weight: 800; color: #999; letter-spacing: .7px; text-transform: uppercase; margin-bottom: 10px; }
+    .products-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .products-list li { color: #222; font-size: 14px; font-weight: 700; line-height: 1.4; display: flex; gap: 9px; align-items: flex-start; }
+    .products-list li::before { content: '\2713'; color: #22c55e; font-weight: 900; flex-shrink: 0; }
     .spam-note { margin-top: 16px; font-size: 12px; color: #aaa; line-height: 1.6; }
 
     .btn { display: inline-block; margin-top: 28px; padding: 14px 36px; background: #E8440A; color: #fff; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; transition: background 0.2s, transform 0.15s; letter-spacing: .2px; }
     .btn:hover { background: #CC3500; transform: translateY(-2px); text-decoration: none; }
+    @media (max-width: 600px) {
+      .products-box, .notice-box, .details { padding: 14px; }
+      .details .row { flex-direction: column; gap: 3px; }
+      .details .row .value { text-align: left; }
+    }
   </style>
 </head>
 <body>
@@ -72,10 +84,10 @@
 
     <div id="emailBox" class="email-box" style="display:none;">
       <strong id="emailDisplay"></strong>
-      Check this inbox — your access confirmation email is on its way.
+      Check this inbox. Your bill and product access email is on its way.
     </div>
     <div id="noEmailBox" class="email-box no-email" style="display:none;">
-      Check the inbox of the email you used at checkout — your access link is on its way.
+      Check the inbox of the email you used at checkout. Your bill and product access email is on its way.
     </div>
 
     <div class="steps">
@@ -90,8 +102,18 @@
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-text"><strong>Not in inbox?</strong> Check spam/promotions. If nothing after 10 mins, email <a href="mailto:Aohacx@gmail.com" style="color:#E8440A;font-weight:700;">support@codehunters.dev</a></div>
+        <div class="step-text"><strong>Not in inbox?</strong> Check spam/promotions. If nothing after 10 mins, email <a href="mailto:aohacx@gmail.com" style="color:#E8440A;font-weight:700;">aohacx@gmail.com</a></div>
       </div>
+    </div>
+
+    <div class="products-box" id="productsBox">
+      <div class="products-title">Products Purchased</div>
+      <ul class="products-list" id="productsList"></ul>
+    </div>
+
+    <div class="notice-box">
+      <strong>Check your mail to review your bill and product access. Check spam folder in case it is not found.</strong><br>
+      <strong>If the products are not mentioned from Code Hunters team, check your Gmail Shared section. For more assistance, reach our Telegram or mail support.</strong>
     </div>
 
     <div class="details" id="orderDetails" style="display:none;">
@@ -110,6 +132,7 @@
   var orderId = params.get('order_id');
   var orderKey = params.get('order_key');
   var email = params.get('email');
+  var products = params.get('products');
 
   if (email) {
     document.getElementById('emailDisplay').textContent = email;
@@ -125,6 +148,18 @@
     if (orderKey) {
       document.getElementById('orderKey').textContent = orderKey;
       document.getElementById('orderKeyRow').style.display = 'flex';
+    }
+  }
+
+  if (products) {
+    var productNames = products.split('|').map(function(name) { return name.trim(); }).filter(Boolean);
+    if (productNames.length) {
+      document.getElementById('productsList').innerHTML = productNames.map(function(name) {
+        var d = document.createElement('div');
+        d.textContent = name;
+        return '<li>' + d.innerHTML + '</li>';
+      }).join('');
+      document.getElementById('productsBox').style.display = 'block';
     }
   }
 })();

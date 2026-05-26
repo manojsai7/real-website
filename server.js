@@ -15,7 +15,7 @@ const PRODUCTS = {
   'ai_bundle': {
     id: 'ai_bundle',
     name: 'AI Engineer Bundle',
-    price: 2,
+    price: 1,
     currency: 'INR',
     description: '150+ Machine Learning Resources, Deep Learning Projects, and NLP Toolkit with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_AI'
@@ -23,7 +23,7 @@ const PRODUCTS = {
   'python_bundle': {
     id: 'python_bundle',
     name: 'Python Developer Bundle',
-    price: 2,
+    price: 1,
     currency: 'INR',
     description: '200+ Python Project Source Codes, Django Full Stack, and ML implementations',
     folderEnv: 'GDRIVE_FOLDER_PYTHON'
@@ -31,7 +31,7 @@ const PRODUCTS = {
   'web_bundle': {
     id: 'web_bundle',
     name: 'Full Stack Web Bundle',
-    price: 2,
+    price: 1,
     currency: 'INR',
     description: 'HTML/CSS/JS, React Frontend Projects, PHP Backend, and UI Templates',
     folderEnv: 'GDRIVE_FOLDER_WEB'
@@ -39,7 +39,7 @@ const PRODUCTS = {
   'programming_bundle': {
     id: 'programming_bundle',
     name: 'Programming Master Bundle',
-    price: 2,
+    price: 1,
     currency: 'INR',
     description: 'Java, C/C++, C# Projects with DSA Resources and Programming Roadmaps',
     folderEnv: 'GDRIVE_FOLDER_PROGRAMMING'
@@ -47,7 +47,7 @@ const PRODUCTS = {
   'career_bundle': {
     id: 'career_bundle',
     name: 'Career Accelerator Bundle',
-    price: 2,
+    price: 1,
     currency: 'INR',
     description: 'Resume Templates, Interview Prep, Productivity Tools, and Career Growth Guides',
     folderEnv: 'GDRIVE_FOLDER_CAREER'
@@ -55,7 +55,7 @@ const PRODUCTS = {
   'mega_bundle': {
     id: 'mega_bundle',
     name: 'Ultimate Mega Bundle',
-    price: 2,
+    price: 1,
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
@@ -66,56 +66,56 @@ const PRODUCTS = {
   'developers-kit': {
     id: 'developers-kit',
     name: "Developer's Kit \u2013 700+ Projects Bundle",
-    price: 369,
+    price: 1,
     currency: 'INR',
     description: "700+ real-world projects across 10+ technologies with lifetime access & updates"
   },
   '30-day-data-analyst-kit': {
     id: '30-day-data-analyst-kit',
     name: '30-Day Data Analyst Kit',
-    price: 299,
+    price: 1,
     currency: 'INR',
     description: '30-day structured plan, real datasets, portfolio projects'
   },
   '5-day-js-bootcamp': {
     id: '5-day-js-bootcamp',
     name: '5-Day JavaScript Bootcamp',
-    price: 201,
+    price: 1,
     currency: 'INR',
     description: '5-day intensive training, hands-on projects, modern JS (ES6+)'
   },
   'interview-mastery': {
     id: 'interview-mastery',
     name: 'Interview Mastery System',
-    price: 1499,
+    price: 1,
     currency: 'INR',
     description: 'Cover every interview round, HR + Technical prep, mock interview guides'
   },
   'interview-cracking-2026': {
     id: 'interview-cracking-2026',
     name: 'Interview-Cracking System (2026 AI)',
-    price: 399,
+    price: 1,
     currency: 'INR',
     description: 'AI-powered preparation, 2026 updated questions, industry focused'
   },
   'Testing-First': {
     id: 'Testing-First',
     name: 'Testing First',
-    price: 3,
+    price: 1,
     currency: 'INR',
     description: 'Cover every Test, HR + Technical prep, mock interview guides'
   },
   'ats-resume-template': {
     id: 'ats-resume-template',
     name: 'ATS Resume Template - WebDev',
-    price: 129,
+    price: 1,
     currency: 'INR',
     description: 'ATS-approved format, web developer focused, editable template'
   },
   'vip-pass': {
     id: 'vip-pass',
     name: 'Upgrade to VIP Pass',
-    price: 149,
+    price: 1,
     currency: 'INR',
     description: 'Exclusive VIP content, early access to courses, priority support'
   }
@@ -285,7 +285,7 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
   const primaryCtaLabel = grantedFolders.length > 1 ? 'Open First Purchased Bundle' : 'Open My Projects in Drive';
   const accessHelpText = hasDriveConfig
     ? `Sign in with <strong style="color:#666;">${customerEmail}</strong> if Google prompts you`
-    : 'Drive delivery is being processed. If access is delayed, contact <strong style="color:#666;">support@codehunters.dev</strong>.';
+    : 'Drive delivery is being processed. If access is delayed, contact <strong style="color:#666;">aohacx@gmail.com</strong>.';
   try {
     const sendResult = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'Code Hunters <noreply@codehunters.dev>',
@@ -411,7 +411,7 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
     <td style="background:#f8f8f8;border-top:1px solid #eee;padding:20px 36px 24px;text-align:center;border-radius:0 0 12px 12px;">
       <p style="margin:0 0 5px;font-size:13px;font-weight:700;color:#333;">Code Hunters</p>
       <p style="margin:0 0 8px;font-size:12px;color:#aaa;">
-        Questions? <a href="mailto:support@codehunters.dev" style="color:#E8440A;text-decoration:none;">support@codehunters.dev</a>
+        Questions? <a href="mailto:aohacx@gmail.com" style="color:#E8440A;text-decoration:none;">aohacx@gmail.com</a>
       </p>
       <p style="margin:0;font-size:11px;color:#ccc;">
         Transactional email &mdash; sent to confirm your purchase &nbsp;&middot;&nbsp;
@@ -489,7 +489,9 @@ app.post('/api/create-razorpay-order', async (req, res) => {
   for (const item of items) {
     const product = PRODUCTS[item.id];
     if (!product) continue;
-    const qty = item.quantity || 1;
+    const qty = product.type === 'bundle'
+      ? 1
+      : Math.max(1, Math.min(10, parseInt(item.quantity, 10) || 1));
     totalPaise += product.price * 100 * qty;
     validItems.push({ id: product.id, name: product.name, qty });
   }
@@ -547,8 +549,12 @@ app.post('/api/verify-payment', async (req, res) => {
     .update(razorpay_order_id + '|' + razorpay_payment_id)
     .digest('hex');
 
-  const verified = expectedSignature === razorpay_signature;
+  const expectedBuffer = Buffer.from(expectedSignature, 'hex');
+  const receivedBuffer = Buffer.from(String(razorpay_signature), 'hex');
+  const verified = expectedBuffer.length === receivedBuffer.length &&
+    crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
   let customerEmail = null;
+  let purchasedProducts = [];
 
   if (verified) {
     // Fetch order notes from Razorpay to get customer email, then grant Drive access
@@ -557,6 +563,10 @@ app.post('/api/verify-payment', async (req, res) => {
       if (razorpay) {
         const order = await razorpay.orders.fetch(razorpay_order_id);
         customerEmail = order.notes && order.notes.customer_email;
+        purchasedProducts = parseProductIdsFromNotes(order.notes)
+          .map(id => PRODUCTS[id])
+          .filter(Boolean)
+          .map(product => ({ id: product.id, name: product.name }));
         if (customerEmail) {
           await grantAccess(customerEmail, razorpay_payment_id, parseProductIdsFromNotes(order.notes));
         }
@@ -567,7 +577,7 @@ app.post('/api/verify-payment', async (req, res) => {
     }
   }
 
-  res.json({ verified, email: customerEmail || null });
+  res.json({ verified, email: customerEmail || null, products: purchasedProducts });
 });
 
 // Razorpay Webhook — belt-and-suspenders delivery for network drops / browser closes
