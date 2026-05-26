@@ -366,15 +366,18 @@
 
     var html = '', total = 0, allFeatures = [], cartIds = [];
     cart.forEach(function(item) {
-      var p = PRODUCTS[item.id];
-      if (!p) return;
+      var p = PRODUCTS[item.id] || {};
       cartIds.push(item.id);
-      var price = p.price * (item.quantity || 1);
+      
+      var itemName = p.name || item.title || 'Product';
+      var itemPrice = p.price || item.price || 0;
+      var price = itemPrice * (item.quantity || 1);
+      
       total += price;
       html += '<div class="cart-item">' +
-        '<span class="cart-item-name">' + escapeHtml(p.name) + '</span>' +
+        '<span class="cart-item-name">' + escapeHtml(itemName) + '</span>' +
         '<span class="cart-item-price">\u20B9' + price.toLocaleString('en-IN') + '</span>' +
-        '<button class="cart-item-remove" data-id="' + escapeHtml(p.id) + '" title="Remove">\u2715</button>' +
+        '<button class="cart-item-remove" data-id="' + escapeHtml(item.id) + '" title="Remove">\u2715</button>' +
         '</div>';
       if (p.features) {
         p.features.forEach(function(f) {

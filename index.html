@@ -647,13 +647,15 @@
       opacity: 0;
     }
     .pc-acc-content.expanded {
-      max-height: 500px;
+      max-height: 220px;
       padding: 12px;
       opacity: 1;
       border-color: var(--b);
       border-top: none;
       overflow-y: auto;
     }
+    .pc-acc-content::-webkit-scrollbar { width: 4px; }
+    .pc-acc-content::-webkit-scrollbar-thumb { background: var(--b2); border-radius: 4px; }
     .pc-expanded-list {
       list-style: disc;
       padding-left: 20px;
@@ -677,6 +679,7 @@
     .pc-footer {
       display: flex;
       gap: 8px;
+      margin-top: auto;
     }
     .pc-btn-add {
       flex: 1;
