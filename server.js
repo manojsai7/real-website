@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // --- Product catalog (prices from actual product pages) ---
 const PRODUCTS = {
+  // --- Root Bundles ---
   'ai_bundle': {
     id: 'ai_bundle',
     name: 'AI Engineer Bundle',
@@ -58,6 +59,64 @@ const PRODUCTS = {
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
+  },
+
+  // --- WooCommerce Sub-site Products ---
+  'developers-kit': {
+    id: 'developers-kit',
+    name: "Developer's Kit \u2013 700+ Projects Bundle",
+    price: 369,
+    currency: 'INR',
+    description: "700+ real-world projects across 10+ technologies with lifetime access & updates"
+  },
+  '30-day-data-analyst-kit': {
+    id: '30-day-data-analyst-kit',
+    name: '30-Day Data Analyst Kit',
+    price: 299,
+    currency: 'INR',
+    description: '30-day structured plan, real datasets, portfolio projects'
+  },
+  '5-day-js-bootcamp': {
+    id: '5-day-js-bootcamp',
+    name: '5-Day JavaScript Bootcamp',
+    price: 201,
+    currency: 'INR',
+    description: '5-day intensive training, hands-on projects, modern JS (ES6+)'
+  },
+  'interview-mastery': {
+    id: 'interview-mastery',
+    name: 'Interview Mastery System',
+    price: 1499,
+    currency: 'INR',
+    description: 'Cover every interview round, HR + Technical prep, mock interview guides'
+  },
+  'interview-cracking-2026': {
+    id: 'interview-cracking-2026',
+    name: 'Interview-Cracking System (2026 AI)',
+    price: 399,
+    currency: 'INR',
+    description: 'AI-powered preparation, 2026 updated questions, industry focused'
+  },
+  'Testing-First': {
+    id: 'Testing-First',
+    name: 'Testing First',
+    price: 3,
+    currency: 'INR',
+    description: 'Cover every Test, HR + Technical prep, mock interview guides'
+  },
+  'ats-resume-template': {
+    id: 'ats-resume-template',
+    name: 'ATS Resume Template - WebDev',
+    price: 129,
+    currency: 'INR',
+    description: 'ATS-approved format, web developer focused, editable template'
+  },
+  'vip-pass': {
+    id: 'vip-pass',
+    name: 'Upgrade to VIP Pass',
+    price: 149,
+    currency: 'INR',
+    description: 'Exclusive VIP content, early access to courses, priority support'
   }
 };
 

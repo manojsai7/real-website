@@ -179,7 +179,7 @@ var PRODUCTS = [
   {
     id: "mega_bundle",
     title: "Ultimate Mega Bundle",
-    price: 999, origPrice: 4999,
+    price: 2, origPrice: 4999,
     folderEnv: "GDRIVE_FOLDER_MEGA",
     type: "bundle", badge: "exclusive", badgeLabel: "Special Offer",
     stars: 5, reviewCount: 154,
