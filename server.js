@@ -10,62 +10,121 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // --- Product catalog (prices from actual product pages) ---
+// folderEnv: name of the process.env variable holding the Google Drive folder ID for this product.
+// Legacy products default to GDRIVE_FOLDER_ID (the original global folder).
 const PRODUCTS = {
   'developers-kit': {
     id: 'developers-kit',
     name: "Developer's Kit – 700+ Job-Ready Projects Bundle",
     price: 369,
     currency: 'INR',
-    description: '700+ real-world projects across 10+ technologies with lifetime access & updates'
+    description: '700+ real-world projects across 10+ technologies with lifetime access & updates',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   '30-day-data-analyst-kit': {
     id: '30-day-data-analyst-kit',
     name: '30-Day Data Analyst Kit',
     price: 299,
     currency: 'INR',
-    description: 'Complete data analyst preparation kit – 30 day structured plan'
+    description: 'Complete data analyst preparation kit – 30 day structured plan',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   '5-day-js-bootcamp': {
     id: '5-day-js-bootcamp',
     name: '5-Day JavaScript Bootcamp',
     price: 201,
     currency: 'INR',
-    description: '5-day intensive JavaScript for everything bootcamp'
+    description: '5-day intensive JavaScript for everything bootcamp',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   'interview-mastery': {
     id: 'interview-mastery',
     name: 'Interview Mastery System – Clear Every Interview Round',
     price: 1499,
     currency: 'INR',
-    description: 'Complete interview preparation system covering every round'
+    description: 'Complete interview preparation system covering every round',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   'interview-cracking-2026': {
     id: 'interview-cracking-2026',
     name: 'Complete Interview-Cracking System (2026 AI-Based)',
     price: 399,
     currency: 'INR',
-    description: 'AI-powered interview cracking system for 2026'
+    description: 'AI-powered interview cracking system for 2026',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   'Testing-First': {
     id: 'Testing-First',
     name: 'Testing First',
     price: 3,
     currency: 'INR',
-    description: 'Complete Tests'
+    description: 'Complete Tests',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   'ats-resume-template': {
     id: 'ats-resume-template',
     name: 'ATS Approved Resume Template - WebDev',
     price: 129,
     currency: 'INR',
-    description: 'ATS-approved resume template designed for web developers'
+    description: 'ATS-approved resume template designed for web developers',
+    folderEnv: 'GDRIVE_FOLDER_ID'
   },
   'vip-pass': {
     id: 'vip-pass',
     name: 'Upgrade to VIP Pass',
     price: 149,
     currency: 'INR',
-    description: 'VIP pass upgrade with exclusive benefits'
+    description: 'VIP pass upgrade with exclusive benefits',
+    folderEnv: 'GDRIVE_FOLDER_ID'
+  },
+  // ── New bundle products — each maps to its own Google Drive folder ──
+  'ai_bundle': {
+    id: 'ai_bundle',
+    name: 'AI Engineer Bundle',
+    price: 499,
+    currency: 'INR',
+    description: 'Complete AI & Machine Learning project bundle',
+    folderEnv: 'GDRIVE_FOLDER_AI'
+  },
+  'python_bundle': {
+    id: 'python_bundle',
+    name: 'Python Bundle',
+    price: 399,
+    currency: 'INR',
+    description: '100+ Python projects from beginner to advanced',
+    folderEnv: 'GDRIVE_FOLDER_PYTHON'
+  },
+  'webdev_bundle': {
+    id: 'webdev_bundle',
+    name: 'Web Dev Bundle',
+    price: 449,
+    currency: 'INR',
+    description: 'Full-stack web development projects & templates',
+    folderEnv: 'GDRIVE_FOLDER_WEBDEV'
+  },
+  'appdev_bundle': {
+    id: 'appdev_bundle',
+    name: 'App Dev Bundle',
+    price: 449,
+    currency: 'INR',
+    description: 'Mobile & cross-platform app development projects',
+    folderEnv: 'GDRIVE_FOLDER_APPDEV'
+  },
+  'career_bundle': {
+    id: 'career_bundle',
+    name: 'Career Bundle',
+    price: 349,
+    currency: 'INR',
+    description: 'Resume templates, interview prep & career tools',
+    folderEnv: 'GDRIVE_FOLDER_CAREER'
+  },
+  'mega_bundle': {
+    id: 'mega_bundle',
+    name: 'Mega Bundle – Everything',
+    price: 999,
+    currency: 'INR',
+    description: 'All bundles — AI, Python, Web Dev, App Dev & Career',
+    folderEnv: 'GDRIVE_FOLDER_MEGA'
   }
 };
 
@@ -118,43 +177,84 @@ function getDriveClient() {
   return google.drive({ version: 'v3', auth });
 }
 
-async function grantAccess(customerEmail, paymentId) {
+// --- Resolve unique Drive folder IDs for a list of product IDs ---
+// Falls back to GDRIVE_FOLDER_ID when a product has no folderEnv or the env var is unset.
+function resolveFolderIds(productIds) {
+  const seen = new Set();
+  const folderIds = [];
+  const ids = Array.isArray(productIds) && productIds.length ? productIds : [];
+  if (ids.length === 0) {
+    // No product context — use global fallback
+    const fallback = process.env.GDRIVE_FOLDER_ID;
+    if (fallback) folderIds.push(fallback);
+    return folderIds;
+  }
+  for (const pid of ids) {
+    const product = PRODUCTS[pid];
+    const envKey = (product && product.folderEnv) ? product.folderEnv : 'GDRIVE_FOLDER_ID';
+    const fid = process.env[envKey];
+    if (fid && !seen.has(fid)) {
+      seen.add(fid);
+      folderIds.push(fid);
+    } else if (!fid) {
+      console.warn(`[delivery] Env var ${envKey} not set for product '${pid}' — skipping folder`);
+    }
+  }
+  // Always fall back to global folder if nothing resolved
+  if (folderIds.length === 0) {
+    const fallback = process.env.GDRIVE_FOLDER_ID;
+    if (fallback) folderIds.push(fallback);
+  }
+  return folderIds;
+}
+
+// productIds: string[] of purchased product IDs — used to grant access to the correct folder(s).
+async function grantAccess(customerEmail, paymentId, productIds) {
   if (processedPayments.has(paymentId)) {
     console.log('[delivery] Payment already processed:', paymentId);
     return;
   }
   processedPayments.add(paymentId);
 
-  const folderId = process.env.GDRIVE_FOLDER_ID;
-  const hasDriveConfig = Boolean(folderId && process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+  const hasDriveConfig = Boolean(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
   if (!hasDriveConfig) {
-    console.warn('[delivery] Drive not configured — GDRIVE_FOLDER_ID or GOOGLE_SERVICE_ACCOUNT_JSON missing');
+    console.warn('[delivery] Drive not configured — GOOGLE_SERVICE_ACCOUNT_JSON missing');
   }
 
-  // --- Share Google Drive folder ---
+  // Resolve which folder(s) to grant access to based on purchased product IDs
+  const folderIds = resolveFolderIds(productIds);
+  console.log(`[delivery] Granting ${customerEmail} access to ${folderIds.length} folder(s):`, folderIds);
+
+  // --- Share each Google Drive folder ---
   let isDuplicate = false;
-  if (hasDriveConfig) {
-    try {
-      const drive = getDriveClient();
-      await drive.permissions.create({
-        fileId: folderId,
-        requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
-        sendNotificationEmail: false,
-        fields: 'id',
-      });
-      console.log('[delivery] Drive access granted to', customerEmail, 'for folder', folderId);
-    } catch (err) {
-      const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
-      if (duplicateGrant) {
-        isDuplicate = true;
-        console.warn('[delivery] Drive access already exists for', customerEmail, '— skipping duplicate email');
-      } else {
-        console.error('[delivery] Drive grant FAILED for', customerEmail, '—', err.message);
+  if (hasDriveConfig && folderIds.length > 0) {
+    const drive = getDriveClient();
+    for (const folderId of folderIds) {
+      try {
+        await drive.permissions.create({
+          fileId: folderId,
+          requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+          sendNotificationEmail: false,
+          fields: 'id',
+        });
+        console.log('[delivery] Drive access granted to', customerEmail, 'for folder', folderId);
+      } catch (err) {
+        const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
+        if (duplicateGrant) {
+          isDuplicate = true;
+          console.warn('[delivery] Drive access already exists for', customerEmail, 'folder', folderId, '— skipping duplicate email');
+        } else {
+          console.error('[delivery] Drive grant FAILED for', customerEmail, 'folder', folderId, '—', err.message);
+        }
       }
     }
   }
 
-  if (isDuplicate) return;
+  // Only skip email if ALL folders were duplicates (all already had access)
+  if (isDuplicate && folderIds.length <= 1) return;
+
+  // Use first resolved folder for the CTA link in the email
+  const primaryFolderId = folderIds[0] || null;
 
   // --- Send confirmation email ---
   const resend = getResend();
@@ -162,8 +262,10 @@ async function grantAccess(customerEmail, paymentId) {
     console.warn('[delivery] RESEND_API_KEY not set — skipping confirmation email');
     return;
   }
-  const accessUrl = hasDriveConfig ? `https://drive.google.com/drive/folders/${folderId}` : 'https://codehunters.dev';
-  const accessHelpText = hasDriveConfig
+  const accessUrl = (hasDriveConfig && primaryFolderId)
+    ? `https://drive.google.com/drive/folders/${primaryFolderId}`
+    : 'https://codehunters.dev';
+  const accessHelpText = (hasDriveConfig && primaryFolderId)
     ? `Sign in with <strong style="color:#666;">${customerEmail}</strong> if Google prompts you`
     : 'Drive delivery is being processed. If access is delayed, contact <strong style="color:#666;">support@codehunters.dev</strong>.';
   try {
@@ -370,7 +472,7 @@ app.post('/api/create-razorpay-order', async (req, res) => {
     if (!product) continue;
     const qty = item.quantity || 1;
     totalPaise += product.price * 100 * qty;
-    validItems.push({ name: product.name, qty });
+    validItems.push({ id: product.id, name: product.name, qty });
   }
 
   if (!validItems.length) {
@@ -391,6 +493,8 @@ app.post('/api/create-razorpay-order', async (req, res) => {
         customer_email: customerEmail || '',
         customer_phone: customerPhone || '',
         items: validItems.map(i => i.name).join(', '),
+        // Comma-separated product IDs — used by fulfillment to resolve per-bundle Drive folders
+        item_ids: validItems.map(i => i.id).join(','),
       },
     });
 
@@ -429,14 +533,17 @@ app.post('/api/verify-payment', async (req, res) => {
   let customerEmail = null;
 
   if (verified) {
-    // Fetch order notes from Razorpay to get customer email, then grant Drive access
+    // Fetch order notes from Razorpay to get customer email + purchased product IDs
     try {
       const razorpay = getRazorpay();
       if (razorpay) {
         const order = await razorpay.orders.fetch(razorpay_order_id);
         customerEmail = order.notes && order.notes.customer_email;
+        // Parse comma-separated product IDs stored in order notes at creation time
+        const rawIds = (order.notes && order.notes.item_ids) || '';
+        const productIds = rawIds ? rawIds.split(',').map(s => s.trim()).filter(Boolean) : [];
         if (customerEmail) {
-          await grantAccess(customerEmail, razorpay_payment_id);
+          await grantAccess(customerEmail, razorpay_payment_id, productIds);
         }
       }
     } catch (err) {
@@ -467,8 +574,11 @@ app.post('/api/razorpay-webhook', async (req, res) => {
       if (razorpay) {
         const order = await razorpay.orders.fetch(payment.order_id);
         const customerEmail = order.notes && order.notes.customer_email;
+        // Parse comma-separated product IDs stored in order notes at creation time
+        const rawIds = (order.notes && order.notes.item_ids) || '';
+        const productIds = rawIds ? rawIds.split(',').map(s => s.trim()).filter(Boolean) : [];
         if (customerEmail) {
-          await grantAccess(customerEmail, payment.id);
+          await grantAccess(customerEmail, payment.id, productIds);
         }
       }
     } catch (err) {
