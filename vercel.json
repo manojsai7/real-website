@@ -14,6 +14,7 @@
           "images/**",
           "index.html",
           "about.html",
+          "product.html",
           "cart.html",
           "checkout.html",
           "success.html",

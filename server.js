@@ -599,6 +599,27 @@ app.get('/cart', (req, res) => {
 app.get('/cart.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'cart.html'));
 });
+app.get('/product.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'product.html'));
+});
+app.get('/product', (req, res) => {
+  res.sendFile(path.join(__dirname, 'product.html'));
+});
+app.get('/about.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'about.html'));
+});
+app.get('/checkout.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'checkout.html'));
+});
+app.get('/success.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'success.html'));
+});
+app.get('/support.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'support.html'));
+});
+app.get('/terms.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'terms.html'));
+});
 
 // Legacy 301 redirects – covers all /sp and /sp/* paths
 app.get('/sp', (req, res) => res.redirect(301, '/'));
