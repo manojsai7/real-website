@@ -99,8 +99,23 @@
     
     .pdp-features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
     .pdp-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--t1); font-weight: 500; }
-    .pdp-features li::before { content: '✓'; flex-shrink: 0; width: 22px; height: 22px; background: #DCFCE7; color: var(--g); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+    .pdp-features li::before { content: '\2713'; flex-shrink: 0; width: 22px; height: 22px; background: #DCFCE7; color: var(--g); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
     .dark-theme .pdp-features li::before { background: rgba(34,197,94,.2); }
+
+    /* Bundle composite image panel */
+    .pdp-image-bundle { background: #111; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--b); }
+    .pdp-image-bundle-hero { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center top; display: block; }
+    .pdp-image-bundle-strip { display: flex; gap: 4px; padding: 6px; background: rgba(0,0,0,.82); }
+    .pdp-image-bundle-strip img { flex: 1; min-width: 0; height: 64px; object-fit: cover; border-radius: 6px; filter: brightness(.85); }
+    .dark-theme .pdp-image-bundle-strip { background: rgba(255,255,255,.06); }
+
+    /* Bundle 'What's Included' full section */
+    .pdp-included { border-top: 1px solid var(--b); padding-top: 24px; }
+    .pdp-included-title { font-size: 15px; font-weight: 800; color: var(--t1); margin-bottom: 14px; letter-spacing: -.2px; }
+    .pdp-included-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+    @media (max-width: 600px) { .pdp-included-grid { grid-template-columns: 1fr; } }
+    .pdp-included-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; color: var(--t2); line-height: 1.4; }
+    .pdp-included-dot { color: var(--a); font-size: 8px; flex-shrink: 0; margin-top: 4px; }
 
     .pdp-actions { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
     .btn-primary { flex: 1; min-width: 200px; padding: 16px; background: var(--a); color: #fff; font-size: 16px; font-weight: 700; border: none; border-radius: 8px; transition: background .15s, transform .1s; text-align: center; }
@@ -227,19 +242,54 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   document.title = product.title + " – Code Hunters";
-  var starsHtml = '&#9733;&#9733;&#9733;&#9733;&#9733;'.substring(0, product.stars * 7) + '&#9734;&#9734;&#9734;&#9734;&#9734;'.substring(0, (5 - product.stars) * 7);
+
+  // Stars
+  var starsFilled = Math.round(product.stars);
+  var starsHtml = '';
+  for (var si = 1; si <= 5; si++) { starsHtml += (si <= starsFilled ? '&#9733;' : '&#9734;'); }
+
   var discount = Math.round((1 - product.price / product.origPrice) * 100);
-  
-  var featuresHtml = '';
-  if (product.features && product.features.length) {
-    featuresHtml = '<ul class="pdp-features">' + product.features.map(function(f) { return '<li>' + f + '</li>'; }).join('') + '</ul>';
+
+  // Image panel — composite for bundles, plain for others
+  var imageHtml;
+  if (product.previewImages && product.previewImages.length && product.image) {
+    var stripImgs = product.previewImages.slice(0, 4).map(function(src) {
+      return '<img src="' + src + '" alt="" loading="lazy">';
+    }).join('');
+    imageHtml =
+      '<div class="pdp-image-bundle">' +
+        '<img class="pdp-image-bundle-hero" src="' + product.image + '" alt="' + product.title + '">' +
+        '<div class="pdp-image-bundle-strip">' + stripImgs + '</div>' +
+      '</div>';
+  } else {
+    var imgSrc = product.image ? '<img src="' + product.image + '" alt="' + product.title + '">' : '<div style="font-size:80px;opacity:.2;">&#128196;</div>';
+    imageHtml = '<div class="pdp-image">' + imgSrc + '</div>';
   }
 
-  var imageHtml = product.image ? '<img src="' + product.image + '" alt="' + product.title + '">' : '<div style="font-size: 80px; opacity: 0.2;">&#128196;</div>';
   var badgeHtml = product.badge ? '<div class="pdp-badge">' + product.badgeLabel + '</div>' : '';
 
-  container.innerHTML = 
-    '<div class="pdp-image">' + imageHtml + '</div>' +
+  // Highlights — use bundle highlights if available, else fall back to features
+  var highlightItems = (product.highlights && product.highlights.length) ? product.highlights : (product.features || []);
+  var featuresHtml = '';
+  if (highlightItems.length) {
+    featuresHtml = '<ul class="pdp-features">' + highlightItems.map(function(f) { return '<li>' + f + '</li>'; }).join('') + '</ul>';
+  }
+
+  // Full contents section — only for bundles
+  var fullContentsHtml = '';
+  if (product.fullContents && product.fullContents.length) {
+    var items = product.fullContents.map(function(item) {
+      return '<div class="pdp-included-item"><span class="pdp-included-dot">&#9679;</span>' + item + '</div>';
+    }).join('');
+    fullContentsHtml =
+      '<div class="pdp-included">' +
+        '<div class="pdp-included-title">&#128230; Everything Included</div>' +
+        '<div class="pdp-included-grid">' + items + '</div>' +
+      '</div>';
+  }
+
+  container.innerHTML =
+    imageHtml +
     '<div class="pdp-info">' +
       badgeHtml +
       '<h1 class="pdp-title">' + product.title + '</h1>' +
@@ -251,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function() {
       '</div>' +
       '<div class="pdp-desc">' + (product.longDesc || product.desc) + '</div>' +
       featuresHtml +
+      fullContentsHtml +
       '<div class="pdp-actions">' +
         '<button class="btn-primary" id="pdpBuyBtn">Buy Now</button>' +
         '<button class="btn-secondary" id="pdpAddBtn">Add to Cart</button>' +
