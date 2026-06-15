@@ -88,6 +88,16 @@
 
     .cart-total { display: flex; justify-content: space-between; padding: 16px 0 0; font-size: 18px; font-weight: 700; color: #222; border-top: 2px solid #222; margin-top: 8px; }
     .cart-total .amount { color: #22c55e; }
+    .coupon-box { margin: 16px 0 0; padding: 14px; border: 1px solid #e8e8e8; border-radius: 6px; background: #fafafa; display: none; }
+    .coupon-label { display: block; font-size: 12px; font-weight: 700; color: #555; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .coupon-row { display: flex; gap: 8px; }
+    .coupon-row input { min-width: 0; flex: 1; padding: 11px 12px; border: 1px solid #bbb; border-radius: 4px; font-size: 14px; text-transform: uppercase; outline: none; }
+    .coupon-row input:focus { border-color: #61bdf7; box-shadow: 0 0 0 2px rgba(97,189,247,0.25); }
+    .coupon-row button { padding: 0 14px; border: none; border-radius: 4px; background: #222; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .coupon-message { min-height: 18px; margin-top: 8px; font-size: 12px; font-weight: 600; color: #777; }
+    .coupon-message.ok { color: #16a34a; }
+    .coupon-message.bad { color: #d50000; }
+    .discount-line { display: none; justify-content: space-between; padding: 12px 0 0; font-size: 14px; font-weight: 700; color: #16a34a; }
 
     .empty-cart { text-align: center; padding: 30px 0; color: #999; font-size: 14px; }
     .empty-cart a { color: #E8440A; font-weight: 600; }
@@ -211,6 +221,19 @@
       <div id="cartTotal" class="cart-total" style="display:none;">
         <span>Total</span>
         <span class="amount" id="totalAmount">₹0</span>
+      </div>
+
+      <div id="discountLine" class="discount-line">
+        <span>Coupon discount</span>
+        <span id="discountAmount">-&#8377;0</span>
+      </div>
+      <div id="couponBox" class="coupon-box">
+        <label class="coupon-label" for="couponCode">Coupon Code</label>
+        <div class="coupon-row">
+          <input type="text" id="couponCode" autocomplete="off" placeholder="RBY00">
+          <button type="button" id="applyCouponBtn">Apply</button>
+        </div>
+        <div id="couponMessage" class="coupon-message"></div>
       </div>
 
       <!-- What You're Getting -->
@@ -402,6 +425,16 @@
     try { return JSON.parse(sessionStorage.getItem('ch_cart')) || []; } catch(e) { return []; }
   }
   function saveCart(c) { sessionStorage.setItem('ch_cart', JSON.stringify(c)); }
+  function getCouponCode() {
+    var input = document.getElementById('couponCode');
+    return input ? input.value.trim().toUpperCase() : '';
+  }
+  function getCouponDiscount(total) {
+    return getCouponCode() === 'RBY00' ? Math.floor(total * 0.99) : 0;
+  }
+  function formatInr(amount) {
+    return '\u20B9' + amount.toLocaleString('en-IN');
+  }
 
   // Accept ?product= param for direct buy
   var params = new URLSearchParams(window.location.search);
@@ -438,6 +471,8 @@
     if (!cart.length) {
       container.innerHTML = '<div class="empty-cart">Your cart is empty. <a href="/">Browse products</a></div>';
       totalEl.style.display = 'none';
+      document.getElementById('couponBox').style.display = 'none';
+      document.getElementById('discountLine').style.display = 'none';
       document.getElementById('payBtn').disabled = true;
       document.getElementById('orderTotal').textContent = '\u20B90';
       document.getElementById('gettingSection').style.display = 'none';
@@ -468,8 +503,17 @@
     });
 
     container.innerHTML = html;
-    document.getElementById('totalAmount').textContent = '\u20B9' + total.toLocaleString('en-IN');
-    document.getElementById('orderTotal').textContent = '\u20B9' + total.toLocaleString('en-IN');
+    var discount = getCouponDiscount(total);
+    var payableTotal = Math.max(1, total - discount);
+    document.getElementById('totalAmount').textContent = formatInr(payableTotal);
+    document.getElementById('orderTotal').textContent = formatInr(payableTotal);
+    document.getElementById('couponBox').style.display = 'block';
+    if (discount > 0) {
+      document.getElementById('discountAmount').textContent = '-' + formatInr(discount);
+      document.getElementById('discountLine').style.display = 'flex';
+    } else {
+      document.getElementById('discountLine').style.display = 'none';
+    }
     totalEl.style.display = 'flex';
     document.getElementById('payBtn').disabled = false;
 
@@ -534,6 +578,28 @@
 
   renderCart();
 
+  document.getElementById('applyCouponBtn').addEventListener('click', function() {
+    var msg = document.getElementById('couponMessage');
+    var code = getCouponCode();
+    if (code === 'RBY00') {
+      msg.textContent = 'RBY00 applied: 99% discount.';
+      msg.className = 'coupon-message ok';
+    } else if (code) {
+      msg.textContent = 'Invalid coupon code.';
+      msg.className = 'coupon-message bad';
+    } else {
+      msg.textContent = '';
+      msg.className = 'coupon-message';
+    }
+    renderCart();
+  });
+  document.getElementById('couponCode').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+    document.getElementById('couponMessage').textContent = '';
+    document.getElementById('couponMessage').className = 'coupon-message';
+    renderCart();
+  });
+
   document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var errorEl = document.getElementById('errorMsg');
@@ -572,6 +638,7 @@
         customerName: firstName + ' ' + lastName,
         customerEmail: email,
         customerPhone: phone,
+        couponCode: getCouponCode(),
       }),
     })
     .then(function(r){ return r.json(); })

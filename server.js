@@ -121,6 +121,34 @@ const PRODUCTS = {
   }
 };
 
+const FOLDER_ENV_ALIASES = {
+  GDRIVE_FOLDER_AI: ['GDRIVE_FOLDER_AI_BUNDLE', 'GDRIVE_FOLDER_AIBUNDLE', 'GDRIVE_FOLDER_AI_ENGINEER'],
+};
+
+const COUPONS = {
+  RBY00: {
+    code: 'RBY00',
+    discountPercent: 99,
+  },
+};
+
+function getConfiguredFolderId(folderEnv) {
+  const keys = [folderEnv].concat(FOLDER_ENV_ALIASES[folderEnv] || []);
+  for (const key of keys) {
+    const value = process.env[key];
+    if (!value) continue;
+    const normalized = value.replace(/\0/g, '').trim();
+    if (!normalized || /^your_.*folder_id$/i.test(normalized) || normalized.includes('REPLACE')) continue;
+    return normalized;
+  }
+  return null;
+}
+
+function getCoupon(code) {
+  if (!code) return null;
+  return COUPONS[String(code).trim().toUpperCase()] || null;
+}
+
 // --- Order key generation (like wc_order_6aAljJBEgvnDB) ---
 let orderCounter = 1000;
 function generateOrderKey() {
@@ -198,10 +226,10 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
   const folders = purchasedProducts
     .map(product => ({
       product,
-      folderId: process.env[product.folderEnv],
+      folderId: getConfiguredFolderId(product.folderEnv),
     }))
     .filter(entry => entry.folderId);
-  const legacyFolderId = process.env.GDRIVE_FOLDER_ID;
+  const legacyFolderId = getConfiguredFolderId('GDRIVE_FOLDER_ID');
   if (!folders.length && legacyFolderId) {
     folders.push({
       product: { name: 'Code Hunters Bundle', folderEnv: 'GDRIVE_FOLDER_ID' },
@@ -478,13 +506,13 @@ app.post('/api/create-razorpay-order', async (req, res) => {
     });
   }
 
-  const { items, customerName, customerEmail, customerPhone } = req.body;
+  const { items, customerName, customerEmail, customerPhone, couponCode } = req.body;
   if (!items || !items.length) {
     return res.status(400).json({ error: 'No items in cart' });
   }
 
-  // Calculate total amount in paise
-  let totalPaise = 0;
+  // Calculate total amount in paise. Coupon validation stays server-side.
+  let subtotalPaise = 0;
   const validItems = [];
   for (const item of items) {
     const product = PRODUCTS[item.id];
@@ -492,13 +520,19 @@ app.post('/api/create-razorpay-order', async (req, res) => {
     const qty = product.type === 'bundle'
       ? 1
       : Math.max(1, Math.min(10, parseInt(item.quantity, 10) || 1));
-    totalPaise += product.price * 100 * qty;
+    subtotalPaise += product.price * 100 * qty;
     validItems.push({ id: product.id, name: product.name, qty });
   }
 
   if (!validItems.length) {
     return res.status(400).json({ error: 'No valid products found' });
   }
+
+  const coupon = getCoupon(couponCode);
+  const discountPaise = coupon
+    ? Math.floor(subtotalPaise * coupon.discountPercent / 100)
+    : 0;
+  const totalPaise = Math.max(100, subtotalPaise - discountPaise);
 
   try {
     const orderKey = generateOrderKey();
@@ -515,6 +549,10 @@ app.post('/api/create-razorpay-order', async (req, res) => {
         customer_phone: customerPhone || '',
         items: validItems.map(i => i.name).join(', '),
         product_ids: JSON.stringify(validItems.map(i => i.id)),
+        coupon_code: coupon ? coupon.code : '',
+        coupon_discount_percent: coupon ? String(coupon.discountPercent) : '',
+        subtotal_paise: String(subtotalPaise),
+        discount_paise: String(discountPaise),
       },
     });
 
@@ -523,6 +561,9 @@ app.post('/api/create-razorpay-order', async (req, res) => {
       orderKey: orderKey,
       orderNumber: orderNumber,
       amount: order.amount,
+      subtotal: subtotalPaise,
+      discount: discountPaise,
+      coupon: coupon ? { code: coupon.code, discountPercent: coupon.discountPercent } : null,
       currency: order.currency,
       keyId: process.env.RAZORPAY_KEY_ID,
     });
