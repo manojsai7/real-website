@@ -15,7 +15,7 @@ const PRODUCTS = {
   'ai_bundle': {
     id: 'ai_bundle',
     name: 'AI Engineer Bundle',
-    price: 1,
+    price: 399,
     currency: 'INR',
     description: '150+ Machine Learning Resources, Deep Learning Projects, and NLP Toolkit with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_AI'
@@ -23,7 +23,7 @@ const PRODUCTS = {
   'python_bundle': {
     id: 'python_bundle',
     name: 'Python Developer Bundle',
-    price: 1,
+    price: 299,
     currency: 'INR',
     description: '200+ Python Project Source Codes, Django Full Stack, and ML implementations',
     folderEnv: 'GDRIVE_FOLDER_PYTHON'
@@ -31,7 +31,7 @@ const PRODUCTS = {
   'web_bundle': {
     id: 'web_bundle',
     name: 'Full Stack Web Bundle',
-    price: 1,
+    price: 299,
     currency: 'INR',
     description: 'HTML/CSS/JS, React Frontend Projects, PHP Backend, and UI Templates',
     folderEnv: 'GDRIVE_FOLDER_WEB'
@@ -39,7 +39,7 @@ const PRODUCTS = {
   'programming_bundle': {
     id: 'programming_bundle',
     name: 'Programming Master Bundle',
-    price: 1,
+    price: 199,
     currency: 'INR',
     description: 'Java, C/C++, C# Projects with DSA Resources and Programming Roadmaps',
     folderEnv: 'GDRIVE_FOLDER_PROGRAMMING'
@@ -47,7 +47,7 @@ const PRODUCTS = {
   'career_bundle': {
     id: 'career_bundle',
     name: 'Career Accelerator Bundle',
-    price: 1,
+    price: 99,
     currency: 'INR',
     description: 'Resume Templates, Interview Prep, Productivity Tools, and Career Growth Guides',
     folderEnv: 'GDRIVE_FOLDER_CAREER'
@@ -55,7 +55,7 @@ const PRODUCTS = {
   'mega_bundle': {
     id: 'mega_bundle',
     name: 'Ultimate Mega Bundle',
-    price: 1,
+    price: 599,
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
