@@ -121,6 +121,22 @@ const PRODUCTS = {
   }
 };
 
+const FOLDER_ENV_ALIASES = {
+  GDRIVE_FOLDER_AI: ['GDRIVE_FOLDER_AI_BUNDLE', 'GDRIVE_FOLDER_AIBUNDLE', 'GDRIVE_FOLDER_AI_ENGINEER'],
+};
+
+function getConfiguredFolderId(folderEnv) {
+  const keys = [folderEnv].concat(FOLDER_ENV_ALIASES[folderEnv] || []);
+  for (const key of keys) {
+    const value = process.env[key];
+    if (!value) continue;
+    const normalized = value.replace(/\0/g, '').trim();
+    if (!normalized || /^your_.*folder_id$/i.test(normalized) || normalized.includes('REPLACE')) continue;
+    return normalized;
+  }
+  return null;
+}
+
 // --- Order key generation (like wc_order_6aAljJBEgvnDB) ---
 let orderCounter = 1000;
 function generateOrderKey() {
@@ -233,10 +249,10 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
   const folders = purchasedProducts
     .map(product => ({
       product,
-      folderId: process.env[product.folderEnv],
+      folderId: getConfiguredFolderId(product.folderEnv),
     }))
     .filter(entry => entry.folderId);
-  const legacyFolderId = process.env.GDRIVE_FOLDER_ID;
+  const legacyFolderId = getConfiguredFolderId('GDRIVE_FOLDER_ID');
   if (!folders.length && legacyFolderId) {
     folders.push({
       product: { name: 'Code Hunters Bundle', folderEnv: 'GDRIVE_FOLDER_ID' },

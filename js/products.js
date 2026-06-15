@@ -207,7 +207,7 @@ var PRODUCTS = [
     badgeLabel: "Everything",
     stars: 5,
     reviewCount: 154,
-    image: "/images/codehnt.png",
+    image: "/images/Ultimate_pack.png",
     cat: "mega",
     desc: "Every bundle on the platform: AI, Python, Web, Programming, Career, bonuses, and future updates.",
     longDesc: "The complete Code Hunters collection with every bundle, project pack, roadmap, PDF, reference material, bonus resource, and future update included.",
