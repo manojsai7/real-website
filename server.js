@@ -15,7 +15,7 @@ const PRODUCTS = {
   'ai_bundle': {
     id: 'ai_bundle',
     name: 'AI Engineer Bundle',
-    price: 1,
+    price: 399,
     currency: 'INR',
     description: '150+ Machine Learning Resources, Deep Learning Projects, and NLP Toolkit with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_AI'
@@ -23,7 +23,7 @@ const PRODUCTS = {
   'python_bundle': {
     id: 'python_bundle',
     name: 'Python Developer Bundle',
-    price: 1,
+    price: 299,
     currency: 'INR',
     description: '200+ Python Project Source Codes, Django Full Stack, and ML implementations',
     folderEnv: 'GDRIVE_FOLDER_PYTHON'
@@ -31,7 +31,7 @@ const PRODUCTS = {
   'web_bundle': {
     id: 'web_bundle',
     name: 'Full Stack Web Bundle',
-    price: 1,
+    price: 299,
     currency: 'INR',
     description: 'HTML/CSS/JS, React Frontend Projects, PHP Backend, and UI Templates',
     folderEnv: 'GDRIVE_FOLDER_WEB'
@@ -39,7 +39,7 @@ const PRODUCTS = {
   'programming_bundle': {
     id: 'programming_bundle',
     name: 'Programming Master Bundle',
-    price: 1,
+    price: 199,
     currency: 'INR',
     description: 'Java, C/C++, C# Projects with DSA Resources and Programming Roadmaps',
     folderEnv: 'GDRIVE_FOLDER_PROGRAMMING'
@@ -47,7 +47,7 @@ const PRODUCTS = {
   'career_bundle': {
     id: 'career_bundle',
     name: 'Career Accelerator Bundle',
-    price: 1,
+    price: 99,
     currency: 'INR',
     description: 'Resume Templates, Interview Prep, Productivity Tools, and Career Growth Guides',
     folderEnv: 'GDRIVE_FOLDER_CAREER'
@@ -55,7 +55,7 @@ const PRODUCTS = {
   'mega_bundle': {
     id: 'mega_bundle',
     name: 'Ultimate Mega Bundle',
-    price: 1,
+    price: 599,
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
     folderEnv: 'GDRIVE_FOLDER_MEGA'
@@ -170,6 +170,41 @@ function getDriveClient() {
   return google.drive({ version: 'v3', auth });
 }
 
+async function grantDriveReader(drive, fileId, customerEmail) {
+  await drive.permissions.create({
+    fileId,
+    requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+    sendNotificationEmail: false,
+    fields: 'id',
+  });
+}
+
+async function grantShortcutTargets(drive, folderId, customerEmail) {
+  const result = await drive.files.list({
+    q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.shortcut' and trashed = false`,
+    fields: 'files(id,name,shortcutDetails)',
+    pageSize: 1000,
+    supportsAllDrives: true,
+    includeItemsFromAllDrives: true,
+  });
+  const shortcuts = result.data.files || [];
+  for (const shortcut of shortcuts) {
+    const targetId = shortcut.shortcutDetails && shortcut.shortcutDetails.targetId;
+    if (!targetId) continue;
+    try {
+      await grantDriveReader(drive, targetId, customerEmail);
+      console.log('[delivery] Shortcut target access granted to', customerEmail, 'for', shortcut.name, targetId);
+    } catch (err) {
+      const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
+      if (duplicateGrant) {
+        console.warn('[delivery] Shortcut target access already exists for', customerEmail, 'on', shortcut.name);
+      } else {
+        console.error('[delivery] Shortcut target grant FAILED for', customerEmail, 'on', shortcut.name, '-', err.message);
+      }
+    }
+  }
+}
+
 function getPurchasedProducts(productIds) {
   const ids = Array.isArray(productIds) ? productIds : [];
   return ids
@@ -222,17 +257,14 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
       const drive = getDriveClient();
       for (const entry of folders) {
         try {
-          await drive.permissions.create({
-            fileId: entry.folderId,
-            requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
-            sendNotificationEmail: false,
-            fields: 'id',
-          });
+          await grantDriveReader(drive, entry.folderId, customerEmail);
+          await grantShortcutTargets(drive, entry.folderId, customerEmail);
           grantedFolders.push(entry);
           console.log('[delivery] Drive access granted to', customerEmail, 'for', entry.product.name, entry.folderId);
         } catch (err) {
           const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
           if (duplicateGrant) {
+            await grantShortcutTargets(drive, entry.folderId, customerEmail);
             grantedFolders.push(entry);
             console.warn('[delivery] Drive access already exists for', customerEmail, 'on', entry.product.name);
           } else {

@@ -2,7 +2,7 @@ var PRODUCTS = [
   {
     id: "ai_bundle",
     title: "AI Engineer Bundle",
-    price: 1,
+    price: 399,
     origPrice: 1999,
     folderEnv: "GDRIVE_FOLDER_AI",
     type: "bundle",
@@ -40,7 +40,7 @@ var PRODUCTS = [
   {
     id: "python_bundle",
     title: "Python Developer Bundle",
-    price: 1,
+    price: 299,
     origPrice: 1499,
     folderEnv: "GDRIVE_FOLDER_PYTHON",
     type: "bundle",
@@ -81,7 +81,7 @@ var PRODUCTS = [
   {
     id: "web_bundle",
     title: "Full Stack Web Bundle",
-    price: 1,
+    price: 299,
     origPrice: 1299,
     folderEnv: "GDRIVE_FOLDER_WEB",
     type: "bundle",
@@ -121,7 +121,7 @@ var PRODUCTS = [
   {
     id: "programming_bundle",
     title: "Programming Master Bundle",
-    price: 1,
+    price: 199,
     origPrice: 1599,
     folderEnv: "GDRIVE_FOLDER_PROGRAMMING",
     type: "bundle",
@@ -162,7 +162,7 @@ var PRODUCTS = [
   {
     id: "career_bundle",
     title: "Career Accelerator Bundle",
-    price: 1,
+    price: 99,
     origPrice: 999,
     folderEnv: "GDRIVE_FOLDER_CAREER",
     type: "bundle",
@@ -199,7 +199,7 @@ var PRODUCTS = [
   {
     id: "mega_bundle",
     title: "Ultimate Mega Bundle",
-    price: 1,
+    price: 599,
     origPrice: 4999,
     folderEnv: "GDRIVE_FOLDER_MEGA",
     type: "bundle",
@@ -207,7 +207,7 @@ var PRODUCTS = [
     badgeLabel: "Everything",
     stars: 5,
     reviewCount: 154,
-    image: "/images/Developers-Kit-1943x2048-1-972x1024.png",
+    image: "/images/codehnt.png",
     cat: "mega",
     desc: "Every bundle on the platform: AI, Python, Web, Programming, Career, bonuses, and future updates.",
     longDesc: "The complete Code Hunters collection with every bundle, project pack, roadmap, PDF, reference material, bonus resource, and future update included.",
