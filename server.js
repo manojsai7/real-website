@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
 const Razorpay = require('razorpay');
-const { google } = require('googleapis');
 const { Resend } = require('resend');
 
 const app = express();
@@ -185,6 +184,7 @@ function getResend() {
 }
 
 function getDriveClient() {
+  const { google } = require('googleapis');
   let creds;
   try {
     creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);

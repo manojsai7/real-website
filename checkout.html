@@ -230,7 +230,7 @@
       <div id="couponBox" class="coupon-box">
         <label class="coupon-label" for="couponCode">Coupon Code</label>
         <div class="coupon-row">
-          <input type="text" id="couponCode" autocomplete="off" placeholder="RBY00">
+          <input type="text" id="couponCode" autocomplete="off" placeholder="Enter coupon code">
           <button type="button" id="applyCouponBtn">Apply</button>
         </div>
         <div id="couponMessage" class="coupon-message"></div>
@@ -282,7 +282,7 @@
     'ai_bundle': {
       id: 'ai_bundle',
       name: 'AI Engineer Bundle',
-      price: 1,
+      price: 399,
       features: [
         '150+ Machine Learning Resources & Practical Materials',
         'Deep Learning Project Collection',
@@ -295,7 +295,7 @@
     'python_bundle': {
       id: 'python_bundle',
       name: 'Python Developer Bundle',
-      price: 1,
+      price: 299,
       features: [
         '200+ Python Project Source Codes',
         'Django Full Stack Project Collection',
@@ -308,7 +308,7 @@
     'web_bundle': {
       id: 'web_bundle',
       name: 'Full Stack Web Bundle',
-      price: 1,
+      price: 299,
       features: [
         '150+ HTML CSS JavaScript Projects',
         'React Frontend Project Collection',
@@ -321,7 +321,7 @@
     'programming_bundle': {
       id: 'programming_bundle',
       name: 'Programming Master Bundle',
-      price: 1,
+      price: 199,
       features: [
         'Java Project Collection',
         'C & C++ Programming Source Codes',
@@ -334,7 +334,7 @@
     'career_bundle': {
       id: 'career_bundle',
       name: 'Career Accelerator Bundle',
-      price: 1,
+      price: 99,
       features: [
         'Professional Resume Template Collection',
         'Coding Books & Developer Notes',
@@ -347,7 +347,7 @@
     'mega_bundle': {
       id: 'mega_bundle',
       name: 'Ultimate Mega Bundle',
-      price: 1,
+      price: 599,
       features: [
         'Access to All AI, Python, Web & Programming Projects',
         'Complete Collection of Coding Notes & Interview Prep',
@@ -430,7 +430,7 @@
     return input ? input.value.trim().toUpperCase() : '';
   }
   function getCouponDiscount(total) {
-    return getCouponCode() === 'RBY00' ? Math.floor(total * 0.99) : 0;
+    return 0;
   }
   function formatInr(amount) {
     return '\u20B9' + amount.toLocaleString('en-IN');
@@ -581,12 +581,9 @@
   document.getElementById('applyCouponBtn').addEventListener('click', function() {
     var msg = document.getElementById('couponMessage');
     var code = getCouponCode();
-    if (code === 'RBY00') {
-      msg.textContent = 'RBY00 applied: 99% discount.';
+    if (code) {
+      msg.textContent = 'Coupon will be verified at payment.';
       msg.className = 'coupon-message ok';
-    } else if (code) {
-      msg.textContent = 'Invalid coupon code.';
-      msg.className = 'coupon-message bad';
     } else {
       msg.textContent = '';
       msg.className = 'coupon-message';
@@ -654,6 +651,14 @@
       // Show order key if returned
       if (data.orderKey) {
         document.getElementById('orderNumber').textContent = data.orderKey;
+      }
+      if (typeof data.amount === 'number') {
+        document.getElementById('orderTotal').textContent = formatInr(data.amount / 100);
+        document.getElementById('totalAmount').textContent = formatInr(data.amount / 100);
+      }
+      if (data.discount) {
+        document.getElementById('discountAmount').textContent = '-' + formatInr(data.discount / 100);
+        document.getElementById('discountLine').style.display = 'flex';
       }
 
       var options = {
