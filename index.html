@@ -672,27 +672,6 @@
       color: var(--g);
     }
 
-    .pc.pc-mega {
-      border: 2px solid rgba(232, 68, 10, .55);
-      box-shadow: 0 12px 34px rgba(232, 68, 10, .14);
-    }
-
-    .pc.pc-mega::before {
-      content: 'Recommended Full Access';
-      position: absolute;
-      top: 10px;
-      right: 48px;
-      z-index: 2;
-      background: var(--a);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .2px;
-      padding: 4px 8px;
-      border-radius: 100px;
-      box-shadow: 0 4px 12px rgba(232, 68, 10, .25);
-    }
-
     .pc-wish {
       position: absolute;
       top: 10px;
@@ -1185,10 +1164,6 @@
 
       .pc-features {
         margin-bottom: 10px;
-      }
-
-      .pc.pc-mega {
-        grid-column: 1 / -1;
       }
 
       .bundle-modal {
@@ -1956,7 +1931,7 @@
     }
   </style>
 </head>
-<!-- hi man -->
+
 <body>
 
   <!-- Announcement bar -->
@@ -1994,19 +1969,19 @@
     <div class="wrap">
       <div class="hero-inner">
         <div class="hero-left">
-          <div class="hero-badge">Best Value: Complete Developer Library</div>
+          <div class="hero-badge">Interview-Ready Projects</div>
           <h1 class="hero-title">
-            Get the Ultimate Mega Bundle and
-            <span class="accent">build with confidence.</span>
+            Turn your resume into a
+            <span class="accent">shortlist magnet.</span>
           </h1>
           <p class="hero-sub">
-            One purchase unlocks AI, Python, Web, Programming, Career resources, project files, notes, prompts,
-            roadmaps, and future updates. Start with the full library, or pick an individual bundle below.
+            Use 700+ industry-ready projects recruiters expect to see. Role-specific builds across Python, Frontend,
+            Backend, Data, and AI so you can show proof without starting from scratch.
           </p>
           <div class="hero-price-row">
             <span class="hero-price">&#8377;1</span>
-            <span class="hero-price-orig">&#8377;1</span>
-            <span class="hero-discount-pill">Best Deal</span>
+            <span class="hero-price-orig">&#8377;4,999</span>
+            <span class="hero-discount-pill">99% OFF</span>
           </div>
           <div class="hero-actions">
             <button class="btn-primary" id="heroBuyBtn">Get Instant Access &#8594;</button>
@@ -2022,23 +1997,24 @@
         <div class="hero-right">
           <div class="hero-card">
             <div class="hero-card-img">
-              <img src="/images/Ultimate_pack.png" alt="Ultimate Mega Bundle" loading="eager">
+              <img src="/images/Developers-Kit-1943x2048-1-972x1024.png" alt="Ultimate Mega Bundle" loading="eager">
             </div>
             <div class="hero-card-body">
               <div class="hero-card-title">Ultimate Mega Bundle</div>
               <ul class="hero-card-features">
-                <li>All 5 premium bundles in one access</li>
-                <li>Projects, PDFs, notes, prompts and roadmaps</li>
-                <li>Best choice for serious career preparation</li>
-                <li>Lifetime access with free future updates</li>
+                <li>Access to All AI, Python, Web &amp; Programming Projects</li>
+                <li>Complete Collection of Coding Notes &amp; Interview Prep</li>
+                <li>All Resume Templates &amp; Productivity PDF Toolkit</li>
+                <li>All Bonus Materials and Roadmaps</li>
+                <li>Lifetime Community Support &amp; Free Updates</li>
               </ul>
               <div class="pc-features">
                 <button class="pc-details-btn" id="heroDetailsBtn">View Everything Included</button>
               </div>
               <div class="hero-card-price-row">
                 <span class="hero-card-price">&#8377;1</span>
-                <span class="hero-card-orig">&#8377;1</span>
-                <span class="hero-card-save">Save &#8377;0</span>
+                <span class="hero-card-orig">&#8377;4,999</span>
+                <span class="hero-card-save">Save &#8377;4,998</span>
               </div>
               <button class="hero-card-btn" id="heroCardBtn">Add to Cart</button>
             </div>
@@ -2192,8 +2168,8 @@
   <!-- ── SECTION 2: Products ── -->
   <section class="products-section" id="products">
     <div class="wrap">
-      <h2 class="section-heading">Choose Your Bundle</h2>
-      <p class="section-sub">Mega Bundle gives the full library. Individual bundles are focused options if you need only one track.</p>
+      <h2 class="section-heading">Browse All Products</h2>
+      <p class="section-sub">Curated kits for developers at every level — career, projects, interviews &amp; more.</p>
 
       <!-- Category Tabs -->
       <div class="cat-strip" id="catStrip">
@@ -2543,7 +2519,7 @@
 
           var catLabel = { ai: 'AI Bundle', python: 'Python Bundle', web: 'Web Bundle', programming: 'Programming Bundle', career: 'Career Bundle', mega: 'Mega Bundle' }[p.cat] || 'Bundle';
           return (
-            '<div class="pc' + (p.id === 'mega_bundle' ? ' pc-mega' : '') + '">' +
+            '<div class="pc">' +
             (p.badge ? '<div class="pc-badge ' + esc(p.badge) + '">' + esc(p.badgeLabel) + '</div>' : '') +
             '<button class="pc-wish' + (wished ? ' active' : '') + '" data-wish-id="' + esc(p.id) + '" title="' + (wished ? 'Remove from wishlist' : 'Add to wishlist') + '">' +
             (wished ? '&#9829;' : '&#9825;') +

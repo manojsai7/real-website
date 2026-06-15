@@ -121,22 +121,6 @@ const PRODUCTS = {
   }
 };
 
-const FOLDER_ENV_ALIASES = {
-  GDRIVE_FOLDER_AI: ['GDRIVE_FOLDER_AI_BUNDLE', 'GDRIVE_FOLDER_AIBUNDLE', 'GDRIVE_FOLDER_AI_ENGINEER'],
-};
-
-function getConfiguredFolderId(folderEnv) {
-  const keys = [folderEnv].concat(FOLDER_ENV_ALIASES[folderEnv] || []);
-  for (const key of keys) {
-    const value = process.env[key];
-    if (!value) continue;
-    const normalized = value.replace(/\0/g, '').trim();
-    if (!normalized || /^your_.*folder_id$/i.test(normalized) || normalized.includes('REPLACE')) continue;
-    return normalized;
-  }
-  return null;
-}
-
 // --- Order key generation (like wc_order_6aAljJBEgvnDB) ---
 let orderCounter = 1000;
 function generateOrderKey() {
@@ -186,41 +170,6 @@ function getDriveClient() {
   return google.drive({ version: 'v3', auth });
 }
 
-async function grantDriveReader(drive, fileId, customerEmail) {
-  await drive.permissions.create({
-    fileId,
-    requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
-    sendNotificationEmail: false,
-    fields: 'id',
-  });
-}
-
-async function grantShortcutTargets(drive, folderId, customerEmail) {
-  const result = await drive.files.list({
-    q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.shortcut' and trashed = false`,
-    fields: 'files(id,name,shortcutDetails)',
-    pageSize: 1000,
-    supportsAllDrives: true,
-    includeItemsFromAllDrives: true,
-  });
-  const shortcuts = result.data.files || [];
-  for (const shortcut of shortcuts) {
-    const targetId = shortcut.shortcutDetails && shortcut.shortcutDetails.targetId;
-    if (!targetId) continue;
-    try {
-      await grantDriveReader(drive, targetId, customerEmail);
-      console.log('[delivery] Shortcut target access granted to', customerEmail, 'for', shortcut.name, targetId);
-    } catch (err) {
-      const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
-      if (duplicateGrant) {
-        console.warn('[delivery] Shortcut target access already exists for', customerEmail, 'on', shortcut.name);
-      } else {
-        console.error('[delivery] Shortcut target grant FAILED for', customerEmail, 'on', shortcut.name, '-', err.message);
-      }
-    }
-  }
-}
-
 function getPurchasedProducts(productIds) {
   const ids = Array.isArray(productIds) ? productIds : [];
   return ids
@@ -249,10 +198,10 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
   const folders = purchasedProducts
     .map(product => ({
       product,
-      folderId: getConfiguredFolderId(product.folderEnv),
+      folderId: process.env[product.folderEnv],
     }))
     .filter(entry => entry.folderId);
-  const legacyFolderId = getConfiguredFolderId('GDRIVE_FOLDER_ID');
+  const legacyFolderId = process.env.GDRIVE_FOLDER_ID;
   if (!folders.length && legacyFolderId) {
     folders.push({
       product: { name: 'Code Hunters Bundle', folderEnv: 'GDRIVE_FOLDER_ID' },
@@ -273,14 +222,17 @@ async function grantAccess(customerEmail, paymentId, productIds = []) {
       const drive = getDriveClient();
       for (const entry of folders) {
         try {
-          await grantDriveReader(drive, entry.folderId, customerEmail);
-          await grantShortcutTargets(drive, entry.folderId, customerEmail);
+          await drive.permissions.create({
+            fileId: entry.folderId,
+            requestBody: { type: 'user', role: 'reader', emailAddress: customerEmail },
+            sendNotificationEmail: false,
+            fields: 'id',
+          });
           grantedFolders.push(entry);
           console.log('[delivery] Drive access granted to', customerEmail, 'for', entry.product.name, entry.folderId);
         } catch (err) {
           const duplicateGrant = err && (err.code === 409 || /already/i.test(err.message || ''));
           if (duplicateGrant) {
-            await grantShortcutTargets(drive, entry.folderId, customerEmail);
             grantedFolders.push(entry);
             console.warn('[delivery] Drive access already exists for', customerEmail, 'on', entry.product.name);
           } else {
