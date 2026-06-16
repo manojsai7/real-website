@@ -1971,12 +1971,12 @@
         <div class="hero-left">
           <div class="hero-badge">Interview-Ready Projects</div>
           <h1 class="hero-title">
-            Turn your resume into a
-            <span class="accent">shortlist magnet.</span>
+            700+ real-world projects in one
+            <span class="accent">Developer's Kit.</span>
           </h1>
           <p class="hero-sub">
-            Use 700+ industry-ready projects recruiters expect to see. Role-specific builds across Python, Frontend,
-            Backend, Data, and AI so you can show proof without starting from scratch.
+            Get instant access to Python, AI, Full Stack Web, Programming, and Career resources packed with source code,
+            interview prep, templates, roadmaps, and lifetime updates.
           </p>
           <div class="hero-price-row">
             <span class="hero-price">&#8377;599</span>
@@ -1997,10 +1997,10 @@
         <div class="hero-right">
           <div class="hero-card">
             <div class="hero-card-img">
-              <img src="/images/Ultimate_pack.png" alt="Ultimate Mega Bundle" loading="eager">
+              <img src="/images/Ultimate_pack.png" alt="Developer's Kit - 700+ Job-Ready Projects Bundle" loading="eager">
             </div>
             <div class="hero-card-body">
-              <div class="hero-card-title">Ultimate Mega Bundle</div>
+              <div class="hero-card-title">Developer's Kit - 700+ Job-Ready Projects Bundle</div>
               <ul class="hero-card-features">
                 <li>Access to All AI, Python, Web &amp; Programming Projects</li>
                 <li>Complete Collection of Coding Notes &amp; Interview Prep</li>
@@ -2628,7 +2628,7 @@
         var btn = document.getElementById(id);
         if (!btn) return;
         btn.addEventListener('click', function () {
-          var p = PRODUCTS.find(function (x) { return x.id === 'mega_bundle'; }) || PRODUCTS[0]; // Ultimate Mega Bundle
+          var p = PRODUCTS.find(function (x) { return x.id === 'mega_bundle'; }) || PRODUCTS[0]; // Developer's Kit bundle
           if (action === 'buy') {
             CartModule.addToCart({ id: p.id, title: p.title, price: p.price, type: p.type });
             window.location.href = '/checkout.html';

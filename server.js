@@ -53,7 +53,7 @@ const PRODUCTS = {
   },
   'mega_bundle': {
     id: 'mega_bundle',
-    name: 'Ultimate Mega Bundle',
+    name: "Developer's Kit - 700+ Job-Ready Projects Bundle",
     price: 599,
     currency: 'INR',
     description: 'Everything on the platform – all bundles, projects, roadmaps, and resources with lifetime access',
@@ -64,7 +64,7 @@ const PRODUCTS = {
   // --- WooCommerce Sub-site Products ---
   'developers-kit': {
     id: 'developers-kit',
-    name: "Developer's Kit \u2013 700+ Projects Bundle",
+    name: "Developer's Kit - 700+ Job-Ready Projects Bundle",
     price: 1,
     currency: 'INR',
     description: "700+ real-world projects across 10+ technologies with lifetime access & updates"
